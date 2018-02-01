@@ -1,11 +1,10 @@
 package Virtual_Totem;
 
-import java.io.BufferedReader;
+import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
@@ -25,7 +24,7 @@ class Server_VT {
     private ConectionList ConectionList;
     private ServerSocket socketserver;
     private Socket socketConexion;
-    private String msg;
+    private Object msg;
 
     public Server_VT() {
         ConectionList = new ConectionList();
@@ -67,18 +66,20 @@ class Server_VT {
             ConectionList.remove(socketConexion);
         }
 
-        private synchronized void send(String msg) {
+        private synchronized void send(Object msg) {
             
             Iterator<Socket> iter = ConectionList.iterator();
-            PrintWriter out = null;
+            ObjectOutputStream out = null;
             while (iter.hasNext()) {
                 try {
-                    out = new PrintWriter(iter.next().getOutputStream());
+                    out = new ObjectOutputStream(iter.next().getOutputStream());
+                    out.writeObject(msg);
+                    out.flush();
+                    
                 } catch (IOException e) {
                     e.getMessage();
                 }
-                out.println(msg);
-                out.flush();;
+                
             }
         }
     }
@@ -89,8 +90,8 @@ class Server_VT {
             new Thread() {
                 public void run() {
                     try {
-                        PrintWriter out = null;
-                        BufferedReader in = null;
+                        ObjectOutputStream out = null;
+                        ObjectInputStream in = null;
                         try {
                             // Get outbound and inbound flows
                             OutputStream outStream = Server_VT.this.
@@ -99,15 +100,18 @@ class Server_VT {
                                     socketConexion.getInputStream();
 
                             // Create outbound and inbound flows
-                            out = new PrintWriter(outStream);
-                            in = new BufferedReader(
-                                    new InputStreamReader(inStream));
+                            out = new ObjectOutputStream(outStream);
+                            in = new ObjectInputStream(inStream);
 
                             // Read and write in inbound flows
-                            while ((msg = in.readLine()) != null) {
-                                    // All conections in the list
-                                    ConectionList.send(msg);
-                            }
+                            try {
+								while ((msg = in.readObject()) != null) {
+								        // All conections in the list
+								        ConectionList.send(msg);
+								}
+							} catch (ClassNotFoundException e) {
+								e.printStackTrace();
+							}
                             
                         } finally {
                             // remove conection from the list
