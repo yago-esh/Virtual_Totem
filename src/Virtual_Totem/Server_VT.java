@@ -24,7 +24,8 @@ class Server_VT {
     private ConectionList ConectionList;
     private ServerSocket socketserver;
     private Socket socketConexion;
-    private Object msg;
+    private Totem_VT msg;
+    private Totem_VT chek_msg;
 
     public Server_VT() {
         ConectionList = new ConectionList();
@@ -66,7 +67,7 @@ class Server_VT {
             ConectionList.remove(socketConexion);
         }
 
-        private synchronized void send(Object msg) {
+        private synchronized void send(Totem_VT msg) {
             
             Iterator<Socket> iter = ConectionList.iterator();
             ObjectOutputStream out = null;
@@ -102,12 +103,15 @@ class Server_VT {
                             // Create outbound and inbound flows
                             out = new ObjectOutputStream(outStream);
                             in = new ObjectInputStream(inStream);
-
+                            if(chek_msg != null) {
+                            	out.writeObject(chek_msg);
+                            }                       
                             // Read and write in inbound flows
                             try {
-								while ((msg = in.readObject()) != null) {
+								while ((msg = (Totem_VT)in.readObject()) != null) {
+										chek_msg=msg;
 								        // All conections in the list
-								        ConectionList.send(msg);
+								        ConectionList.send(msg);        
 								}
 							} catch (ClassNotFoundException e) {
 								e.printStackTrace();
