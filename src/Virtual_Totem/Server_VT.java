@@ -94,6 +94,8 @@ class Server_VT {
                         ObjectOutputStream out = null;
                         ObjectInputStream in = null;
                         try {
+                            msg= new Totem_VT();
+                            chek_msg= new Totem_VT();
                             // Get outbound and inbound flows
                             OutputStream outStream = Server_VT.this.
                                     socketConexion.getOutputStream();
@@ -103,13 +105,11 @@ class Server_VT {
                             // Create outbound and inbound flows
                             out = new ObjectOutputStream(outStream);
                             in = new ObjectInputStream(inStream);
-                            if(chek_msg != null) {
-                            	out.writeObject(chek_msg);
-                            }                       
+                            out.writeObject(chek_msg);
                             // Read and write in inbound flows
                             try {
 								while ((msg = (Totem_VT)in.readObject()) != null) {
-										chek_msg=msg;
+										chek_msg.copy_Totem(msg);
 								        // All conections in the list
 								        ConectionList.send(msg);        
 								}

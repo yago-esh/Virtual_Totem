@@ -14,6 +14,13 @@ public class Totem_VT {
 		name_dragon="";
 	}
 	
+	public void copy_Totem(Totem_VT totem) {
+		this.wolf=totem.isWolf();
+		this.dragon=totem.isDragon();
+		this.name_wolf=totem.getName_wolf();
+		this.name_dragon=totem.getName_dragon();
+	}
+	
 	public boolean isWolf() {
 		return wolf;
 	}
@@ -45,12 +52,4 @@ public class Totem_VT {
 	public void setName_dragon(String name_dragon) {
 		this.name_dragon = name_dragon;
 	}
-
-	public Totem_VT(boolean wolf, boolean dragon, String name_wolf, String name_dragon) {
-		this.wolf=wolf;
-		this.dragon=dragon;
-		this.name_wolf=name_wolf;
-		this.name_dragon=name_dragon;
-	}
-
 }
