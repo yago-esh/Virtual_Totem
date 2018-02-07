@@ -9,13 +9,13 @@ import Virtual_Totem.Window_VT;
 
 class Window_VT extends JFrame {
 
-	private Client_VT client;
+	private Client_VT cliente;
 	private Panel_VT Panel_VT;
 	static final long serialVersionUID = 42L;
 
-	public Window_VT(Client_VT client) {
-		this.client = client;
-		Panel_VT = new Panel_VT(client);
+	public Window_VT(Client_VT cliente) {
+		this.cliente = cliente;
+		Panel_VT = new Panel_VT(cliente);
 		this.setContentPane(Panel_VT);
 		this.setTitle("Chat");
 		this.setLocation(150, 150);
@@ -24,13 +24,13 @@ class Window_VT extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				Window_VT.this.client.finish();
+				Window_VT.this.cliente.terminar();
 				System.exit(0);
 			}
 		});
 	}
 
-	public void show() {
+	public void mostrar() {
 		this.setVisible(true);
 	}
 }

@@ -1,10 +1,11 @@
 package Virtual_Totem;
 
-import java.io.ObjectInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
@@ -17,118 +18,133 @@ import Virtual_Totem.Server_VT;
 class Server_VT {
 
     public static void main(String[] args) {
-        Server_VT server = new Server_VT();
-        server.execute();
+        Server_VT servidor = new Server_VT();
+        servidor.ejecutar();
     }
 
-    private ConectionList ConectionList;
-    private ServerSocket socketserver;
+    private ListaConexiones listaConexiones;
+    private ServerSocket socketServidor;
     private Socket socketConexion;
-    private Totem_VT msg;
-    private Totem_VT chek_msg;
+    private String linea;
 
     public Server_VT() {
-        ConectionList = new ConectionList();
+        listaConexiones = new ListaConexiones();
     }
 
-    private void execute() {
+    private void ejecutar() {
         try {
-            // Create socket server
-            socketserver = new ServerSocket(2025);
+            // Crear socket servidor
+            socketServidor = new ServerSocket(2029);
 
             while (true) {
-                // Wait client conection
-                socketConexion = socketserver.accept();
+                System.out.println("Servidor> Esperando conexion...");
 
-                // Add conection to the list
-                ConectionList.add(socketConexion);
+                // Esperar conexion del cliente
+                socketConexion = socketServidor.accept();
 
-                //Call ConectionThreatd 
-                this.new ConectionThread();
+                System.out.println("Servidor> Recibida conexion de "
+                        + socketConexion.getInetAddress().getHostAddress() + ":"
+                        + socketConexion.getPort());
+
+                // Anadir conexion a la lista
+                listaConexiones.anadir(socketConexion);
+
+                
+                //         de una clase interna CON AMBITO DE MIEMBRO
+                //         llamada HiloConexion
+                // ------------------------------------------------------------
+                this.new HiloConexiones();
+                // ------------------------------------------------------------
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    private class ConectionList {
+    private class ListaConexiones {
 
-        private List<Socket> ConectionList;
+        private List<Socket> listaConexiones;
 
-        private ConectionList() {
-            ConectionList = new LinkedList<Socket>();
+        private ListaConexiones() {
+            listaConexiones = new LinkedList<Socket>();
         }
 
-        private synchronized void add(Socket socketConexion) {
-            ConectionList.add(socketConexion);
+        private synchronized void anadir(Socket socketConexion) {
+            listaConexiones.add(socketConexion);
         }
 
-        private synchronized void remove(Socket socketConexion) {
-            ConectionList.remove(socketConexion);
+        private synchronized void eliminar(Socket socketConexion) {
+            listaConexiones.remove(socketConexion);
         }
 
-        private synchronized void send(Totem_VT msg) {
+        private synchronized void enviar(String texto) {
             
-            Iterator<Socket> iter = ConectionList.iterator();
-            ObjectOutputStream out = null;
+            Iterator<Socket> iter = listaConexiones.iterator();
+            PrintWriter out = null;
             while (iter.hasNext()) {
                 try {
-                    out = new ObjectOutputStream(iter.next().getOutputStream());
-                    out.writeObject(msg);
-                    out.flush();
-                    
+                    out = new PrintWriter(iter.next().getOutputStream());
                 } catch (IOException e) {
                     e.getMessage();
                 }
-                
+                out.println(texto);
+                out.flush();;
             }
         }
     }
 
-    private class ConectionThread {
+    private class HiloConexiones {
 
-        public ConectionThread() {
+        public HiloConexiones() {
             new Thread() {
                 public void run() {
                     try {
-                        ObjectOutputStream out = null;
-                        ObjectInputStream in = null;
+                        PrintWriter out = null;
+                        BufferedReader in = null;
                         try {
-                            msg= new Totem_VT();
-                            chek_msg= new Totem_VT();
-                            // Get outbound and inbound flows
+                            // Obtener flujos de salida y entrada
                             OutputStream outStream = Server_VT.this.
                                     socketConexion.getOutputStream();
                             InputStream inStream = Server_VT.this.
                                     socketConexion.getInputStream();
 
-                            // Create outbound and inbound flows
-                            out = new ObjectOutputStream(outStream);
-                            in = new ObjectInputStream(inStream);
-                            out.writeObject(chek_msg);
-                            // Read and write in inbound flows
-                            try {
-								while ((msg = (Totem_VT)in.readObject()) != null) {
-										chek_msg.copy_Totem(msg);
-								        // All conections in the list
-								        ConectionList.send(msg);        
-								}
-							} catch (ClassNotFoundException e) {
-								e.printStackTrace();
-							}
-                            
+                            // Crear flujos de escritura y lectura
+                            out = new PrintWriter(outStream);
+                            System.out.println(
+                                    "Servidor> Obtenido flujo de escritura");
+                            in = new BufferedReader(
+                                    new InputStreamReader(inStream));
+                            System.out.println(
+                                    "Servidor> Obtenido flujo de lectura");
+
+                            // Leer y escribir en los flujos
+                            boolean salir = false;
+                            while (!salir && (linea = in.readLine()) != null) {
+                                System.out.println("Servidor> Recibida linea = "
+                                        + linea);
+                                if (linea.trim().equals("adios")) {
+                                    salir = true;
+                                } else {
+                                   
+                                    // todas las conexiones de la lista
+                                    // --------------------------------
+                                    listaConexiones.enviar(linea);
+                                    // --------------------------------
+                                }
+                            }
                         } finally {
-                            // remove conection from the list
-                            ConectionList.remove(socketConexion);
-                            // Close flows
+                            // Eliminar conexion de la lista
+                            listaConexiones.eliminar(socketConexion);
+                            // Cerrar flujos
                             if (out != null) {
                                 out.close();
                             }
                             if (in != null) {
                                 in.close();
                             }
-                            // Close socket conection
+                            // Cerrar socket de la conexion
                             socketConexion.close();
+                            System.out.println("Servidor> Fin de conexion");
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
