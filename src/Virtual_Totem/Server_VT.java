@@ -26,6 +26,8 @@ class Server_VT {
     private ServerSocket socketServidor;
     private Socket socketConexion;
     private String linea;
+    private boolean lobo_taken;
+	private boolean dragon_taken;
 
     public Server_VT() {
         listaConexiones = new ListaConexiones();
@@ -79,6 +81,21 @@ class Server_VT {
 
         private synchronized void enviar(String texto) {
             
+        	switch (texto){
+        	case "coger_dragon":
+        		dragon_taken=true;
+        		break;
+        	case "coger_lobo":
+        		lobo_taken=true;
+        		break;
+        	case "soltar_dragon":
+        		dragon_taken=false;
+        		break;
+        	case "soltar_lobo":
+        		lobo_taken=false;
+        		break;
+        	}
+        	
             Iterator<Socket> iter = listaConexiones.iterator();
             PrintWriter out = null;
             while (iter.hasNext()) {
