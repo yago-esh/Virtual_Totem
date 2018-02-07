@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,7 +70,7 @@ class Server_VT {
         private List<Socket> listaConexiones;
 
         private ListaConexiones() {
-            listaConexiones = new LinkedList<Socket>();
+            listaConexiones = new ArrayList<Socket>();
         }
 
         private synchronized void anadir(Socket socketConexion) {
@@ -98,7 +100,9 @@ class Server_VT {
         	
             Iterator<Socket> iter = listaConexiones.iterator();
             PrintWriter out = null;
+            int x=0;
             while (iter.hasNext()) {
+            	x++;
                 try {
                     out = new PrintWriter(iter.next().getOutputStream());
                 } catch (IOException e) {
@@ -106,6 +110,7 @@ class Server_VT {
                 }
                 out.println(texto);
                 out.flush();;
+                System.out.println(x);
             }
         }
     }
@@ -135,19 +140,14 @@ class Server_VT {
                                     "Servidor> Obtenido flujo de lectura");
 
                             // Leer y escribir en los flujos
-                            boolean salir = false;
-                            while (!salir && (linea = in.readLine()) != null) {
+                            while ((linea = in.readLine()) != null) {
                                 System.out.println("Servidor> Recibida linea = "
                                         + linea);
-                                if (linea.trim().equals("adios")) {
-                                    salir = true;
-                                } else {
                                    
                                     // todas las conexiones de la lista
                                     // --------------------------------
                                     listaConexiones.enviar(linea);
                                     // --------------------------------
-                                }
                             }
                         } finally {
                             // Eliminar conexion de la lista
@@ -165,6 +165,7 @@ class Server_VT {
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
+                        
                     }
                 }
             }.start();

@@ -26,7 +26,7 @@ public class Panel_VT extends JPanel {
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
 		
-		Lobo_bt = new JButton("Coger el Lobo");
+		Lobo_bt = new JButton("Coger Lobo");
 		Lobo_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (Lobo_bt.getText() == "Coger Lobo") {
@@ -42,7 +42,7 @@ public class Panel_VT extends JPanel {
 		Lobo_bt.setBounds(74, 38, 150, 50);
 		add(Lobo_bt);
 		
-		Dragon_bt = new JButton("Coger el Dragon");
+		Dragon_bt = new JButton("Coger Dragon");
 		Dragon_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (Dragon_bt.getText() == "Coger Dragon") {
