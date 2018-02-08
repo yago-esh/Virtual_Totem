@@ -17,7 +17,7 @@ import java.util.List;
 
 import Virtual_Totem.Server_VT;
 
-class Server_VT {
+class Server_VT extends Thread{
 
     public static void main(String[] args) {
         Server_VT servidor = new Server_VT();
@@ -36,33 +36,41 @@ class Server_VT {
     }
 
     private void ejecutar() {
-        try {
-            // Crear socket servidor
-            socketServidor = new ServerSocket(2029);
+    	try {
+			socketServidor = new ServerSocket(2029);
+			this.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public void run(){
+    	 try {
+             // Crear socket servidor
+             while (true) {
+                 System.out.println("Servidor> Esperando conexion...");
 
-            while (true) {
-                System.out.println("Servidor> Esperando conexion...");
+                 // Esperar conexion del cliente
+                 socketConexion = socketServidor.accept();
 
-                // Esperar conexion del cliente
-                socketConexion = socketServidor.accept();
+                 System.out.println("Servidor> Recibida conexion de "
+                         + socketConexion.getInetAddress().getHostAddress() + ":"
+                         + socketConexion.getPort());
 
-                System.out.println("Servidor> Recibida conexion de "
-                        + socketConexion.getInetAddress().getHostAddress() + ":"
-                        + socketConexion.getPort());
+                 // Anadir conexion a la lista
+                 listaConexiones.anadir(socketConexion);
 
-                // Anadir conexion a la lista
-                listaConexiones.anadir(socketConexion);
-
-                
-                //         de una clase interna CON AMBITO DE MIEMBRO
-                //         llamada HiloConexion
-                // ------------------------------------------------------------
-                this.new HiloConexiones();
-                // ------------------------------------------------------------
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+                 
+                 //         de una clase interna CON AMBITO DE MIEMBRO
+                 //         llamada HiloConexion
+                 // ------------------------------------------------------------
+                 this.new HiloConexiones();
+                 // ------------------------------------------------------------
+             }
+         } catch (IOException ex) {
+             ex.printStackTrace();
+         }
     }
 
     private class ListaConexiones {
