@@ -88,10 +88,9 @@ class Server_VT extends Thread{
         private synchronized void eliminar(Socket socketConexion) {
             listaConexiones.remove(socketConexion);
         }
-
-        private synchronized void enviar(String texto) {
-            
-        	switch (texto){
+        
+        private synchronized void change_totem(String state) {
+        	switch (state){
         	case "coger_dragon":
         		dragon_taken=true;
         		break;
@@ -105,20 +104,28 @@ class Server_VT extends Thread{
         		lobo_taken=false;
         		break;
         	}
-        	
+        }
+
+        private synchronized void enviar(String texto) {
+            
+        	change_totem(texto);
             Iterator<Socket> iter = listaConexiones.iterator();
             PrintWriter out = null;
             int x=0;
             while (iter.hasNext()) {
-            	x++;
-                try {
-                    out = new PrintWriter(iter.next().getOutputStream());
-                } catch (IOException e) {
-                    e.getMessage();
-                }
-                out.println(texto);
-                out.flush();;
-                System.out.println(x);
+            	if (iter != null) {
+	            	x++;
+	                try {
+	                    out = new PrintWriter(iter.next().getOutputStream());
+	                } catch (IOException e) {
+	                    e.getMessage();
+	                }
+	                if(out!=null) {
+		                out.println(texto);
+		                out.flush();;
+	                }
+	                System.out.println(x);
+            	}
             }
         }
     }
