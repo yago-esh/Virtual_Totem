@@ -30,9 +30,13 @@ class Server_VT extends Thread{
     private String linea;
     private boolean lobo_taken;
 	private boolean dragon_taken;
+	private int lobo_taken_id;
+	private int dragon_taken_id;
+	private int id;
 
     public Server_VT() {
         listaConexiones = new ListaConexiones();
+        id=0;
     }
 
     private void ejecutar() {
@@ -50,10 +54,10 @@ class Server_VT extends Thread{
              // Crear socket servidor
              while (true) {
                  System.out.println("Servidor> Esperando conexion...");
-
+                 
                  // Esperar conexion del cliente
                  socketConexion = socketServidor.accept();
-
+                 
                  System.out.println("Servidor> Recibida conexion de "
                          + socketConexion.getInetAddress().getHostAddress() + ":"
                          + socketConexion.getPort());
@@ -65,7 +69,8 @@ class Server_VT extends Thread{
                  //         de una clase interna CON AMBITO DE MIEMBRO
                  //         llamada HiloConexion
                  // ------------------------------------------------------------
-                 this.new HiloConexiones();
+                 this.new HiloConexiones(id);
+                 id++;
                  // ------------------------------------------------------------
              }
          } catch (IOException ex) {
@@ -89,13 +94,15 @@ class Server_VT extends Thread{
             listaConexiones.remove(socketConexion);
         }
         
-        private synchronized void change_totem(String state) {
+        private synchronized void change_totem(String state, int id_client) {
         	switch (state){
         	case "coger_dragon":
         		dragon_taken=true;
+        		dragon_taken_id=id_client;
         		break;
         	case "coger_lobo":
         		lobo_taken=true;
+        		lobo_taken_id=id_client;
         		break;
         	case "soltar_dragon":
         		dragon_taken=false;
@@ -106,9 +113,9 @@ class Server_VT extends Thread{
         	}
         }
 
-        private synchronized void enviar(String texto) {
+        private synchronized void enviar(String texto, int id_client) {
             
-        	change_totem(texto);
+        	change_totem(texto,id_client);
             Iterator<Socket> iter = listaConexiones.iterator();
             PrintWriter out = null;
             int x=0;
@@ -124,20 +131,31 @@ class Server_VT extends Thread{
 		                out.println(texto);
 		                out.flush();;
 	                }
-	                System.out.println(x);
             	}
             }
+        }
+        
+        private synchronized void break_free(int id_client) {
+        	System.out.println("comprobacion_brak_free");
+        	if(dragon_taken_id == id_client) {
+        		enviar("soltar_dragon",id_client);
+        	}
+        	else if (lobo_taken_id == id_client) {
+        		enviar("soltar_lobo",id_client);
+        	}
         }
     }
 
     private class HiloConexiones {
 
-        public HiloConexiones() {
+        public HiloConexiones(int id) {
             new Thread() {
                 public void run() {
                     try {
+                    	int id_client=id;
                         PrintWriter out = null;
                         BufferedReader in = null;
+                        try {
                             // Obtener flujos de salida y entrada
                             OutputStream outStream = Server_VT.this.
                                     socketConexion.getOutputStream();
@@ -167,9 +185,13 @@ class Server_VT extends Thread{
                                    
                                     // todas las conexiones de la lista
                                     // --------------------------------
-                                    listaConexiones.enviar(linea);
+                                    listaConexiones.enviar(linea,id_client);
                                     // --------------------------------
                             }
+                        } finally {
+                        	System.out.println("comprobacion_finally");
+                        	listaConexiones.break_free(id_client);
+                        }
                     } catch (IOException ex) {
                         ex.printStackTrace();
                         
