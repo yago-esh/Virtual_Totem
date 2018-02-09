@@ -2,54 +2,54 @@ package Virtual_Totem;
 
 public class Totem_VT {
 	
-	private boolean wolf;
-	private boolean dragon;
-	private String name_wolf;
-	private String name_dragon;
+	private boolean wolf_taken;
+	private boolean dragon_taken;
+	private String name_wolf_taken;
+	private String name_dragon_taken;
 	
 	public Totem_VT(){
-		wolf=false;
-		dragon=false;
-		name_wolf="";
-		name_dragon="";
+		wolf_taken=false;
+		dragon_taken=false;
+		name_wolf_taken="";
+		name_dragon_taken="";
 	}
 	
 	public void copy_Totem(Totem_VT totem) {
-		this.wolf=totem.isWolf();
-		this.dragon=totem.isDragon();
-		this.name_wolf=totem.getName_wolf();
-		this.name_dragon=totem.getName_dragon();
+		this.wolf_taken=totem.iswolf_taken();
+		this.dragon_taken=totem.isdragon_taken();
+		this.name_wolf_taken=totem.getName_wolf_taken();
+		this.name_dragon_taken=totem.getName_dragon_taken();
 	}
 	
-	public boolean isWolf() {
-		return wolf;
+	public boolean iswolf_taken() {
+		return wolf_taken;
 	}
 
-	public void setWolf(boolean wolf) {
-		this.wolf = wolf;
+	public void setwolf_taken(boolean wolf_taken) {
+		this.wolf_taken = wolf_taken;
 	}
 
-	public boolean isDragon() {
-		return dragon;
+	public boolean isdragon_taken() {
+		return dragon_taken;
 	}
 
-	public void setDragon(boolean dragon) {
-		this.dragon = dragon;
+	public void setdragon_taken(boolean dragon_taken) {
+		this.dragon_taken = dragon_taken;
 	}
 
-	public String getName_wolf() {
-		return name_wolf;
+	public String getName_wolf_taken() {
+		return name_wolf_taken;
 	}
 
-	public void setName_wolf(String name_wolf) {
-		this.name_wolf = name_wolf;
+	public void setName_wolf_taken(String name_wolf_taken) {
+		this.name_wolf_taken = name_wolf_taken;
 	}
 
-	public String getName_dragon() {
-		return name_dragon;
+	public String getName_dragon_taken() {
+		return name_dragon_taken;
 	}
 
-	public void setName_dragon(String name_dragon) {
-		this.name_dragon = name_dragon;
+	public void setName_dragon_taken(String name_dragon_taken) {
+		this.name_dragon_taken = name_dragon_taken;
 	}
 }

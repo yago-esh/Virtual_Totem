@@ -152,7 +152,14 @@ class Server_VT extends Thread{
                                     new InputStreamReader(inStream));
                             System.out.println(
                                     "Servidor> Obtenido flujo de lectura");
-
+                            if(lobo_taken) {
+                            	out.println("coger_lobo");
+                            	out.flush();
+                            }
+                            if(dragon_taken) {
+                            	out.println("coger_dragon");
+                            	out.flush();
+                            }
                             // Leer y escribir en los flujos
                             while ((linea = in.readLine()) != null) {
                                 System.out.println("Servidor> Recibida linea = "
