@@ -19,7 +19,7 @@ class Window_VT extends JFrame {
 		this.setContentPane(Panel_VT);
 		this.setTitle("Chat");
 		this.setLocation(150, 150);
-		this.setSize(300, 250);
+		this.setSize(300, 300);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {

@@ -57,6 +57,15 @@ public class Panel_VT extends JPanel {
 		});
 		Dragon_bt.setBounds(74, 116, 150, 50);
 		add(Dragon_bt);
+		
+		JButton btnFinalizarConexion = new JButton("Finalizar Conexion");
+		btnFinalizarConexion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cliente.terminar();
+			}
+		});
+		btnFinalizarConexion.setBounds(76, 202, 145, 25);
+		add(btnFinalizarConexion);
 
 	}
 	
