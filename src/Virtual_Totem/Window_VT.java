@@ -17,7 +17,7 @@ class Window_VT extends JFrame {
 		this.cliente = cliente;
 		Panel_VT = new Panel_VT(cliente);
 		this.setContentPane(Panel_VT);
-		this.setTitle("Chat");
+		this.setTitle("Virtual Totem");
 		this.setLocation(150, 150);
 		this.setSize(300, 300);
 		this.setResizable(false);

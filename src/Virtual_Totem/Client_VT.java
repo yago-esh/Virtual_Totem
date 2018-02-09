@@ -32,7 +32,7 @@ class Client_VT {
 
 	public void ejecutar() throws IOException {
 		// Crear socket cliente y establecer conexion
-		socketConexion = new Socket("10.1.2.196", 2029);
+		socketConexion = new Socket("10.1.2.34", 2029);
 
 		System.out.println("Cliente> Establecida conexion");
 
