@@ -138,7 +138,6 @@ class Server_VT extends Thread{
                     try {
                         PrintWriter out = null;
                         BufferedReader in = null;
-                        try {
                             // Obtener flujos de salida y entrada
                             OutputStream outStream = Server_VT.this.
                                     socketConexion.getOutputStream();
@@ -164,20 +163,6 @@ class Server_VT extends Thread{
                                     listaConexiones.enviar(linea);
                                     // --------------------------------
                             }
-                        } finally {
-                            // Eliminar conexion de la lista
-                            listaConexiones.eliminar(socketConexion);
-                            // Cerrar flujos
-                            if (out != null) {
-                                out.close();
-                            }
-                            if (in != null) {
-                                in.close();
-                            }
-                            // Cerrar socket de la conexion
-                            socketConexion.close();
-                            System.out.println("Servidor> Fin de conexion");
-                        }
                     } catch (IOException ex) {
                         ex.printStackTrace();
                         
