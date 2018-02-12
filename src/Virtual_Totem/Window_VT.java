@@ -18,8 +18,8 @@ class Window_VT extends JFrame {
 		Panel_VT = new Panel_VT(cliente);
 		this.setContentPane(Panel_VT);
 		this.setTitle("Virtual Totem");
-		this.setLocation(150, 150);
-		this.setSize(300, 250);
+		this.setLocation(810, 425);
+		this.setSize(300, 230);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
