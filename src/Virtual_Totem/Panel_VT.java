@@ -2,8 +2,6 @@ package Virtual_Totem;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -15,7 +13,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 
 
 public class Panel_VT extends JPanel {
@@ -29,6 +26,7 @@ public class Panel_VT extends JPanel {
 	private Info_VT info;
 	private boolean unlock_dragon;
 	private boolean unlock_wolf;
+	private boolean warning_exit;
 	
 	public Panel_VT(Client_VT client) {
 		
@@ -38,6 +36,8 @@ public class Panel_VT extends JPanel {
 		set_name="";
 		unlock_dragon=false;
 		unlock_wolf=false;
+		warning_exit=false;
+
 		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		setForeground(Color.BLACK);
 		setBackground(Color.LIGHT_GRAY);
@@ -98,6 +98,8 @@ public class Panel_VT extends JPanel {
 		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/background.jpg")));
 		background.setBounds(0, 0, 299, 199);
 		add(background);
+		
+		
 	}
 	
 	public void mostrarMensaje(final String texto) {
@@ -107,15 +109,19 @@ public class Panel_VT extends JPanel {
 					switch (texto){
 		        	case "coger_dragon":
 		        		Dragon_bt.setText("Soltar Dragon");
+		        		warning_exit=true;
 		        		break;
 		        	case "coger_lobo":
 		        		Lobo_bt.setText("Soltar Lobo");
+		        		warning_exit=true;
 		        		break;
 		        	case "soltar_dragon":
 		        		Dragon_bt.setText("Coger Dragon");
+		        		warning_exit=false;
 		        		break;
 		        	case "soltar_lobo":
 		        		Lobo_bt.setText("Coger Lobo");
+		        		warning_exit=false;
 		        		break;
 		        	}
 					accion=false;
@@ -179,6 +185,9 @@ public class Panel_VT extends JPanel {
 		return false;
 	}
 	
+	public boolean can_exit() {
+		return warning_exit;
+	}
 	public void show_error(String totem) {
 		JOptionPane.showMessageDialog(null,"Otro usuario a forzado la liberación del " + totem);
 	}

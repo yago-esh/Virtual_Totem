@@ -8,10 +8,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -96,10 +94,6 @@ class Server_VT extends Thread{
         private synchronized void anadir(Socket socketConexion) {
             listaConexiones.add(socketConexion);
         }
-
-        private synchronized void eliminar(Socket socketConexion) {
-            listaConexiones.remove(socketConexion);
-        }
         
         private synchronized void change_totem(String state, int id_client) {
         	switch (state){
@@ -137,10 +131,8 @@ class Server_VT extends Thread{
         	change_totem(texto,id_client);
             Iterator<Socket> iter = listaConexiones.iterator();
             PrintWriter out = null;
-            int x=0;
             while (iter.hasNext()) {
             	if (iter != null) {
-	            	x++;
 	                try {
 	                    out = new PrintWriter(iter.next().getOutputStream());
 	                } catch (IOException e) {

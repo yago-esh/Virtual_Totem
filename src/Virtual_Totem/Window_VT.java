@@ -3,6 +3,7 @@ package Virtual_Totem;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import Virtual_Totem.Client_VT;
 import Virtual_Totem.Window_VT;
@@ -24,8 +25,19 @@ class Window_VT extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				Window_VT.this.cliente.terminar();
-				System.exit(0);
+				if(Panel_VT.can_exit()) {
+					String ObjButtons[] = {"Yes","No"};
+			        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.","Advertencia de salida",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+			        if(PromptResult==JOptionPane.YES_OPTION)
+			        {
+			        	Window_VT.this.cliente.terminar();
+			            System.exit(0);
+			        }
+				}
+				else {
+					Window_VT.this.cliente.terminar();
+		            System.exit(0);
+				}
 			}
 		});
 	}
