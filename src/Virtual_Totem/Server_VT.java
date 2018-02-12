@@ -33,10 +33,17 @@ class Server_VT extends Thread{
 	private int lobo_taken_id;
 	private int dragon_taken_id;
 	private int id;
+	private boolean save_lobo;
+	private boolean save_dragon;
+	private String lobo_user;
+	private String dragon_user;
+	
 
     public Server_VT() {
         listaConexiones = new ListaConexiones();
         id=1;
+        save_dragon=false;
+        save_lobo=false;
     }
 
     private void ejecutar() {
@@ -98,10 +105,12 @@ class Server_VT extends Thread{
         	switch (state){
         	case "coger_dragon":
         		dragon_taken=true;
+        		save_dragon=true;
         		dragon_taken_id=id_client;
         		break;
         	case "coger_lobo":
         		lobo_taken=true;
+        		save_lobo=true;
         		lobo_taken_id=id_client;
         		break;
         	case "soltar_dragon":
@@ -110,6 +119,16 @@ class Server_VT extends Thread{
         	case "soltar_lobo":
         		lobo_taken=false;
         		break;
+        	default:
+        		if(save_dragon) {
+        			save_dragon=false;
+        			dragon_user=state;
+        		}
+        		else if(save_lobo) {
+        			save_lobo=false;
+        			lobo_user=state;
+        		}
+        		
         	}
         }
 
@@ -173,9 +192,13 @@ class Server_VT extends Thread{
                             if(lobo_taken) {
                             	out.println("coger_lobo");
                             	out.flush();
+                            	out.println(lobo_user);
+                            	out.flush();
                             }
                             if(dragon_taken) {
                             	out.println("coger_dragon");
+                            	out.flush();
+                            	out.println(dragon_user);
                             	out.flush();
                             }
                             // Leer y escribir en los flujos
