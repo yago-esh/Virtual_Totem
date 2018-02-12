@@ -43,7 +43,7 @@ public class Panel_VT extends JPanel {
 				}
 			}
 		});
-		Lobo_bt.setBounds(75, 62, 150, 50);
+		Lobo_bt.setBounds(75, 24, 150, 50);
 		add(Lobo_bt);
 		
 		Dragon_bt = new JButton("Coger Dragon");
@@ -60,11 +60,11 @@ public class Panel_VT extends JPanel {
 				}
 			}
 		});
-		Dragon_bt.setBounds(75, 142, 150, 50);
+		Dragon_bt.setBounds(75, 100, 150, 50);
 		add(Dragon_bt);
 		
 		JLabel lblCreatedByYago = new JLabel("Created by Yago Echave-Sustaeta");
-		lblCreatedByYago.setBounds(12, 221, 239, 16);
+		lblCreatedByYago.setBounds(52, 175, 195, 16);
 		add(lblCreatedByYago);
 
 	}

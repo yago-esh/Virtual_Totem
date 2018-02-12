@@ -36,7 +36,7 @@ class Server_VT extends Thread{
 
     public Server_VT() {
         listaConexiones = new ListaConexiones();
-        id=0;
+        id=1;
     }
 
     private void ejecutar() {
