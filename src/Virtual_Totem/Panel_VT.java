@@ -26,6 +26,8 @@ public class Panel_VT extends JPanel {
 	private String set_name;
 	private Client_VT cliente;
 	private Info_VT info;
+	private boolean unlock_dragon;
+	private boolean unlock_wolf;
 	
 	public Panel_VT(Client_VT client) {
 		
@@ -33,6 +35,8 @@ public class Panel_VT extends JPanel {
 		cliente.asociar(this);
 		accion=false;
 		set_name="";
+		unlock_dragon=false;
+		unlock_wolf=false;
 		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		setForeground(Color.BLACK);
 		setBackground(Color.LIGHT_GRAY);
@@ -80,10 +84,7 @@ public class Panel_VT extends JPanel {
 		JButton Info_bt = new JButton("");
 		Info_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				info.setVisible(true);
-				info.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				
-				
+				info.showIt(Panel_VT.this.is_totem_taked("lobo"), Panel_VT.this.is_totem_taked("dragon"));
 			}
 		});
 		Info_bt.setBackground(Color.LIGHT_GRAY);
@@ -119,18 +120,22 @@ public class Panel_VT extends JPanel {
 					switch (texto){
 		        	case "coger_dragon":
 		        		Dragon_bt.setEnabled(false);
+		        		unlock_dragon=true;
 		        		set_name="dragon";
 		        		break;
 		        	case "coger_lobo":
 		        		Lobo_bt.setEnabled(false);
+		        		unlock_wolf=true;
 		        		set_name="lobo";
 		        		break;
 		        	case "soltar_dragon":
 		        		Dragon_bt.setEnabled(true);
+		        		unlock_dragon=false;
 		        		Dragon_bt.setText("Coger Dragon");
 		        		break;
 		        	case "soltar_lobo":
 		        		Lobo_bt.setEnabled(true);
+		        		unlock_wolf=false;
 		        		Lobo_bt.setText("Coger Lobo");
 		        		break;
 		        	default:
@@ -152,5 +157,15 @@ public class Panel_VT extends JPanel {
 	public void send(String texto) {
 		System.out.println("Accion recibida"+texto);
 		cliente.enviar(texto);
+	}
+	
+	public boolean is_totem_taked(String totem) {
+		if(totem == "lobo") {
+			return unlock_wolf;
+		}
+		else if (totem == "dragon") {
+			return unlock_dragon;
+		}
+		return false;
 	}
 }

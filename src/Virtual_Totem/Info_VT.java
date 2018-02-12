@@ -16,6 +16,8 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class Info_VT extends JDialog {
@@ -26,7 +28,15 @@ public class Info_VT extends JDialog {
 	private boolean desb_dragon;
 	private boolean desb_lobo;
 
-	public Info_VT(Panel_VT panel) {	
+	public Info_VT(Panel_VT panel) {
+		
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosing(WindowEvent event) {
+	            hideIt();
+	        }
+	    });
 		desb_dragon=false;
 		desb_lobo=false;
 		this.setTitle("Info of Virtual Totem");
@@ -105,7 +115,7 @@ public class Info_VT extends JDialog {
 							desb_dragon=false;
 							if(!send)JOptionPane.showMessageDialog(null,"Dragón desbloqueado correctamente");
 						}
-						Info_VT.this.setVisible(false);
+						hideIt();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -116,11 +126,7 @@ public class Info_VT extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						btnDesbloquearLobo.setForeground(Color.BLACK);
-						desb_lobo=false;
-						btnDesbloquearDragon.setForeground(Color.BLACK);
-						desb_dragon=false;
-						Info_VT.this.setVisible(false);
+						hideIt();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
@@ -129,7 +135,24 @@ public class Info_VT extends JDialog {
 		}
 	}
 	
-	public void alert() {
+	public void showIt(boolean lobo, boolean dragon) {
+		this.setVisible(true);
+		if(!lobo) {
+			btnDesbloquearLobo.setEnabled(false);
+		}
+		if(!dragon){
+			btnDesbloquearDragon.setEnabled(false);
+		}
 		
+	}
+	
+	public void hideIt() {
+		btnDesbloquearLobo.setForeground(Color.BLACK);
+		btnDesbloquearLobo.setEnabled(true);
+		desb_lobo=false;
+		btnDesbloquearDragon.setForeground(Color.BLACK);
+		btnDesbloquearDragon.setEnabled(true);
+		desb_dragon=false;
+		Info_VT.this.setVisible(false);
 	}
 }
