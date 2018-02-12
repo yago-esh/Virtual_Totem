@@ -57,7 +57,7 @@ public class Panel_VT extends JPanel {
 				}
 			}
 		});
-		Lobo_bt.setBounds(75, 30, 150, 50);
+		Lobo_bt.setBounds(74, 25, 150, 50);
 		add(Lobo_bt);
 		
 		Dragon_bt = new JButton("Coger Dragon");
@@ -74,12 +74,8 @@ public class Panel_VT extends JPanel {
 				}
 			}
 		});
-		Dragon_bt.setBounds(75, 100, 150, 50);
+		Dragon_bt.setBounds(74, 95, 150, 50);
 		add(Dragon_bt);
-		
-		JLabel lblCreatedByYago = new JLabel("Created by Yago Echave-Sustaeta");
-		lblCreatedByYago.setBounds(30, 170, 195, 16);
-		add(lblCreatedByYago);
 		
 		JButton Info_bt = new JButton("");
 		Info_bt.addActionListener(new ActionListener() {
@@ -88,12 +84,17 @@ public class Panel_VT extends JPanel {
 			}
 		});
 		Info_bt.setBackground(Color.LIGHT_GRAY);
+		Info_bt.setOpaque(false);
 		Info_bt.setMargin(new Insets(0, 0, 0, 0));
 		Info_bt.setBorder(null);
 		Info_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
-		Info_bt.setBounds(240, 159, 32, 32);
+		Info_bt.setBounds(133, 154, 32, 32);
 		add(Info_bt);
-
+		
+		JLabel background = new JLabel("New label");
+		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/background.jpg")));
+		background.setBounds(0, 0, 299, 199);
+		add(background);
 	}
 	
 	public void mostrarMensaje(final String texto) {
