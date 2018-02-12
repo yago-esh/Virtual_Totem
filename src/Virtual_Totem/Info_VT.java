@@ -39,7 +39,7 @@ public class Info_VT extends JDialog {
 		desb_dragon=false;
 		desb_lobo=false;
 		this.setTitle("Info of Virtual Totem");
-		setBounds(810, 425, 450, 300);
+		setBounds(810, 425, 451, 289);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(null);
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -48,6 +48,7 @@ public class Info_VT extends JDialog {
 		
 		this.setVisible(false);
 		JTextPane info_text = new JTextPane();
+		info_text.setForeground(Color.BLACK);
 		info_text.setEditable(false);
 		info_text.setOpaque(false);
 		info_text.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -92,58 +93,55 @@ public class Info_VT extends JDialog {
 			contentPanel.add(btnDesbloquearDragon);
 		}
 		{
-			JLabel lblNewLabel = new JLabel("New label");
-			lblNewLabel.setBounds(0, 0, 432, 249);
-			contentPanel.add(lblNewLabel);
-			lblNewLabel.setIcon(new ImageIcon(Info_VT.class.getResource("/Img/background.jpg")));
+			JLabel lblCreatedByYago = new JLabel("Created by Yago Echave-Sustaeta");
+			lblCreatedByYago.setForeground(Color.BLACK);
+			lblCreatedByYago.setFont(new Font("Tahoma", Font.BOLD, 13));
+			lblCreatedByYago.setBounds(12, 210, 258, 16);
+			contentPanel.add(lblCreatedByYago);
+		}
+		JButton okButton = new JButton("OK");
+		okButton.setBounds(287, 206, 55, 25);
+		contentPanel.add(okButton);
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean send=false;
+				if(desb_lobo && desb_dragon) {
+					JOptionPane.showMessageDialog(null,"Lobo y Dragón desbloqueados correctamente");
+					send = true;
+				}
+				if(desb_lobo) {
+					panel.send("soltar_lobo");
+					btnDesbloquearLobo.setForeground(Color.BLACK);
+					desb_lobo=false;
+					if(!send)JOptionPane.showMessageDialog(null,"Lobo desbloqueado correctamente");
+				}
+				if(desb_dragon){
+					panel.send("soltar_dragon");
+					btnDesbloquearDragon.setForeground(Color.BLACK);
+					desb_dragon=false;
+					if(!send)JOptionPane.showMessageDialog(null,"Dragón desbloqueado correctamente");
+				}
+				hideIt();
+			}
+		});
+		okButton.setActionCommand("OK");
+		getRootPane().setDefaultButton(okButton);
+		{
+			JButton cancelButton = new JButton("Cancel");
+			cancelButton.setBounds(349, 206, 75, 25);
+			contentPanel.add(cancelButton);
+			cancelButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					hideIt();
+				}
+			});
+			cancelButton.setActionCommand("Cancel");
 		}
 		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			buttonPane.setOpaque(false);
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						boolean send=false;
-						if(desb_lobo && desb_dragon) {
-							JOptionPane.showMessageDialog(null,"Lobo y Dragón desbloqueados correctamente");
-							send = true;
-						}
-						if(desb_lobo) {
-							panel.send("soltar_lobo");
-							btnDesbloquearLobo.setForeground(Color.BLACK);
-							desb_lobo=false;
-							if(!send)JOptionPane.showMessageDialog(null,"Lobo desbloqueado correctamente");
-						}
-						if(desb_dragon){
-							panel.send("soltar_dragon");
-							btnDesbloquearDragon.setForeground(Color.BLACK);
-							desb_dragon=false;
-							if(!send)JOptionPane.showMessageDialog(null,"Dragón desbloqueado correctamente");
-						}
-						hideIt();
-					}
-				});
-				{
-					JLabel lblCreatedByYago = new JLabel("Created by Yago Echave-Sustaeta                            ");
-					buttonPane.add(lblCreatedByYago);
-				}
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						hideIt();
-					}
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
+			JLabel lblNewLabel = new JLabel("New label");
+			lblNewLabel.setBounds(0, 0, 432, 253);
+			contentPanel.add(lblNewLabel);
+			lblNewLabel.setIcon(new ImageIcon(Info_VT.class.getResource("/Img/background.jpg")));
 		}
 	}
 	
