@@ -13,6 +13,7 @@ import javax.swing.border.BevelBorder;
 import Virtual_Totem.Client_VT;
 import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
@@ -132,11 +133,17 @@ public class Panel_VT extends JPanel {
 		        		set_name="lobo";
 		        		break;
 		        	case "soltar_dragon":
+		        		if (Dragon_bt.getText() == "Soltar Dragon") {
+		        			show_error("dragon");
+		        		}
 		        		Dragon_bt.setEnabled(true);
 		        		unlock_dragon=false;
 		        		Dragon_bt.setText("Coger Dragon");
 		        		break;
 		        	case "soltar_lobo":
+		        		if (Lobo_bt.getText() == "Soltar Lobo") {
+		        			show_error("lobo");
+		        		}
 		        		Lobo_bt.setEnabled(true);
 		        		unlock_wolf=false;
 		        		Lobo_bt.setText("Coger Lobo");
@@ -170,5 +177,9 @@ public class Panel_VT extends JPanel {
 			return unlock_dragon;
 		}
 		return false;
+	}
+	
+	public void show_error(String totem) {
+		JOptionPane.showMessageDialog(null,"Otro usuario a forzado la liberación del " + totem);
 	}
 }
