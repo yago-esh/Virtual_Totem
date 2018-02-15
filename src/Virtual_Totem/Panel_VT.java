@@ -96,7 +96,7 @@ public class Panel_VT extends JPanel {
 		
 		JLabel background = new JLabel("New label");
 		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/background.jpg")));
-		background.setBounds(0, 0, 299, 199);
+		background.setBounds(0, 0, 299, 212);
 		add(background);
 		
 		
@@ -189,6 +189,7 @@ public class Panel_VT extends JPanel {
 		return warning_exit;
 	}
 	public void show_error(String totem) {
+		warning_exit=false;
 		JOptionPane.showMessageDialog(null,"Otro usuario a forzado la liberación del " + totem);
 	}
 }

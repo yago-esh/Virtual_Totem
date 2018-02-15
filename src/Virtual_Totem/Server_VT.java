@@ -151,7 +151,7 @@ class Server_VT extends Thread{
         	if(dragon_taken_id == id_client) {
         		enviar("soltar_dragon",id_client);
         	}
-        	else if (lobo_taken_id == id_client) {
+        	if (lobo_taken_id == id_client) {
         		enviar("soltar_lobo",id_client);
         	}
         }
