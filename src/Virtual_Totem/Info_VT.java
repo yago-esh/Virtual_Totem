@@ -141,7 +141,7 @@ public class Info_VT extends JDialog {
 		contentPanel.add(lblNewLabel_1);
 		{
 			JLabel lblNewLabel = new JLabel("New label");
-			lblNewLabel.setBounds(0, 0, 432, 253);
+			lblNewLabel.setBounds(0, 0, 450, 253);
 			contentPanel.add(lblNewLabel);
 			lblNewLabel.setIcon(new ImageIcon(Info_VT.class.getResource("/Img/background.jpg")));
 		}
