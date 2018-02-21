@@ -1,18 +1,28 @@
 package Virtual_Totem;
 
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Insets;
 
 import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.MatteBorder;
+
 import Virtual_Totem.Client_VT;
+import javafx.scene.layout.Border;
+
 import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import java.awt.Font;
 
 
 public class Panel_VT extends JPanel {
@@ -45,7 +55,9 @@ public class Panel_VT extends JPanel {
 		info = new Info_VT(Panel_VT.this);
 		
 		Lobo_bt = new JButton("Coger Lobo");
-		Lobo_bt.setForeground(Color.BLACK);
+		Lobo_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		Lobo_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_lobo_bt.jpg")));
+		Lobo_bt.setForeground(Color.WHITE);
 		Lobo_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (Lobo_bt.getText() == "Coger Lobo") {
@@ -60,10 +72,16 @@ public class Panel_VT extends JPanel {
 			}
 		});
 		Lobo_bt.setBounds(74, 25, 150, 50);
+		Lobo_bt.setHorizontalTextPosition( SwingConstants.CENTER );
+		Lobo_bt.setVerticalTextPosition( SwingConstants.CENTER );
+		Lobo_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
+		//Lobo_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_lobo_bt.jpg")));
 		add(Lobo_bt);
 		
-		Dragon_bt = new JButton("Coger Dragon");
-		Dragon_bt.setForeground(Color.BLACK);
+		Dragon_bt = new JButton("Coger Dragon");		
+		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));		
+		Dragon_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon.jpg")));
+		Dragon_bt.setForeground(Color.WHITE);
 		Dragon_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (Dragon_bt.getText() == "Coger Dragon") {
@@ -78,6 +96,9 @@ public class Panel_VT extends JPanel {
 			}
 		});
 		Dragon_bt.setBounds(74, 95, 150, 50);
+		Dragon_bt.setHorizontalTextPosition( SwingConstants.CENTER );
+		Dragon_bt.setVerticalTextPosition( SwingConstants.CENTER );
+		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
 		add(Dragon_bt);
 		
 		JButton Info_bt = new JButton("");
@@ -95,7 +116,7 @@ public class Panel_VT extends JPanel {
 		add(Info_bt);
 		
 		JLabel background = new JLabel("New label");
-		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/background.jpg")));
+		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/Background_main.png")));
 		background.setBounds(0, 0, 299, 212);
 		add(background);
 		
