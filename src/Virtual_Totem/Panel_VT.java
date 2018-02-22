@@ -5,6 +5,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.font.TextAttribute;
+import java.awt.font.TextLayout;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -139,11 +140,16 @@ public class Panel_VT extends JPanel {
 		        		break;
 		        	case "soltar_dragon":
 		        		Dragon_bt.setText("Coger Dragon");
-		        		warning_exit=false;
+		        		if(Lobo_bt.getText()!="Soltar Lobo") {
+		        			warning_exit=false;
+		        		}
 		        		break;
 		        	case "soltar_lobo":
 		        		Lobo_bt.setText("Coger Lobo");
-		        		warning_exit=false;
+		        		Lobo_bt.setForeground(Color.WHITE);
+		        		if(Dragon_bt.getText()!="Soltar Dragon") {
+		        			warning_exit=false;
+		        		}
 		        		break;
 		        	}
 					accion=false;
