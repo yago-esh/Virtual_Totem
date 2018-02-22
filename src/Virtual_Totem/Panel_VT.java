@@ -75,7 +75,7 @@ public class Panel_VT extends JPanel {
 		Lobo_bt.setHorizontalTextPosition( SwingConstants.CENTER );
 		Lobo_bt.setVerticalTextPosition( SwingConstants.CENTER );
 		Lobo_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
-		//Lobo_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_lobo_bt.jpg")));
+		Lobo_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_lobo_bt_disabled.jpg")));
 		add(Lobo_bt);
 		
 		Dragon_bt = new JButton("Coger Dragon");		
@@ -99,6 +99,7 @@ public class Panel_VT extends JPanel {
 		Dragon_bt.setHorizontalTextPosition( SwingConstants.CENTER );
 		Dragon_bt.setVerticalTextPosition( SwingConstants.CENTER );
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
+		Dragon_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon_disabled.jpg")));
 		add(Dragon_bt);
 		
 		JButton Info_bt = new JButton("");
@@ -177,11 +178,11 @@ public class Panel_VT extends JPanel {
 		        		break;
 		        	default:
 		        		if (set_name == "dragon") {
-		        			Dragon_bt.setText("Dragon: " + texto);
+		        			Dragon_bt.setText("<html><font color = black>Dragon: " + texto+"</html>");
 		        			set_name="";
 		        		}
 		        		else if (set_name == "lobo") {
-		        			Lobo_bt.setText("Lobo: " + texto);
+		        			Lobo_bt.setText("<html><font color = white>Lobo: " + texto+"</html>");
 		        			set_name="";
 		        		}
 		        		
