@@ -108,13 +108,13 @@ public class Info_VT extends JDialog {
 					send = true;
 				}
 				if(desb_lobo) {
-					panel.send("soltar_lobo");
+					panel.send("soltar_lobo,"+System.getProperty("user.name"));
 					btnDesbloquearLobo.setForeground(Color.BLACK);
 					desb_lobo=false;
 					if(!send)JOptionPane.showMessageDialog(null,"Lobo desbloqueado correctamente");
 				}
 				if(desb_dragon){
-					panel.send("soltar_dragon");
+					panel.send("soltar_dragon,"+System.getProperty("user.name"));
 					btnDesbloquearDragon.setForeground(Color.BLACK);
 					desb_dragon=false;
 					if(!send)JOptionPane.showMessageDialog(null,"Dragón desbloqueado correctamente");

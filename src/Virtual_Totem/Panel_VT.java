@@ -162,9 +162,17 @@ public class Panel_VT extends JPanel {
 		warning_exit=false;
 	}
 	
-	public void showMsg(final String text) {
+	public void showMsg(final String msg) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				
+				String forced_name="";
+				String text=msg;
+				if(text.indexOf(",") != -1) {
+					String[] parts = msg.split(",");
+					text = parts[0]; 
+					forced_name = parts[1]; 
+				}
 				
 				//------------------------------------I did the action--------------------------------//
 				if(isAction) {
@@ -211,7 +219,7 @@ public class Panel_VT extends JPanel {
 		        		break;
 		        	case "soltar_dragon":
 		        		if (Dragon_bt.getText() == "Soltar Dragon") {
-		        			show_error("dragon");
+		        			show_error("dragon",forced_name);
 		        		}
 		        		Dragon_bt.setEnabled(true);
 		        		dragon_alert.setEnabled(false);
@@ -221,7 +229,7 @@ public class Panel_VT extends JPanel {
 		        		break;
 		        	case "soltar_lobo":
 		        		if (Wolf_bt.getText() == "Soltar Lobo") {
-		        			show_error("lobo");
+		        			show_error("lobo",forced_name);
 		        		}
 		        		Wolf_bt.setEnabled(true);
 		        		wolf_alert.setEnabled(false);
@@ -266,8 +274,8 @@ public class Panel_VT extends JPanel {
 		return warning_exit;
 	}
 	
-	public void show_error(String totem) {
+	public void show_error(String totem, String forced_name) {
 		warning_exit=false;
-		JOptionPane.showMessageDialog(null,"Otro usuario a forzado la liberación del " + totem);
+		JOptionPane.showMessageDialog(null,"El usuario " +forced_name+ " a forzado la liberación del " + totem);
 	}
 }
