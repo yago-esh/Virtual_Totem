@@ -32,8 +32,8 @@ public class Panel_VT extends JPanel {
 	private String set_name;
 	private Client_VT client;
 	static final long serialVersionUID = 42L;
-	private JButton Wolf_bt, Dragon_bt, Info_bt;
 	private boolean isAction, unlock_dragon, unlock_wolf, warning_exit;
+	private JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
 	
 
 	public Panel_VT(Client_VT client) {
@@ -53,8 +53,6 @@ public class Panel_VT extends JPanel {
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
 		Wolf_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_Wolf_bt.jpg")));
 		Wolf_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_Wolf_bt_disabled.jpg")));
-		
-		
 		add(Wolf_bt);
 		
 		Dragon_bt = new JButton("Coger Dragon");		
@@ -75,8 +73,27 @@ public class Panel_VT extends JPanel {
 		Info_bt.setBackground(Color.LIGHT_GRAY);
 		Info_bt.setMargin(new Insets(0, 0, 0, 0));
 		Info_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
-		
 		add(Info_bt);
+		
+		wolf_alert = new JButton("");
+		wolf_alert.setBorder(null);
+		wolf_alert.setOpaque(false);
+		wolf_alert.setEnabled(false);
+		wolf_alert.setBounds(233, 36, 32, 32);
+		wolf_alert.setBackground(Color.LIGHT_GRAY);
+		wolf_alert.setMargin(new Insets(0, 0, 0, 0));
+		wolf_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		add(wolf_alert);
+		
+		dragon_alert = new JButton("");
+		dragon_alert.setBorder(null);
+		dragon_alert.setOpaque(false);
+		dragon_alert.setEnabled(false);
+		dragon_alert.setBounds(233, 106, 32, 32);
+		dragon_alert.setBackground(Color.LIGHT_GRAY);
+		dragon_alert.setMargin(new Insets(0, 0, 0, 0));
+		dragon_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		add(dragon_alert);
 		
 		//------------------------------------Labels------------------------------------------//
 		
@@ -123,6 +140,16 @@ public class Panel_VT extends JPanel {
 		Info_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				info.showIt(Panel_VT.this.is_totem_taked("lobo"), Panel_VT.this.is_totem_taked("dragon"));
+			}
+		});
+		
+		wolf_alert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		
+		dragon_alert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 	}
@@ -172,11 +199,13 @@ public class Panel_VT extends JPanel {
 					switch (text){
 		        	case "coger_dragon":
 		        		Dragon_bt.setEnabled(false);
+		        		dragon_alert.setEnabled(true);
 		        		unlock_dragon=true;
 		        		set_name="dragon";
 		        		break;
 		        	case "coger_lobo":
 		        		Wolf_bt.setEnabled(false);
+		        		wolf_alert.setEnabled(true);
 		        		unlock_wolf=true;
 		        		set_name="lobo";
 		        		break;
@@ -185,6 +214,8 @@ public class Panel_VT extends JPanel {
 		        			show_error("dragon");
 		        		}
 		        		Dragon_bt.setEnabled(true);
+		        		dragon_alert.setEnabled(false);
+		        		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		        		unlock_dragon=false;
 		        		Dragon_bt.setText("Coger Dragon");
 		        		break;
@@ -193,15 +224,19 @@ public class Panel_VT extends JPanel {
 		        			show_error("lobo");
 		        		}
 		        		Wolf_bt.setEnabled(true);
+		        		wolf_alert.setEnabled(false);
+		        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		        		unlock_wolf=false;
 		        		Wolf_bt.setText("Coger Lobo");
 		        		break;
 		        	default:
 		        		if (set_name == "dragon") {
+		        			Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		        			Dragon_bt.setText("<html><font color = black>Dragon: " + text+"</html>");
 		        			set_name="";
 		        		}
 		        		else if (set_name == "lobo") {
+		        			Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		        			Wolf_bt.setText("<html><font color = white>Lobo: " + text+"</html>");
 		        			set_name="";
 		        		}
