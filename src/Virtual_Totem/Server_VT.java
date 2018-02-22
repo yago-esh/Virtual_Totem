@@ -35,6 +35,7 @@ class Server_VT extends Thread{
 	private boolean save_dragon;
 	private String lobo_user;
 	private String dragon_user;
+	private final int compatible_version = 135;
 	
 
     public Server_VT() {
@@ -181,6 +182,8 @@ class Server_VT extends Thread{
                                     new InputStreamReader(inStream));
                             System.out.println(
                                     "Servidor> Obtenido flujo de lectura");
+                            out.println(compatible_version);
+                            out.flush();
                             if(lobo_taken) {
                             	out.println("coger_lobo");
                             	out.flush();

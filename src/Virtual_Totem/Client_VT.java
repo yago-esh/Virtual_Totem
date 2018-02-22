@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+
 import Virtual_Totem.Client_VT;
 
 class Client_VT {
@@ -16,7 +18,8 @@ class Client_VT {
 	private PrintWriter out;
 	private BufferedReader in;
 	private Panel_VT Panel_VT;
-	private boolean terminar;
+	private int version;
+	private boolean terminar,check_version;
 
 	public Client_VT() {
 		socketConexion = null;
@@ -24,13 +27,15 @@ class Client_VT {
 		in = null;
 		Panel_VT = null;
 		terminar = false;
+		check_version=false;
+		version=135;
 	}
 
 	public void associate(Panel_VT Panel_VT) {
 		this.Panel_VT = Panel_VT;
 	}
 
-	public void ejecutar() throws IOException {
+	public void execute() throws IOException {
 		// Crear socket cliente y establecer conexion
 		socketConexion = new Socket("10.1.2.34", 2029);
 
@@ -103,6 +108,16 @@ class Client_VT {
 						Client_VT.this.terminar();
 						System.exit(0);
 					} else {
+						if(!check_version) {
+							check_version=true;
+							if(Integer.parseInt(lineaRecibir)>version) {
+								JOptionPane.showMessageDialog(null,
+										"Su versión de Virtual Totem es incompatible. Por favor, actualicela.",
+										"ERROR", JOptionPane.ERROR_MESSAGE);
+								System.exit(-1);
+								salir=true;
+							}
+						}
 						Panel_VT.showMsg(lineaRecibir);
 					}
 				}

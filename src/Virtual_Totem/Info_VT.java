@@ -136,7 +136,7 @@ public class Info_VT extends JDialog {
 			cancelButton.setActionCommand("Cancel");
 		}
 		
-		JLabel lblNewLabel_1 = new JLabel("Version 1.2.9");
+		JLabel lblNewLabel_1 = new JLabel("Version 1.3.5");
 		lblNewLabel_1.setBounds(12, 225, 120, 14);
 		contentPanel.add(lblNewLabel_1);
 		{

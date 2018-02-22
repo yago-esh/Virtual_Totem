@@ -42,7 +42,7 @@ class Window_VT extends JFrame {
 		});
 	}
 
-	public void mostrar() {
+	public void showIt() {
 		this.setVisible(true);
 	}
 }

@@ -8,20 +8,21 @@ import Virtual_Totem.Client_VT_graphic;
 import Virtual_Totem.Window_VT;
 
 class Client_VT_graphic {
-
+	
+	
     public static void main(String args[]) {
-        Client_VT_graphic cliente = new Client_VT_graphic();
-		cliente.ejecutar();
+        Client_VT_graphic client = new Client_VT_graphic();
+		client.execute();
     }
 
-	public void ejecutar() {
-		Client_VT cliente = new Client_VT();
-		Window_VT ventana = new Window_VT(cliente);
+	public void execute() {
+		Client_VT client = new Client_VT();
+		Window_VT window = new Window_VT(client);
 		try {
-			cliente.ejecutar();
-			ventana.mostrar();
+			client.execute();
+			window.showIt();
 		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(ventana,
+			JOptionPane.showMessageDialog(window,
 					"No se puede conectar con el servidor",
 					"ERROR", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
