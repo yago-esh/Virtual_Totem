@@ -26,7 +26,7 @@ class Client_VT {
 		terminar = false;
 	}
 
-	public void asociar(Panel_VT Panel_VT) {
+	public void associate(Panel_VT Panel_VT) {
 		this.Panel_VT = Panel_VT;
 	}
 
@@ -103,13 +103,13 @@ class Client_VT {
 						Client_VT.this.terminar();
 						System.exit(0);
 					} else {
-						Panel_VT.mostrarMensaje(lineaRecibir);
+						Panel_VT.showMsg(lineaRecibir);
 					}
 				}
 			} catch (IOException ex) {
 				if (!terminar) {
 					ex.printStackTrace();
-					Panel_VT.mostrarMensaje(ex.getMessage());
+					Panel_VT.showMsg(ex.getMessage());
 				}
 			}
 			finally {

@@ -28,141 +28,155 @@ import java.awt.Font;
 
 public class Panel_VT extends JPanel {
 	
-	static final long serialVersionUID = 42L;
-	private JButton Lobo_bt;
-	private JButton Dragon_bt;
-	private boolean accion;
-	private String set_name;
-	private Client_VT cliente;
 	private Info_VT info;
-	private boolean unlock_dragon;
-	private boolean unlock_wolf;
-	private boolean warning_exit;
+	private String set_name;
+	private Client_VT client;
+	static final long serialVersionUID = 42L;
+	private JButton Wolf_bt, Dragon_bt, Info_bt;
+	private boolean isAction, unlock_dragon, unlock_wolf, warning_exit;
 	
+
 	public Panel_VT(Client_VT client) {
 		
-		cliente=client;
-		cliente.asociar(this);
-		accion=false;
-		set_name="";
-		unlock_dragon=false;
-		unlock_wolf=false;
-		warning_exit=false;
-
-		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		setForeground(Color.BLACK);
-		setBackground(Color.LIGHT_GRAY);
-		setLayout(null);
+		this.client=client;
+		client.associate(this);
 		info = new Info_VT(Panel_VT.this);
+		setLayout(null);
 		
-		Lobo_bt = new JButton("Coger Lobo");
-		Lobo_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		Lobo_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_lobo_bt.jpg")));
-		Lobo_bt.setForeground(Color.WHITE);
-		Lobo_bt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (Lobo_bt.getText() == "Coger Lobo") {
-					accion=true;
-					cliente.enviar("coger_lobo");
-					cliente.enviar(System.getProperty("user.name"));
-				}
-				else {
-					accion=true;
-					cliente.enviar("soltar_lobo");
-				}
-			}
-		});
-		Lobo_bt.setBounds(74, 25, 150, 50);
-		Lobo_bt.setHorizontalTextPosition( SwingConstants.CENTER );
-		Lobo_bt.setVerticalTextPosition( SwingConstants.CENTER );
-		Lobo_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
-		Lobo_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_lobo_bt_disabled.jpg")));
-		add(Lobo_bt);
+		//------------------------------------Buttons------------------------------------------//
+		Wolf_bt = new JButton("Coger Lobo");
+		Wolf_bt.setBounds(74, 25, 150, 50);
+		Wolf_bt.setForeground(Color.WHITE);
+		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		Wolf_bt.setVerticalTextPosition(SwingConstants.CENTER);
+		Wolf_bt.setHorizontalTextPosition(SwingConstants.CENTER);
+		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
+		Wolf_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_Wolf_bt.jpg")));
+		Wolf_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_Wolf_bt_disabled.jpg")));
+		
+		
+		add(Wolf_bt);
 		
 		Dragon_bt = new JButton("Coger Dragon");		
-		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));		
-		Dragon_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon.jpg")));
 		Dragon_bt.setForeground(Color.WHITE);
-		Dragon_bt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (Dragon_bt.getText() == "Coger Dragon") {
-					accion=true;
-					cliente.enviar("coger_dragon");
-					cliente.enviar(System.getProperty("user.name"));
-				}
-				else {
-					accion=true;
-					cliente.enviar("soltar_dragon");
-				}
-			}
-		});
 		Dragon_bt.setBounds(74, 95, 150, 50);
-		Dragon_bt.setHorizontalTextPosition( SwingConstants.CENTER );
-		Dragon_bt.setVerticalTextPosition( SwingConstants.CENTER );
+		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		Dragon_bt.setVerticalTextPosition(SwingConstants.CENTER);
+		Dragon_bt.setHorizontalTextPosition(SwingConstants.CENTER);
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
+		Dragon_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon.jpg")));
 		Dragon_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon_disabled.jpg")));
 		add(Dragon_bt);
 		
-		JButton Info_bt = new JButton("");
+		Info_bt = new JButton("");
+		Info_bt.setBorder(null);
+		Info_bt.setOpaque(false);
+		Info_bt.setBounds(133, 154, 32, 32);
+		Info_bt.setBackground(Color.LIGHT_GRAY);
+		Info_bt.setMargin(new Insets(0, 0, 0, 0));
+		Info_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
+		
+		add(Info_bt);
+		
+		//------------------------------------Labels------------------------------------------//
+		
+		JLabel background = new JLabel("New label");
+		background.setBounds(0, 0, 299, 212);
+		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/Background_main.png")));
+		add(background);
+		
+		//------------------------------------Initialize Variables--------------------------------//
+		initialize();
+		listeners();
+	}
+	
+	public void listeners() {
+		
+		Wolf_bt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (Wolf_bt.getText() == "Coger Lobo") {
+					isAction=true;
+					client.enviar("coger_lobo");
+					client.enviar(System.getProperty("user.name"));
+				}
+				else {
+					isAction=true;
+					client.enviar("soltar_lobo");
+				}
+			}
+		});
+		
+		Dragon_bt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (Dragon_bt.getText() == "Coger Dragon") {
+					isAction=true;
+					client.enviar("coger_dragon");
+					client.enviar(System.getProperty("user.name"));
+				}
+				else {
+					isAction=true;
+					client.enviar("soltar_dragon");
+				}
+			}
+		});
+		
 		Info_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				info.showIt(Panel_VT.this.is_totem_taked("lobo"), Panel_VT.this.is_totem_taked("dragon"));
 			}
 		});
-		Info_bt.setBackground(Color.LIGHT_GRAY);
-		Info_bt.setOpaque(false);
-		Info_bt.setMargin(new Insets(0, 0, 0, 0));
-		Info_bt.setBorder(null);
-		Info_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
-		Info_bt.setBounds(133, 154, 32, 32);
-		add(Info_bt);
-		
-		JLabel background = new JLabel("New label");
-		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/Background_main.png")));
-		background.setBounds(0, 0, 299, 212);
-		add(background);
-		
-		
 	}
 	
-	public void mostrarMensaje(final String texto) {
+	public void initialize(){
+		isAction=false;
+		set_name="";
+		unlock_dragon=false;
+		unlock_wolf=false;
+		warning_exit=false;
+	}
+	
+	public void showMsg(final String text) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				if(accion) {
-					switch (texto){
+				
+				//------------------------------------I did the action--------------------------------//
+				if(isAction) {
+					switch (text){
 		        	case "coger_dragon":
 		        		Dragon_bt.setText("Soltar Dragon");
 		        		warning_exit=true;
 		        		break;
 		        	case "coger_lobo":
-		        		Lobo_bt.setText("Soltar Lobo");
+		        		Wolf_bt.setText("Soltar Lobo");
 		        		warning_exit=true;
 		        		break;
 		        	case "soltar_dragon":
 		        		Dragon_bt.setText("Coger Dragon");
-		        		if(Lobo_bt.getText()!="Soltar Lobo") {
+		        		if(Wolf_bt.getText()!="Soltar Lobo") {
 		        			warning_exit=false;
 		        		}
 		        		break;
 		        	case "soltar_lobo":
-		        		Lobo_bt.setText("Coger Lobo");
-		        		Lobo_bt.setForeground(Color.WHITE);
+		        		Wolf_bt.setText("Coger Lobo");
+		        		Wolf_bt.setForeground(Color.WHITE);
 		        		if(Dragon_bt.getText()!="Soltar Dragon") {
 		        			warning_exit=false;
 		        		}
 		        		break;
 		        	}
-					accion=false;
+					isAction=false;
 				}
+				
+				//------------------------------------I received the action--------------------------------//
 				else {
-					switch (texto){
+					switch (text){
 		        	case "coger_dragon":
 		        		Dragon_bt.setEnabled(false);
 		        		unlock_dragon=true;
 		        		set_name="dragon";
 		        		break;
 		        	case "coger_lobo":
-		        		Lobo_bt.setEnabled(false);
+		        		Wolf_bt.setEnabled(false);
 		        		unlock_wolf=true;
 		        		set_name="lobo";
 		        		break;
@@ -175,20 +189,20 @@ public class Panel_VT extends JPanel {
 		        		Dragon_bt.setText("Coger Dragon");
 		        		break;
 		        	case "soltar_lobo":
-		        		if (Lobo_bt.getText() == "Soltar Lobo") {
+		        		if (Wolf_bt.getText() == "Soltar Lobo") {
 		        			show_error("lobo");
 		        		}
-		        		Lobo_bt.setEnabled(true);
+		        		Wolf_bt.setEnabled(true);
 		        		unlock_wolf=false;
-		        		Lobo_bt.setText("Coger Lobo");
+		        		Wolf_bt.setText("Coger Lobo");
 		        		break;
 		        	default:
 		        		if (set_name == "dragon") {
-		        			Dragon_bt.setText("<html><font color = black>Dragon: " + texto+"</html>");
+		        			Dragon_bt.setText("<html><font color = black>Dragon: " + text+"</html>");
 		        			set_name="";
 		        		}
 		        		else if (set_name == "lobo") {
-		        			Lobo_bt.setText("<html><font color = white>Lobo: " + texto+"</html>");
+		        			Wolf_bt.setText("<html><font color = white>Lobo: " + text+"</html>");
 		        			set_name="";
 		        		}
 		        		
@@ -198,9 +212,9 @@ public class Panel_VT extends JPanel {
 		});
 	}
 	
-	public void send(String texto) {
-		System.out.println("Accion recibida"+texto);
-		cliente.enviar(texto);
+	public void send(String text) {
+		System.out.println("isAction recibida"+text);
+		client.enviar(text);
 	}
 	
 	public boolean is_totem_taked(String totem) {
@@ -216,6 +230,7 @@ public class Panel_VT extends JPanel {
 	public boolean can_exit() {
 		return warning_exit;
 	}
+	
 	public void show_error(String totem) {
 		warning_exit=false;
 		JOptionPane.showMessageDialog(null,"Otro usuario a forzado la liberación del " + totem);
