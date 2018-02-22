@@ -29,6 +29,7 @@ import java.awt.Font;
 public class Panel_VT extends JPanel {
 	
 	private Info_VT info;
+	private Alert_VT alert;
 	private String set_name;
 	private Client_VT client;
 	static final long serialVersionUID = 42L;
@@ -41,6 +42,7 @@ public class Panel_VT extends JPanel {
 		this.client=client;
 		client.associate(this);
 		info = new Info_VT(Panel_VT.this);
+		alert = new Alert_VT();
 		setLayout(null);
 		
 		//------------------------------------Buttons------------------------------------------//
@@ -145,11 +147,13 @@ public class Panel_VT extends JPanel {
 		
 		wolf_alert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				alert.showIt("wolf");
 			}
 		});
 		
 		dragon_alert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				alert.showIt("dragon");
 			}
 		});
 	}

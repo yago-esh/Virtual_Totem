@@ -30,7 +30,7 @@ public class Info_VT extends JDialog {
 		this.setVisible(false);
 		this.setResizable(false);
 		contentPanel.setLayout(null);
-		setBounds(810, 425, 451, 275);
+		setBounds(810, 425, 450, 275);
 		this.setTitle("Info of Virtual Totem");
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -43,7 +43,11 @@ public class Info_VT extends JDialog {
 		info_text.setForeground(Color.BLACK);
 		info_text.setFont(new Font("Tahoma", Font.BOLD, 13));
 		info_text.setBackground(UIManager.getColor("CheckBox.background"));
-		info_text.setText("A continuaci\u00F3n va a proceder a desbloquear uno de los totem.\r\nEsta acci\u00F3n solo debe realizarse en los siguientes casos y solo tras haber corroborado la acci\u00F3n con el resto del equipo:\r\n\r\n\u2022 El programa ha bloqueado de forma incorrecta un totem.\r\n\u2022 Un usuario ha bloqueado de forma indefinida un totem, no est\u00E1 siendo utilizado y no puede liberarlo de forma manual.");
+		info_text.setText("A continuaci\u00F3n va a proceder a desbloquear uno de los totem"+
+				".\r\nEsta acci\u00F3n solo debe realizarse en los siguientes casos y solo tras haber"+
+				"corroborado la acci\u00F3n con el resto del equipo:\r\n\r\n\u2022 El programa ha"+
+				"bloqueado de forma incorrecta un totem.\r\n\u2022 Un usuario ha bloqueado de forma"+
+				"indefinida un totem, no est\u00E1 siendo utilizado y no puede liberarlo de forma manual.");
 		info_text.setBounds(12, 13, 408, 142);
 		contentPanel.add(info_text);
 		
@@ -64,26 +68,25 @@ public class Info_VT extends JDialog {
 		contentPanel.add(okButton);
 		
 		cancelButton = new JButton("Cancel");
-		cancelButton.setActionCommand("Cancel");
 		cancelButton.setBounds(349, 206, 75, 25);
 		contentPanel.add(cancelButton);
 		
 		//------------------------------------Labels------------------------------------------//
 		
-		JLabel lblCreatedByYago = new JLabel("Created by Yago Echave-Sustaeta");
-		lblCreatedByYago.setForeground(Color.BLACK);
-		lblCreatedByYago.setBounds(12, 210, 258, 16);
-		lblCreatedByYago.setFont(new Font("Tahoma", Font.BOLD, 13));
-		contentPanel.add(lblCreatedByYago);
+		JLabel CreatedByYago = new JLabel("Created by Yago Echave-Sustaeta");
+		CreatedByYago.setForeground(Color.BLACK);
+		CreatedByYago.setBounds(12, 210, 258, 16);
+		CreatedByYago.setFont(new Font("Tahoma", Font.BOLD, 13));
+		contentPanel.add(CreatedByYago);
 		
-		JLabel lblNewLabel_1 = new JLabel("Versión 1.3.5");
-		lblNewLabel_1.setBounds(12, 225, 120, 14);
-		contentPanel.add(lblNewLabel_1);
+		JLabel Version_lb = new JLabel("Versión 1.3.5");
+		Version_lb.setBounds(12, 225, 120, 14);
+		contentPanel.add(Version_lb);
 
-		JLabel lblNewLabel = new JLabel();
-		lblNewLabel.setBounds(0, 0, 450, 253);
-		lblNewLabel.setIcon(new ImageIcon(Info_VT.class.getResource("/Img/background.jpg")));
-		contentPanel.add(lblNewLabel);
+		JLabel background = new JLabel();
+		background.setBounds(0, 0, 450, 253);
+		background.setIcon(new ImageIcon(Info_VT.class.getResource("/Img/background.jpg")));
+		contentPanel.add(background);
 		
 		
 		//------------------------------------Initialize Variables--------------------------------//
