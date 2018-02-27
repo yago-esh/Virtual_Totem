@@ -101,40 +101,37 @@ class Server_VT extends Thread{
         
         private synchronized void change_totem(String state, int id_client) {
         	
+        	boolean change=true;
         	if(state.indexOf(",") != -1) {
     			
     			String[] parts = state.split(",");
-    			state=parts[1];
     			
+    			if(parts[0].equals("list")){
+    				change=false;
+    			}
+    			if(parts[0].equals("totem")){
+    				state=parts[1];
+    			}
     		}
-        	
-        	switch (state){
-        	case "coger_dragon":
-        		dragon_taken=true;
-        		save_dragon=true;
-        		dragon_taken_id=id_client;
-        		break;
-        	case "coger_lobo":
-        		lobo_taken=true;
-        		save_lobo=true;
-        		lobo_taken_id=id_client;
-        		break;
-        	case "soltar_dragon":
-        		dragon_taken=false;
-        		break;
-        	case "soltar_lobo":
-        		lobo_taken=false;
-        		break;
-        	default:
-        		if(save_dragon) {
-        			save_dragon=false;
-        			dragon_user=state;
-        		}
-        		else if(save_lobo) {
-        			save_lobo=false;
-        			lobo_user=state;
-        		}
-        		
+        	if(change) {
+	        	switch (state){
+	        	case "coger_dragon":
+	        		dragon_taken=true;
+	        		dragon_user=state;
+	        		dragon_taken_id=id_client;
+	        		break;
+	        	case "coger_lobo":
+	        		lobo_taken=true;
+	        		lobo_user=state;
+	        		lobo_taken_id=id_client;
+	        		break;
+	        	case "soltar_dragon":
+	        		dragon_taken=false;
+	        		break;
+	        	case "soltar_lobo":
+	        		lobo_taken=false;
+	        		break;
+	        	}
         	}
         }
 
