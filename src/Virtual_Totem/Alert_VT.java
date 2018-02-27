@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,11 +22,18 @@ import java.awt.List;
 
 public class Alert_VT extends JDialog {
 
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JButton okButton, cancelButton;
+	private ArrayList<String> list_dragon, list_wolf;
+	private String mode;
+	private Panel_VT panel;
+	private List list;
+	private boolean action;
 
-	public Alert_VT() {
+	public Alert_VT(Panel_VT panel) {
 		
+		this.panel = panel;
 		this.setVisible(false);
 		setBounds(810, 425, 450, 235);
 		getContentPane().setLayout(new BorderLayout());
@@ -50,10 +58,8 @@ public class Alert_VT extends JDialog {
 		okButton.setBounds(287, 164, 55, 25);
 		contentPanel.add(okButton);
 		
-		List list = new List();
+		list = new List();
 		list.setBounds(19, 44, 120, 142);
-		list.add("La Corpo");
-		list.add("El Edu");
 		contentPanel.add(list);
 		
 		cancelButton = new JButton("Cancel");
@@ -75,12 +81,22 @@ public class Alert_VT extends JDialog {
 		
 		//------------------------------------Initialize Variables--------------------------------//
 		listeners();
+		initialize();
 	}
 
 	public void listeners() {
 		
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				action=true;
+				addList(mode, System.getProperty("user.name"));
+				if(mode.equals("coger_lobo")) {
+					panel.send("list,coger_lobo,"+System.getProperty("user.name"));
+				}
+				else if (mode.equals("coger_dragon")) {
+					panel.send("list,coger_dragon,"+System.getProperty("user.name"));
+				}
+				
 				hideIt();
 			}
 		});
@@ -92,12 +108,51 @@ public class Alert_VT extends JDialog {
 		});
 	}
 	
+	public void initialize() {
+		list_dragon = new ArrayList<String>();
+		list_wolf = new ArrayList<String>();
+		mode="";
+		action=false;
+	}
+	
 	public void showIt(String totem) {
+		mode=totem;
 		this.setVisible(true);
 		this.setTitle("Cola de usuarios para el "+totem);
+		
+		if(mode.equals("coger_lobo")) {
+			for(String user: list_wolf) {
+				list.add(user);
+			}
+		}
+		else if (mode.equals("coger_dragon")) {
+			for(String user: list_dragon) {
+				list.add(user);
+			}
+		}
 	}
 	
 	public void hideIt() {
 		this.setVisible(false);
+		list.removeAll();
+	}
+	
+	public void addList(String mode, String user){
+		if(mode.equals("coger_lobo")) {
+			if(!action) {
+				list_wolf.add(user);
+			}
+			else {
+				action=false;
+			}
+		}
+		else if (mode.equals("coger_dragon")) {
+			if(!action) {
+				list_dragon.add(user);
+			}
+			else {
+				action=false;
+			}
+		}
 	}
 }

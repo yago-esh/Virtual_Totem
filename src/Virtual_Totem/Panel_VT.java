@@ -41,7 +41,7 @@ public class Panel_VT extends JPanel {
 		this.client=client;
 		client.associate(this);
 		info = new Info_VT(Panel_VT.this);
-		alert = new Alert_VT();
+		alert = new Alert_VT(this);
 		setLayout(null);
 		
 		//------------------------------------Buttons------------------------------------------//
@@ -144,13 +144,13 @@ public class Panel_VT extends JPanel {
 		
 		wolf_alert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				alert.showIt("wolf");
+				alert.showIt("coger_lobo");
 			}
 		});
 		
 		dragon_alert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				alert.showIt("dragon");
+				alert.showIt("coger_dragon");
 			}
 		});
 	}
@@ -168,10 +168,17 @@ public class Panel_VT extends JPanel {
 			
 			String[] parts = msg.split(",");
 			
-			if(parts[0]!="lista") {
-				showMsg(parts[1],parts[2]);
+			switch(parts[0]){
+				case "totem":
+					showMsg(parts[1],parts[2]);
+					break;
+				case "list":
+						System.out.println("Funciona??????");
+						System.out.println("Funciona"+parts[1]+parts[2]);
+						alert.addList(parts[1],parts[2]);
+					break;
 			}
-			
+
 		}
 		else {
 			showMsg(msg,"");

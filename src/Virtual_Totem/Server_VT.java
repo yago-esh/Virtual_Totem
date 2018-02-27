@@ -36,6 +36,7 @@ class Server_VT extends Thread{
 	private String lobo_user;
 	private String dragon_user;
 	private final int compatible_version = 135;
+	private ArrayList<String> List_wolf, List_dragon;
 	
 
     public Server_VT() {
@@ -43,6 +44,8 @@ class Server_VT extends Thread{
         id=1;
         save_dragon=false;
         save_lobo=false;
+        List_wolf = new ArrayList<String>();
+        List_dragon = new ArrayList<String>();
     }
 
     private void ejecutar() {
@@ -148,7 +151,6 @@ class Server_VT extends Thread{
 	                    e.getMessage();
 	                }
 	                if(out!=null) {
-	                	System.out.println("Se envia esto: "+texto);
 		                out.println(texto);
 		                out.flush();;
 	                }
@@ -221,7 +223,6 @@ class Server_VT extends Thread{
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
-                        
                     }
                 }
             }.start();
