@@ -118,13 +118,12 @@ class Client_VT {
 								salir=true;
 							}
 						}
-						Panel_VT.showMsg(lineaRecibir);
+						Panel_VT.ParseMsg(lineaRecibir);
 					}
 				}
 			} catch (IOException ex) {
 				if (!terminar) {
 					ex.printStackTrace();
-					Panel_VT.showMsg(ex.getMessage());
 				}
 			}
 			finally {

@@ -30,7 +30,6 @@ public class Panel_VT extends JPanel {
 	
 	private Info_VT info;
 	private Alert_VT alert;
-	private String set_name;
 	private Client_VT client;
 	static final long serialVersionUID = 42L;
 	private boolean isAction, unlock_dragon, unlock_wolf, warning_exit;
@@ -115,7 +114,7 @@ public class Panel_VT extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (Wolf_bt.getText() == "Coger Lobo") {
 					isAction=true;
-					client.enviar("coger_lobo,"+System.getProperty("user.name"));
+					client.enviar("totem,coger_lobo,"+System.getProperty("user.name"));
 				}
 				else {
 					isAction=true;
@@ -128,7 +127,7 @@ public class Panel_VT extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (Dragon_bt.getText() == "Coger Dragon") {
 					isAction=true;
-					client.enviar("coger_dragon,"+System.getProperty("user.name"));
+					client.enviar("totem,coger_dragon,"+System.getProperty("user.name"));
 				}
 				else {
 					isAction=true;
@@ -158,23 +157,31 @@ public class Panel_VT extends JPanel {
 	
 	public void initialize(){
 		isAction=false;
-		set_name="";
 		unlock_dragon=false;
 		unlock_wolf=false;
 		warning_exit=false;
 	}
 	
-	public void showMsg(final String msg) {
+	public void ParseMsg(String msg){
+		
+		if(msg.indexOf(",") != -1) {
+			
+			String[] parts = msg.split(",");
+			
+			if(parts[0]!="lista") {
+				showMsg(parts[1],parts[2]);
+			}
+			
+		}
+		else {
+			showMsg(msg,"");
+		}
+		
+	}
+	
+	public void showMsg(String text, String user_name) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				
-				String forced_name="";
-				String text=msg;
-				if(text.indexOf(",") != -1) {
-					String[] parts = msg.split(",");
-					text = parts[0]; 
-					forced_name = parts[1]; 
-				}
 				
 				//------------------------------------I did the action--------------------------------//
 				if(isAction) {
@@ -212,18 +219,18 @@ public class Panel_VT extends JPanel {
 		        		dragon_alert.setEnabled(true);
 		        		unlock_dragon=true;
 		        		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-	        			Dragon_bt.setText("<html><font color = black>Dragon: " + forced_name+"</html>");
+	        			Dragon_bt.setText("<html><font color = black>Dragon: " + user_name+"</html>");
 		        		break;
 		        	case "coger_lobo":
 		        		Wolf_bt.setEnabled(false);
 		        		wolf_alert.setEnabled(true);
 		        		unlock_wolf=true;
 		        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-	        			Wolf_bt.setText("<html><font color = white>Lobo: " + forced_name+"</html>");
+	        			Wolf_bt.setText("<html><font color = white>Lobo: " + user_name+"</html>");
 		        		break;
 		        	case "soltar_dragon":
 		        		if (Dragon_bt.getText() == "Soltar Dragon") {
-		        			show_error("dragon",forced_name);
+		        			show_error("dragon",user_name);
 		        		}
 		        		Dragon_bt.setEnabled(true);
 		        		dragon_alert.setEnabled(false);
@@ -233,11 +240,11 @@ public class Panel_VT extends JPanel {
 		        		break;
 		        	case "soltar_lobo":
 		        		if (Wolf_bt.getText() == "Soltar Lobo") {
-		        			show_error("lobo",forced_name);
+		        			show_error("lobo",user_name);
 		        		}
 		        		Wolf_bt.setEnabled(true);
 		        		wolf_alert.setEnabled(false);
-		        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		        		unlock_wolf=false;
 		        		Wolf_bt.setText("Coger Lobo");
 		        		break;
@@ -266,8 +273,8 @@ public class Panel_VT extends JPanel {
 		return warning_exit;
 	}
 	
-	public void show_error(String totem, String forced_name) {
+	public void show_error(String totem, String user_name) {
 		warning_exit=false;
-		JOptionPane.showMessageDialog(null,"El usuario " +forced_name+ " a forzado la liberación del " + totem);
+		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " a forzado la liberación del " + totem);
 	}
 }

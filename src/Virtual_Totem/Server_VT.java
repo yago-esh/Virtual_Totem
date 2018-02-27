@@ -97,6 +97,14 @@ class Server_VT extends Thread{
         }
         
         private synchronized void change_totem(String state, int id_client) {
+        	
+        	if(state.indexOf(",") != -1) {
+    			
+    			String[] parts = state.split(",");
+    			state=parts[1];
+    			
+    		}
+        	
         	switch (state){
         	case "coger_dragon":
         		dragon_taken=true;
@@ -140,6 +148,7 @@ class Server_VT extends Thread{
 	                    e.getMessage();
 	                }
 	                if(out!=null) {
+	                	System.out.println("Se envia esto: "+texto);
 		                out.println(texto);
 		                out.flush();;
 	                }
