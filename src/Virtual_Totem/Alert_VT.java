@@ -35,7 +35,7 @@ public class Alert_VT extends JDialog {
 		
 		this.panel = panel;
 		this.setVisible(false);
-		setBounds(810, 425, 450, 235);
+		setBounds(810, 425, 450, 245);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

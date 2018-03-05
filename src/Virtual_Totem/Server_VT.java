@@ -101,7 +101,9 @@ class Server_VT extends Thread{
         
         private synchronized void change_totem(String state, int id_client) {
         	
+
         	boolean change=true;
+        	String name = "";
         	if(state.indexOf(",") != -1) {
     			
     			String[] parts = state.split(",");
@@ -111,18 +113,19 @@ class Server_VT extends Thread{
     			}
     			if(parts[0].equals("totem")){
     				state=parts[1];
+    				name=parts[2];
     			}
     		}
         	if(change) {
 	        	switch (state){
 	        	case "coger_dragon":
 	        		dragon_taken=true;
-	        		dragon_user=state;
+	        		dragon_user=name;
 	        		dragon_taken_id=id_client;
 	        		break;
 	        	case "coger_lobo":
 	        		lobo_taken=true;
-	        		lobo_user=state;
+	        		lobo_user=name;
 	        		lobo_taken_id=id_client;
 	        		break;
 	        	case "soltar_dragon":
@@ -193,15 +196,11 @@ class Server_VT extends Thread{
                             out.println(compatible_version);
                             out.flush();
                             if(lobo_taken) {
-                            	out.println("coger_lobo");
-                            	out.flush();
-                            	out.println(lobo_user);
+                            	out.println("totem,coger_lobo,"+lobo_user);
                             	out.flush();
                             }
                             if(dragon_taken) {
-                            	out.println("coger_dragon");
-                            	out.flush();
-                            	out.println(dragon_user);
+                            	out.println("totem,coger_dragon,"+dragon_user);
                             	out.flush();
                             }
                             // Leer y escribir en los flujos
