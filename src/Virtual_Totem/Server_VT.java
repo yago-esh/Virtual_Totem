@@ -105,9 +105,9 @@ class Server_VT extends Thread{
         	if(state.indexOf(",") != -1) {
     			
     			String[] parts = state.split(",");
+    			switch(parts[0]) {
     			
-    			if(parts[0].equals("list")){
-    				
+    			case "list":
     				if(parts[1].equals("coger_lobo")) {
     					List_wolf.add(parts[2]);
     				}
@@ -116,11 +116,23 @@ class Server_VT extends Thread{
     				}
     				
     				change=false;
-    			}
-    			if(parts[0].equals("totem")){
+    				break;
+    			
+    			case "totem":
     				state=parts[1];
     				name=parts[2];
+    				break;
+    				
+    			case "CleanList":
+    				if(parts[1].equals("wolf")) {
+    					List_wolf.remove(Integer.parseInt(parts[2]));
+    				}
+    				else if (parts[1].equals("dragon")) {
+    					List_dragon.remove(Integer.parseInt(parts[2]));
+    				}
+    				break;
     			}
+    			
     		}
         	if(change) {
 	        	switch (state){
@@ -135,10 +147,14 @@ class Server_VT extends Thread{
 	        		lobo_taken_id=id_client;
 	        		break;
 	        	case "soltar_dragon":
-	        		dragon_taken=false;
+	        		if(List_dragon.isEmpty()) {
+	        			dragon_taken=false;
+	        		}
 	        		break;
 	        	case "soltar_lobo":
-	        		lobo_taken=false;
+	        		if(List_wolf.isEmpty()) {
+	        			lobo_taken=false;
+	        		}
 	        		break;
 	        	}
         	}

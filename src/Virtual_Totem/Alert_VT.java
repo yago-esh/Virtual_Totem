@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -106,6 +108,12 @@ public class Alert_VT extends JDialog {
 				hideIt();
 			}
 		});
+		
+		this.addWindowListener(new WindowAdapter() {
+	        public void windowClosing(WindowEvent event) {
+	            hideIt();
+	        }
+	    });
 	}
 	
 	public void initialize() {
@@ -181,6 +189,7 @@ public class Alert_VT extends JDialog {
 			for(int x=0; x<list_wolf.size(); x++) {
 				if (list_wolf.get(x).equals(user)) {
 					list_wolf.remove(x);
+					panel.send("CleanList,wolf"+String.valueOf(x));
 					x--;
 				}
 			}
@@ -189,6 +198,7 @@ public class Alert_VT extends JDialog {
 			for(int x=0; x<list_dragon.size(); x++) {
 				if (list_dragon.get(x).equals(user)) {
 					list_dragon.remove(x);
+					panel.send("CleanList,dragon"+String.valueOf(x));
 					x--;
 				}
 			}
