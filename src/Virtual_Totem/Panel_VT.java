@@ -189,9 +189,13 @@ public class Panel_VT extends JPanel {
 		
 		if (action.equals("soltar_lobo") || action.equals("soltar_dragon")) {
 			user=alert.getUser(action);
-			System.out.println("El usuario que se ha obtenido es: "+user);
 			if(user.equals(System.getProperty("user.name"))) {
-				System.out.println("Yo soy el usario");
+					if(!isAction) {
+						new NextInQueue_VT(this,action);
+					}
+					else {
+						showMsg(action,name);
+					}
 			}
 			else if(user.equals("empty")) {
 				showMsg(action,name);
@@ -308,5 +312,31 @@ public class Panel_VT extends JPanel {
 	public void show_error(String totem, String user_name) {
 		warning_exit=false;
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " a forzado la liberación del " + totem);
+	}
+	
+	public void setAction(String totem) {
+		
+		switch (totem){
+
+    	case "dragon":
+    		Dragon_bt.setEnabled(true);
+    		dragon_alert.setEnabled(false);
+    		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+    		unlock_dragon=false;
+    		Dragon_bt.setText("Coger Dragon");
+    		break;
+    	case "lobo":
+    		Wolf_bt.setEnabled(true);
+    		wolf_alert.setEnabled(false);
+    		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+    		unlock_wolf=false;
+    		Wolf_bt.setText("Coger Lobo");
+    		break;
+    	}
+		isAction=true;
+	}
+	
+	public boolean isAction() {
+		return isAction;
 	}
 }

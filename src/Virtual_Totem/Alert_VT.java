@@ -189,8 +189,8 @@ public class Alert_VT extends JDialog {
 			for(int x=0; x<list_wolf.size(); x++) {
 				if (list_wolf.get(x).equals(user)) {
 					list_wolf.remove(x);
-					panel.send("CleanList,wolf"+String.valueOf(x));
-					x--;
+					if(panel.isAction()) panel.send("CleanList,wolf,"+String.valueOf(x));
+					break;
 				}
 			}
 		}
@@ -198,8 +198,8 @@ public class Alert_VT extends JDialog {
 			for(int x=0; x<list_dragon.size(); x++) {
 				if (list_dragon.get(x).equals(user)) {
 					list_dragon.remove(x);
-					panel.send("CleanList,dragon"+String.valueOf(x));
-					x--;
+					if(panel.isAction()) panel.send("CleanList,dragon,"+String.valueOf(x));
+					break;
 				}
 			}
 		}
