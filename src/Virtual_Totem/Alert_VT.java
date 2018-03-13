@@ -155,4 +155,44 @@ public class Alert_VT extends JDialog {
 			}
 		}
 	}
+	
+	public String getUser(String name_list) {
+		String user;
+		if(name_list.equals("soltar_lobo")){
+			if(!list_wolf.isEmpty()) {
+				user= list_wolf.get(0);
+				removeUserList(name_list, user);
+				return user;
+			}
+		}
+		if (name_list.equals("soltar_dragon")) {
+			if(!list_dragon.isEmpty()) {
+				user= list_dragon.get(0);
+				removeUserList(name_list, user);
+				return user;
+			}
+		}
+		return "empty";
+	}
+	
+	public void removeUserList(String name_list, String user) {
+		
+		if(name_list.equals("soltar_lobo")){
+			for(int x=0; x<list_wolf.size(); x++) {
+				if (list_wolf.get(x).equals(user)) {
+					list_wolf.remove(x);
+					x--;
+				}
+			}
+		}
+		if (name_list.equals("soltar_dragon")) {
+			for(int x=0; x<list_dragon.size(); x++) {
+				if (list_dragon.get(x).equals(user)) {
+					list_dragon.remove(x);
+					x--;
+				}
+			}
+		}
+	}
+	
 }

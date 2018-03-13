@@ -178,9 +178,37 @@ public class Panel_VT extends JPanel {
 
 		}
 		else {
-			showMsg(msg,"");
+			chekList(msg,"");
 		}
 		
+	}
+	
+	public void chekList(String action, String name) {
+		
+		String user;
+		
+		if (action.equals("soltar_lobo") || action.equals("soltar_dragon")) {
+			user=alert.getUser(action);
+			System.out.println("El usuario que se ha obtenido es: "+user);
+			if(user.equals(System.getProperty("user.name"))) {
+				System.out.println("Yo soy el usario");
+			}
+			else if(user.equals("empty")) {
+				showMsg(action,name);
+			}
+			else {
+				switch (action){
+	        	case "soltar_dragon":
+	        		Dragon_bt.setText("En transición");
+	        		break;
+	        	case "soltar_lobo":
+	        		Wolf_bt.setText("En transición");
+	        		break;
+	        	}
+			}
+			
+		}
+		else showMsg(action,name);
 	}
 	
 	public void showMsg(String text, String user_name) {
