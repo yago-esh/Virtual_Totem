@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
 import Virtual_Totem.Server_VT;
 
 class Server_VT extends Thread{
@@ -38,7 +37,6 @@ class Server_VT extends Thread{
 	private final int compatible_version = 135;
 	private ArrayList<String> List_wolf, List_dragon;
 	
-
     public Server_VT() {
         listaConexiones = new ListaConexiones();
         id=1;
@@ -109,6 +107,14 @@ class Server_VT extends Thread{
     			String[] parts = state.split(",");
     			
     			if(parts[0].equals("list")){
+    				
+    				if(parts[1].equals("coger_lobo")) {
+    					List_wolf.add(parts[2]);
+    				}
+    				if(parts[1].equals("coger_dragon")) {
+    					List_dragon.add(parts[2]);
+    				}
+    				
     				change=false;
     			}
     			if(parts[0].equals("totem")){
@@ -201,6 +207,16 @@ class Server_VT extends Thread{
                             }
                             if(dragon_taken) {
                             	out.println("totem,coger_dragon,"+dragon_user);
+                            	out.flush();
+                            }
+                            System.out.println("La lista contiene: " + List_wolf);
+        					System.out.println();
+                            for(String user_list: List_wolf) {
+                            	out.println("list,coger_lobo,"+user_list);
+                            	out.flush();
+                            }
+                            for(String user_list: List_dragon) {
+                            	out.println("list,coger_dragon,"+user_list);
                             	out.flush();
                             }
                             // Leer y escribir en los flujos

@@ -163,7 +163,6 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void ParseMsg(String msg){
-		
 		if(msg.indexOf(",") != -1) {
 			
 			String[] parts = msg.split(",");
@@ -173,8 +172,6 @@ public class Panel_VT extends JPanel {
 					showMsg(parts[1],parts[2]);
 					break;
 				case "list":
-						System.out.println("Funciona??????");
-						System.out.println("Funciona"+parts[1]+parts[2]);
 						alert.addList(parts[1],parts[2]);
 					break;
 			}
