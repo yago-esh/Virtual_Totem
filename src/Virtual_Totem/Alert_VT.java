@@ -90,15 +90,17 @@ public class Alert_VT extends JDialog {
 		
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				action=true;
-				addList(mode, System.getProperty("user.name"));
-				if(mode.equals("coger_lobo")) {
-					panel.send("list,coger_lobo,"+System.getProperty("user.name"));
-				}
-				else if (mode.equals("coger_dragon")) {
-					panel.send("list,coger_dragon,"+System.getProperty("user.name"));
-				}
 				
+				if(!isInList(mode)) {
+					action=true;
+					addList(mode, System.getProperty("user.name"));
+					if(mode.equals("coger_lobo")) {
+						panel.send("list,coger_lobo,"+System.getProperty("user.name"));
+					}
+					else if (mode.equals("coger_dragon")) {
+						panel.send("list,coger_dragon,"+System.getProperty("user.name"));
+					}
+				}
 				hideIt();
 			}
 		});
@@ -148,6 +150,7 @@ public class Alert_VT extends JDialog {
 	public void addList(String mode, String user){
 		if(mode.equals("coger_lobo")) {
 			if(!action) {
+				
 				list_wolf.add(user);
 			}
 			else {
@@ -162,6 +165,22 @@ public class Alert_VT extends JDialog {
 				action=false;
 			}
 		}
+	}
+	
+	public boolean isInList(String mode) {
+		
+		if(mode.equals("coger_lobo")) {
+			for(String user: list_wolf) {
+				if(user.equals(System.getProperty("user.name"))) return true;
+			}
+		}
+		else if (mode.equals("coger_dragon")) {
+			for(String user: list_dragon) {
+				if(user.equals(System.getProperty("user.name"))) return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public String getUser(String name_list) {

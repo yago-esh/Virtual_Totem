@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 
@@ -92,5 +94,12 @@ public class NextInQueue_VT extends JDialog {
 				setVisible(false);
 			}
 		});
+		
+		this.addWindowListener(new WindowAdapter() {
+	        public void windowClosing(WindowEvent event) {
+	        	panel.send(action);
+				setVisible(false);
+	        }
+	    });
 	}
 }
