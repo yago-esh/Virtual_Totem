@@ -173,6 +173,18 @@ public class Panel_VT extends JPanel {
 					break;
 				case "list":
 						alert.addList(parts[1],parts[2]);
+						switch (parts[1]){
+			        	case "coger_dragon":
+			        		if (Dragon_bt.getText().equals("Soltar Dragon")) {
+			        			show_alert("dragon",parts[2]);
+			        		}
+			        		break;
+			        	case "coger_lobo":
+			        		if (Wolf_bt.getText().equals("Soltar Lobo")) {
+			        			show_alert("lobo",parts[2]);
+			        		}
+			        		break;
+			        	}
 					break;
 					
 				case "freedom":
@@ -317,6 +329,11 @@ public class Panel_VT extends JPanel {
 	public void show_error(String totem, String user_name) {
 		warning_exit=false;
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " a forzado la liberación del " + totem);
+	}
+	
+	public void show_alert(String totem, String user_name) {
+		warning_exit=false;
+		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " está solicitando el " + totem);
 	}
 	
 	public void setAction(String totem) {
