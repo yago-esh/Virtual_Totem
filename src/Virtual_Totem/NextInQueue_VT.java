@@ -85,6 +85,7 @@ public class NextInQueue_VT extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panel.setAction(totem);
+				panel.getAlert_VT().removeMeUserFromList();
 				panel.send("totem,"+okAction+","+System.getProperty("user.name"));
 				setVisible(false);
 			}

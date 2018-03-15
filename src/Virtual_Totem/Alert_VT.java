@@ -224,6 +224,15 @@ public class Alert_VT extends JDialog {
 		}
 	}
 	
+	public void removeNumList(String name_list, int num) {
+		if(name_list.equals("wolf")){
+			list_wolf.remove(num);
+		}
+		if (name_list.equals("dragon")) {
+			list_dragon.remove(num);		
+		}
+	}
+	
 	public void clearList(String name_list) {
 		if(name_list.equals("soltar_lobo")){
 			list_wolf.clear();

@@ -191,6 +191,11 @@ public class Panel_VT extends JPanel {
 					alert.clearList(parts[1]);
 					showMsg(parts[1],parts[2]);
 					break;
+					
+				case "CleanList":
+					alert.removeNumList(parts[1], Integer.parseInt(parts[2]));
+    				break;
+    			
 			}
 
 		}
