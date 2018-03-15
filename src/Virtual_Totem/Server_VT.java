@@ -132,6 +132,16 @@ class Server_VT extends Thread{
     				}
     				break;
     			
+    			case "CleanServer":
+    				change=false;
+    				if(parts[1].equals("wolf")) {
+    					List_wolf.remove(Integer.parseInt(parts[2]));
+    				}
+    				else if (parts[1].equals("dragon")) {
+    					List_dragon.remove(Integer.parseInt(parts[2]));
+    				}
+    				break;
+    				
     			case "freedom":
     				change=false;
     				if(parts[1].equals("soltar_lobo")) {

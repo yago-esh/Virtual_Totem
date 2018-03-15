@@ -163,6 +163,7 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void ParseMsg(String msg){
+		System.out.println("Hemos recibido: "+msg);
 		if(msg.indexOf(",") != -1) {
 			
 			String[] parts = msg.split(",");
@@ -313,7 +314,7 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void send(String text) {
-		System.out.println("isAction recibida"+text);
+		System.out.println("Enviamos "+text);
 		client.enviar(text);
 	}
 	

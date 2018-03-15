@@ -31,12 +31,13 @@ class Window_VT extends JFrame {
 			        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.","Advertencia de salida",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 			        if(PromptResult==JOptionPane.YES_OPTION)
 			        {
+			        	Panel_VT.getAlert_VT().removeMeUserFromList("JustMe");
 			        	Window_VT.this.cliente.terminar();
 			            System.exit(0);
 			        }
 				}
 				else {
-					Panel_VT.getAlert_VT().removeMeUserFromList();
+					Panel_VT.getAlert_VT().removeMeUserFromList("All");
 					Window_VT.this.cliente.terminar();
 		            System.exit(0);
 				}
