@@ -233,4 +233,23 @@ public class Alert_VT extends JDialog {
 		}
 	}
 	
+	public void removeMeUserFromList() {
+		System.out.println("Entro aqui");
+		for(int x=0; x<list_wolf.size(); x++) {
+			if (list_wolf.get(x).equals(System.getProperty("user.name"))) {
+				panel.send("CleanList,wolf,"+String.valueOf(x));
+				break;
+			}
+		}
+
+
+		for(int x=0; x<list_dragon.size(); x++) {
+			if (list_dragon.get(x).equals(System.getProperty("user.name"))) {
+				list_dragon.remove(x);
+				panel.send("CleanList,dragon,"+String.valueOf(x));
+				break;
+			}
+		}
+	}
+	
 }

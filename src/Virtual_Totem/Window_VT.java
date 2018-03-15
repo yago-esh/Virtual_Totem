@@ -25,7 +25,8 @@ class Window_VT extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if(Panel_VT.can_exit()) {
+				System.out.println(Panel_VT.cant_exit());
+				if(Panel_VT.cant_exit()) {
 					String ObjButtons[] = {"Yes","No"};
 			        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.","Advertencia de salida",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 			        if(PromptResult==JOptionPane.YES_OPTION)
@@ -35,6 +36,7 @@ class Window_VT extends JFrame {
 			        }
 				}
 				else {
+					Panel_VT.getAlert_VT().removeMeUserFromList();
 					Window_VT.this.cliente.terminar();
 		            System.exit(0);
 				}

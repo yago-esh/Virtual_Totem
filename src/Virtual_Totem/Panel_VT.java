@@ -322,7 +322,7 @@ public class Panel_VT extends JPanel {
 		return false;
 	}
 	
-	public boolean can_exit() {
+	public boolean cant_exit() {
 		return warning_exit;
 	}
 	
@@ -332,7 +332,6 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void show_alert(String totem, String user_name) {
-		warning_exit=false;
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " está solicitando el " + totem);
 	}
 	
@@ -360,5 +359,9 @@ public class Panel_VT extends JPanel {
 	
 	public boolean isAction() {
 		return isAction;
+	}
+	
+	public Alert_VT getAlert_VT() {
+		return alert;
 	}
 }

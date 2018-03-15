@@ -22,6 +22,7 @@ public class NextInQueue_VT extends JDialog {
 	private JButton okButton, cancelButton;
 	private Panel_VT panel;
 	private String totem, action, okAction;
+	private JTextPane TextPane;
 
 	public NextInQueue_VT(Panel_VT panel, String action) {
 		
@@ -54,12 +55,11 @@ public class NextInQueue_VT extends JDialog {
 				
 		//------------------------------------TextFields---------------------------------------//
 			
-		JTextPane txtpnSeAcabaDe = new JTextPane();
-		txtpnSeAcabaDe.setEditable(false);
-		txtpnSeAcabaDe.setBounds(10, 0, 285, 87);
-		getContentPane().add(txtpnSeAcabaDe);
-		txtpnSeAcabaDe.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-		txtpnSeAcabaDe.setText("Se acaba de liberar el " +totem+ " y eres el siguiente en la cola. \u00BFQuieres cogerlo?");
+		TextPane = new JTextPane();
+		TextPane.setEditable(false);
+		TextPane.setBounds(10, 0, 285, 87);
+		getContentPane().add(TextPane);
+		TextPane.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		
 		//------------------------------------Initialize Variables--------------------------------//
 		
@@ -76,6 +76,8 @@ public class NextInQueue_VT extends JDialog {
 			totem="dragon";
 			okAction="coger_dragon";
 		}
+		
+		TextPane.setText("Se acaba de liberar el " +totem+ " y eres el siguiente en la cola. \u00BFQuieres cogerlo?");
 	}
 	
 	public void listeners() {

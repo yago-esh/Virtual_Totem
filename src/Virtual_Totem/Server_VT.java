@@ -114,7 +114,6 @@ class Server_VT extends Thread{
     				if(parts[1].equals("coger_dragon")) {
     					List_dragon.add(parts[2]);
     				}
-    				
     				change=false;
     				break;
     			
