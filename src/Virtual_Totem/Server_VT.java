@@ -34,7 +34,7 @@ class Server_VT extends Thread{
 	private boolean save_dragon;
 	private String lobo_user;
 	private String dragon_user;
-	private final int compatible_version = 135;
+	private final int compatible_version = 148;
 	private ArrayList<String> List_wolf, List_dragon;
 	
     public Server_VT() {
@@ -124,11 +124,24 @@ class Server_VT extends Thread{
     				break;
     				
     			case "CleanList":
+    				change=false;
     				if(parts[1].equals("wolf")) {
     					List_wolf.remove(Integer.parseInt(parts[2]));
     				}
     				else if (parts[1].equals("dragon")) {
     					List_dragon.remove(Integer.parseInt(parts[2]));
+    				}
+    				break;
+    			
+    			case "freedom":
+    				change=false;
+    				if(parts[1].equals("soltar_lobo")) {
+    					List_wolf.clear();
+    					lobo_taken=false;
+    				}
+    				else if (parts[1].equals("soltar_dragon")) {
+    					List_dragon.clear();
+    					dragon_taken=false;
     				}
     				break;
     			}

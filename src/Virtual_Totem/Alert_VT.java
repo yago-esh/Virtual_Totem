@@ -224,4 +224,13 @@ public class Alert_VT extends JDialog {
 		}
 	}
 	
+	public void clearList(String name_list) {
+		if(name_list.equals("soltar_lobo")){
+			list_wolf.clear();
+		}
+		if (name_list.equals("soltar_dragon")) {
+			list_dragon.clear();
+		}
+	}
+	
 }

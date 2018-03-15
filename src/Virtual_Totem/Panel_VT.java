@@ -174,6 +174,11 @@ public class Panel_VT extends JPanel {
 				case "list":
 						alert.addList(parts[1],parts[2]);
 					break;
+					
+				case "freedom":
+					alert.clearList(parts[1]);
+					showMsg(parts[1],parts[2]);
+					break;
 			}
 
 		}
