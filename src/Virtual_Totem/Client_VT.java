@@ -28,7 +28,7 @@ class Client_VT {
 		Panel_VT = null;
 		terminar = false;
 		check_version=false;
-		version=148;
+		version=153;
 	}
 
 	public void associate(Panel_VT Panel_VT) {
@@ -37,7 +37,7 @@ class Client_VT {
 
 	public void execute() throws IOException {
 		// Crear socket cliente y establecer conexion
-		socketConexion = new Socket("10.1.2.196", 2029);
+		socketConexion = new Socket("10.0.1.95", 2029);
 
 		System.out.println("Cliente> Establecida conexion");
 
@@ -112,7 +112,7 @@ class Client_VT {
 							check_version=true;
 							if(Integer.parseInt(lineaRecibir)>version) {
 								JOptionPane.showMessageDialog(null,
-										"Su versión de Virtual Totem es incompatible. Por favor, actualicela.",
+										"Su versión de Virtual Totem es incompatible. Por favor, actualícela.",
 										"ERROR", JOptionPane.ERROR_MESSAGE);
 								System.exit(-1);
 								salir=true;

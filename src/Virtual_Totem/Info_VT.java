@@ -79,7 +79,7 @@ public class Info_VT extends JDialog {
 		CreatedByYago.setFont(new Font("Tahoma", Font.BOLD, 13));
 		contentPanel.add(CreatedByYago);
 		
-		JLabel Version_lb = new JLabel("Versi\u00F3n 1.4.8");
+		JLabel Version_lb = new JLabel("Versi\u00F3n 1.5.3");
 		Version_lb.setBounds(12, 225, 120, 14);
 		contentPanel.add(Version_lb);
 

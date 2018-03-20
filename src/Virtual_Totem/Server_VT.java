@@ -34,7 +34,7 @@ class Server_VT extends Thread{
 	private boolean save_dragon;
 	private String lobo_user;
 	private String dragon_user;
-	private final int compatible_version = 148;
+	private int compatible_version = 153;
 	private ArrayList<String> List_wolf, List_dragon;
 	
     public Server_VT() {
@@ -152,6 +152,9 @@ class Server_VT extends Thread{
     					List_dragon.clear();
     					dragon_taken=false;
     				}
+    				break;
+    			case "update":
+    				compatible_version = Integer.parseInt(parts[1]);
     				break;
     			}
     			

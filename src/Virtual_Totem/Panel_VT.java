@@ -334,7 +334,7 @@ public class Panel_VT extends JPanel {
 	
 	public void show_error(String totem, String user_name) {
 		warning_exit=false;
-		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " a forzado la liberación del " + totem);
+		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " ha forzado la liberación del " + totem);
 	}
 	
 	public void show_alert(String totem, String user_name) {
