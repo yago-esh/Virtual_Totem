@@ -28,7 +28,7 @@ class Client_VT {
 		Panel_VT = null;
 		terminar = false;
 		check_version=false;
-		version=153;
+		version=154;
 	}
 
 	public void associate(Panel_VT Panel_VT) {

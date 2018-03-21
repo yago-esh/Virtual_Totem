@@ -34,7 +34,7 @@ class Server_VT extends Thread{
 	private boolean save_dragon;
 	private String lobo_user;
 	private String dragon_user;
-	private int compatible_version = 153;
+	private int compatible_version = 154;
 	private ArrayList<String> List_wolf, List_dragon;
 	
     public Server_VT() {

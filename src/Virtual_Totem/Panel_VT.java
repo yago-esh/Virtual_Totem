@@ -224,12 +224,36 @@ public class Panel_VT extends JPanel {
 				showMsg(action,name);
 			}
 			else {
+
 				switch (action){
 	        	case "soltar_dragon":
 	        		Dragon_bt.setText("En transición");
+	        		if(isAction) {
+	        			Wolf_bt.setForeground(Color.WHITE);
+		        		
+		        		if(Dragon_bt.getText()!="Soltar Dragon") {
+		        			warning_exit=false;
+		        		}
+		        		Dragon_bt.setEnabled(false);
+		        		dragon_alert.setEnabled(true);
+		        		unlock_dragon=true;
+		        		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		        		isAction=false;
+					}
 	        		break;
 	        	case "soltar_lobo":
 	        		Wolf_bt.setText("En transición");
+	        		if(isAction) {
+		        		Wolf_bt.setForeground(Color.WHITE);
+		        		if(Wolf_bt.getText()!="Soltar Lobo") {
+		        			warning_exit=false;
+		        		}	       		
+		        		Wolf_bt.setEnabled(false);
+		        		wolf_alert.setEnabled(true);
+		        		unlock_wolf=true;
+		        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		        		isAction=false;
+					}
 	        		break;
 	        	}
 			}
