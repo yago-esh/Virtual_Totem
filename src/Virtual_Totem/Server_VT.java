@@ -36,6 +36,7 @@ class Server_VT extends Thread{
 	private String dragon_user;
 	private int compatible_version = 154;
 	private ArrayList<String> List_wolf, List_dragon;
+	private ArrayList<Integer> Control_List_wolf, Control_List_dragon;
 	
     public Server_VT() {
         listaConexiones = new ListaConexiones();
@@ -44,6 +45,8 @@ class Server_VT extends Thread{
         save_lobo=false;
         List_wolf = new ArrayList<String>();
         List_dragon = new ArrayList<String>();
+        Control_List_wolf = new ArrayList<Integer>();
+        Control_List_dragon = new ArrayList<Integer>();
     }
 
     private void ejecutar() {
@@ -109,9 +112,11 @@ class Server_VT extends Thread{
     			
     			case "list":
     				if(parts[1].equals("coger_lobo")) {
+    					Control_List_wolf.add(id_client);
     					List_wolf.add(parts[2]);
     				}
     				if(parts[1].equals("coger_dragon")) {
+    					Control_List_dragon.add(id_client);
     					List_dragon.add(parts[2]);
     				}
     				change=false;
@@ -122,33 +127,27 @@ class Server_VT extends Thread{
     				name=parts[2];
     				break;
     				
-    			case "CleanList":
+    			case "CleanList": case "CleanServer":
     				change=false;
     				if(parts[1].equals("wolf")) {
     					List_wolf.remove(Integer.parseInt(parts[2]));
+    					Control_List_wolf.remove(Integer.parseInt(parts[2]));
     				}
     				else if (parts[1].equals("dragon")) {
     					List_dragon.remove(Integer.parseInt(parts[2]));
-    				}
-    				break;
-    			
-    			case "CleanServer":
-    				change=false;
-    				if(parts[1].equals("wolf")) {
-    					List_wolf.remove(Integer.parseInt(parts[2]));
-    				}
-    				else if (parts[1].equals("dragon")) {
-    					List_dragon.remove(Integer.parseInt(parts[2]));
+    					Control_List_dragon.remove(Integer.parseInt(parts[2]));
     				}
     				break;
     				
     			case "freedom":
     				change=false;
     				if(parts[1].equals("soltar_lobo")) {
+    					Control_List_wolf.clear();
     					List_wolf.clear();
     					lobo_taken=false;
     				}
     				else if (parts[1].equals("soltar_dragon")) {
+    					Control_List_dragon.clear();
     					List_dragon.clear();
     					dragon_taken=false;
     				}
@@ -213,6 +212,18 @@ class Server_VT extends Thread{
         	if (lobo_taken_id == id_client) {
         		enviar("soltar_lobo",id_client);
         	}
+        	
+        	for (int x=0 ; x<Control_List_wolf.size() ; x++) {
+        		if(id_client == Control_List_wolf.get(x)) {
+        			enviar("CleanList,wolf,"+x,id_client);
+        		}
+        	}
+        	
+        	for (int x=0 ; x<Control_List_dragon.size() ; x++) {
+        		if(id_client == Control_List_dragon.get(x)) {
+        			enviar("CleanList,dragon,"+List_dragon.get(x),id_client);
+        		}
+        	}  
         }
     }
 
