@@ -53,6 +53,7 @@ class Server_VT extends Thread{
     	try {
 			socketServidor = new ServerSocket(2029);
 			this.start();
+			this.new CheckConexiones();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -204,6 +205,24 @@ class Server_VT extends Thread{
             }
         }
         
+        private synchronized void checkConexiones() {
+        	Iterator<Socket> iter = listaConexiones.iterator();
+            PrintWriter out = null;
+            while (iter.hasNext()) {
+            	if (iter != null) {
+	                try {
+	                    out = new PrintWriter(iter.next().getOutputStream());
+	                } catch (IOException e) {
+	                    e.getMessage();
+	                }
+	                if(out!=null) {
+		                out.println("Are you there?");
+		                out.flush();;
+	                }
+            	}
+            }
+        }
+        
         private synchronized void break_free(int id_client) {
         	System.out.println("comprobacion_brak_free");
         	if(dragon_taken_id == id_client) {
@@ -289,6 +308,26 @@ class Server_VT extends Thread{
                         ex.printStackTrace();
                     }
                 }
+            }.start();
+        }
+    }
+
+    private class CheckConexiones{
+    	
+    	public CheckConexiones() {
+            new Thread() {
+                public void run() {
+                	while(true) {
+                		try {
+							this.sleep(60000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+                		System.out.println("COMPROBANDO CONEXIONES");
+                		listaConexiones.checkConexiones();
+                	}
+                }
+     
             }.start();
         }
     }
