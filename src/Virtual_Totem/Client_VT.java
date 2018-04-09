@@ -37,7 +37,7 @@ class Client_VT {
 
 	public void execute() throws IOException {
 		// Crear socket cliente y establecer conexion
-		socketConexion = new Socket("10.0.1.95", 2029);
+		socketConexion = new Socket("10.1.2.34", 2029);
 
 		System.out.println("Cliente> Establecida conexion");
 
@@ -53,6 +53,7 @@ class Client_VT {
 
 		// Recibir en un hilo independiente
 		new HiloRecibir(in).start();
+		this.new CheckConexiones();
 	}
 
 	public void terminar() {
@@ -123,7 +124,10 @@ class Client_VT {
 				}
 			} catch (IOException ex) {
 				if (!terminar) {
-					ex.printStackTrace();
+					JOptionPane.showMessageDialog(null,
+							"Se ha perdido la conexión con el servidor",
+							"ERROR", JOptionPane.ERROR_MESSAGE);
+					System.exit(-1);
 				}
 			}
 			finally {
@@ -131,4 +135,24 @@ class Client_VT {
 			}
 		}
 	}
+	
+	private class CheckConexiones{
+    	
+    	public CheckConexiones() {
+            new Thread() {
+                public void run() {
+                	while(true) {
+                		try {
+							this.sleep(60000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+                		System.out.println("COMPROBANDO CONEXIONES");
+                		Panel_VT.send("Are you there?");
+                	}
+                }
+     
+            }.start();
+        }
+    }
 }
