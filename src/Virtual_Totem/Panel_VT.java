@@ -31,8 +31,9 @@ public class Panel_VT extends JPanel {
 	private Info_VT info;
 	private Alert_VT alert;
 	private Client_VT client;
+	private String check_user;
 	static final long serialVersionUID = 42L;
-	private boolean isAction, unlock_dragon, unlock_wolf, warning_exit;
+	private boolean isAction, unlock_dragon, unlock_wolf, warning_exit, CanGo, ImAlive;
 	private JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
 	
 
@@ -160,6 +161,9 @@ public class Panel_VT extends JPanel {
 		unlock_dragon=false;
 		unlock_wolf=false;
 		warning_exit=false;
+		CanGo=false;
+		ImAlive=false;
+		check_user="";
 	}
 	
 	public void ParseMsg(String msg){
@@ -197,6 +201,18 @@ public class Panel_VT extends JPanel {
 					alert.removeNumList(parts[1], Integer.parseInt(parts[2]));
     				break;
     			
+				case "isAlive":
+					if (parts[1].equals("NO_DATA")){
+						System.out.println("llegamos???");
+						if(parts[2].equals(System.getProperty("user.name"))) {
+							send("isAlive,ImAlive,"+System.getProperty("user.name"));
+						}
+					}
+					else if (parts[1].equals("ImAlive")) {
+						ImAlive=true;
+						System.out.println("Valor de ImAlive: "+ImAlive);
+					}
+    			
 			}
 
 		}
@@ -208,55 +224,41 @@ public class Panel_VT extends JPanel {
 	
 	public void chekList(String action, String name) {
 		
-		String user;
-		
 		if (action.equals("soltar_lobo") || action.equals("soltar_dragon")) {
-			user=alert.getUser(action);
-			if(user.equals(System.getProperty("user.name"))) {
-					if(!isAction) {
-						new NextInQueue_VT(this,action);
-					}
-					else {
-						showMsg(action,name);
-					}
-			}
-			else if(user.equals("empty")) {
-				showMsg(action,name);
-			}
-			else {
-
-				switch (action){
-	        	case "soltar_dragon":
-	        		Dragon_bt.setText("En transición");
-	        		if(isAction) {
-	        			Wolf_bt.setForeground(Color.WHITE);
-		        		
-		        		if(Dragon_bt.getText()!="Soltar Dragon") {
-		        			warning_exit=false;
-		        		}
-		        		Dragon_bt.setEnabled(false);
-		        		dragon_alert.setEnabled(true);
-		        		unlock_dragon=true;
-		        		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-		        		isAction=false;
-					}
-	        		break;
-	        	case "soltar_lobo":
-	        		Wolf_bt.setText("En transición");
-	        		if(isAction) {
-		        		Wolf_bt.setForeground(Color.WHITE);
-		        		if(Wolf_bt.getText()!="Soltar Lobo") {
-		        			warning_exit=false;
-		        		}	       		
-		        		Wolf_bt.setEnabled(false);
-		        		wolf_alert.setEnabled(true);
-		        		unlock_wolf=true;
-		        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-		        		isAction=false;
-					}
-	        		break;
-	        	}
-			}
+			
+			switch (action){
+        	case "soltar_dragon":
+        		Dragon_bt.setText("En transición");
+        		if(isAction) {
+        			Wolf_bt.setForeground(Color.WHITE);
+	        		
+	        		if(Dragon_bt.getText()!="Soltar Dragon") {
+	        			warning_exit=false;
+	        		}
+	        		Dragon_bt.setEnabled(false);
+	        		dragon_alert.setEnabled(true);
+	        		unlock_dragon=true;
+	        		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+	        		isAction=false;
+				}
+        		break;
+        	case "soltar_lobo":
+        		Wolf_bt.setText("En transición");
+        		if(isAction) {
+	        		Wolf_bt.setForeground(Color.WHITE);
+	        		if(Wolf_bt.getText()!="Soltar Lobo") {
+	        			warning_exit=false;
+	        		}	       		
+	        		Wolf_bt.setEnabled(false);
+	        		wolf_alert.setEnabled(true);
+	        		unlock_wolf=true;
+	        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+	        		isAction=false;
+				}
+        		break;
+        	}
+			
+			new CheckConexiones(action,name,this);
 			
 		}
 		else showMsg(action,name);
@@ -394,4 +396,53 @@ public class Panel_VT extends JPanel {
 	public Alert_VT getAlert_VT() {
 		return alert;
 	}
+	
+	private class CheckConexiones{
+    	
+    	public CheckConexiones(String action, String name, Panel_VT panel) {
+            new Thread() {
+                public void run() {
+                	int x;
+                	check_user=alert.getUser(action);
+
+        			while (!CanGo &&!check_user.equals("empty")) {
+        					//Wait 5 seconds to know if the client is disconnected.
+	                	for(x=0; x<5; x++) {
+	                		send("isAlive,NO_DATA,"+check_user);
+	                		try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+	                		System.out.println("for de ImAlive: "+ImAlive);
+	                		if(ImAlive) {
+	                			CanGo=true;
+	                			break;
+	                		}
+	                	}
+	                	if(!CanGo) {
+	                		check_user=alert.getUser(action);
+	                	}
+        			}
+        			CanGo=false;
+        			ImAlive=false;
+        				
+        			if(check_user.equals(System.getProperty("user.name"))) {
+        				
+        					if(!isAction) {
+        						new NextInQueue_VT(panel,action);
+        					}
+        					else {
+        						showMsg(action,name);
+        					}
+        			}
+        			else if(check_user.equals("empty")) {
+        				showMsg(action,name);
+        			}
+                }
+     
+            }.start();
+        }
+    }
+	
 }
