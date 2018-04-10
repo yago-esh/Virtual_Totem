@@ -25,7 +25,7 @@ public class Panel_VT extends JPanel {
 	private Client_VT client;
 	private String myName;
 	static final long serialVersionUID = 42L;
-	private boolean unlock_dragon, unlock_wolf, CanGo, ImAlive;
+	private boolean dragon_blocked, wolf_blocked, ImAlive;
 	private JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
 	
 
@@ -162,9 +162,8 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void initialize(){
-		unlock_dragon=false;
-		unlock_wolf=false;
-		CanGo=false;
+		dragon_blocked=false;
+		wolf_blocked=false;
 		ImAlive=false;
 	}
 	
@@ -177,7 +176,7 @@ public class Panel_VT extends JPanel {
 		wolf_alert.setEnabled(false);
 		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
-		unlock_wolf=false;
+		wolf_blocked=false;
 		Wolf_bt.setText("Coger Lobo");
 		
 	}
@@ -191,7 +190,7 @@ public class Panel_VT extends JPanel {
 		dragon_alert.setEnabled(false);
 		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
-		unlock_dragon=false;
+		dragon_blocked=false;
 		Dragon_bt.setText("Coger Dragon");
 		
 	}
@@ -200,7 +199,7 @@ public class Panel_VT extends JPanel {
 		
 		Dragon_bt.setEnabled(false);
 		dragon_alert.setEnabled(true);
-		unlock_dragon=true;
+		dragon_blocked=true;
 		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
 		if(user_name.equals("")) {
@@ -215,7 +214,7 @@ public class Panel_VT extends JPanel {
 		
 		Wolf_bt.setEnabled(false);
 		wolf_alert.setEnabled(true);
-		unlock_wolf=true;
+		wolf_blocked=true;
 		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
 		if(user_name.equals("")) {
@@ -303,14 +302,22 @@ public class Panel_VT extends JPanel {
 	        		"Liberación del Totem",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 	        if(PromptResult==JOptionPane.YES_OPTION)
 	        {
-	        	setAction(totem);
+	        	if (action.equals("soltar_lobo")) {
+	        		freeWolf(name);
+	        		Wolf_bt.setText("Soltar Lobo");
+					Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
+				}
+				if (action.equals("soltar_dragon")) {
+					freeDragon(name);
+					Dragon_bt.setText("Soltar Dragon");
+					Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
+				}
 				send("totem,"+okAction+","+myName);
 	        }
 	        else {
 	        	send(action);
 	        }
 			
-
 		}
 		else if(alert.getUser(action).equals("empty")) {
 			showMsg(action,name);
@@ -318,8 +325,6 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void showMsg(String text, String user_name) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
 				
 				switch (text){
 	        	case "coger_dragon":
@@ -339,8 +344,6 @@ public class Panel_VT extends JPanel {
 	        		freeWolf(user_name);
 	        		break;
 	        	}
-			}
-		});
 	}
 	
 	public void send(String text) {
@@ -350,10 +353,10 @@ public class Panel_VT extends JPanel {
 	
 	public boolean is_totem_taked(String totem) {
 		if(totem == "lobo") {
-			return unlock_wolf;
+			return wolf_blocked;
 		}
 		else if (totem == "dragon") {
-			return unlock_dragon;
+			return dragon_blocked;
 		}
 		return false;
 	}
@@ -384,29 +387,6 @@ public class Panel_VT extends JPanel {
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " está solicitando el " + totem);
 	}
 	
-	
-	public void setAction(String totem) {
-		
-		switch (totem){
-
-    	case "dragon":
-    		Dragon_bt.setEnabled(true);
-    		dragon_alert.setEnabled(false);
-    		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-    		unlock_dragon=false;
-    		Dragon_bt.setText("Coger Dragon");
-    		break;
-    	case "lobo":
-    		Wolf_bt.setEnabled(true);
-    		wolf_alert.setEnabled(false);
-    		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-    		unlock_wolf=false;
-    		Wolf_bt.setText("Coger Lobo");
-    		break;
-    	}
-	}
-	
-	
 	public Alert_VT getAlert_VT() {
 		return alert;
 	}
@@ -417,7 +397,7 @@ public class Panel_VT extends JPanel {
             new Thread() {
                 public void run() {
                 	String user=alert.getUser(action);
-
+                	boolean CanGo=false;
         			while (!CanGo &&!user.equals("empty")) {
         				
         					//Wait 3 seconds to know if the client is disconnected.
@@ -444,7 +424,6 @@ public class Panel_VT extends JPanel {
 	                		user=alert.getUser(action);
 	                	}
         			}
-        			CanGo=false;
         			ImAlive=false;
         			send(action);
                 }
