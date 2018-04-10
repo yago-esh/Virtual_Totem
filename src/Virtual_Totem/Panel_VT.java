@@ -31,10 +31,15 @@ public class Panel_VT extends JPanel {
 
 	public Panel_VT(Client_VT client) {
 		
+		//------------------------------Develop mode--------------------------------
+		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+		//---------------------------------------------------------------------------
+		//myName=System.getProperty("user.name");
+		
 		this.client=client;
 		client.associate(this);
 		info = new Info_VT(Panel_VT.this);
-		alert = new Alert_VT(this);
+		alert = new Alert_VT(this,myName);
 		setLayout(null);
 		
 		//------------------------------------Buttons------------------------------------------//
@@ -118,7 +123,7 @@ public class Panel_VT extends JPanel {
 				}
 				else {
 					blockWolf("");
-		    		checkConexion("soltar_lobo");
+					new CheckConexiones("soltar_lobo",Panel_VT.this);
 				}
 			}
 		});
@@ -132,14 +137,14 @@ public class Panel_VT extends JPanel {
 				}
 				else {
 	        		blockDragon("");
-		    		checkConexion("soltar_dragon");
+	        		new CheckConexiones("soltar_dragon",Panel_VT.this);
 				}
 			}
 		});
 		
 		Info_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				info.showIt(Panel_VT.this.is_totem_taked("lobo"), Panel_VT.this.is_totem_taked("dragon"));
+				info.showIt(is_totem_taked("lobo"), is_totem_taked("dragon"));
 			}
 		});
 		
@@ -157,18 +162,10 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void initialize(){
-		//------------------------------Develop mode--------------------------------
-		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
-		//---------------------------------------------------------------------------
-		//myName=System.getProperty("user.name");
 		unlock_dragon=false;
 		unlock_wolf=false;
 		CanGo=false;
 		ImAlive=false;
-	}
-	
-	public void checkConexion(String mode) {
-		new CheckConexiones(mode,this);
 	}
 	
 	public void freeWolf(String user_name) {
@@ -228,6 +225,8 @@ public class Panel_VT extends JPanel {
 			Wolf_bt.setText("<html><font color = white>Lobo: " + user_name+"</html>");
 		}
 	}
+	
+	
 	public void ParseMsg(String msg){
 		System.out.println("Message received: "+msg);
 		if(msg.indexOf(",") != -1) {
@@ -285,9 +284,32 @@ public class Panel_VT extends JPanel {
 	public void chekList(String action, String name) {
 		
 		if(alert.getUser(action).equals(myName)) {
-			if (action.equals("soltar_lobo"))	send("CleanList,wolf,0");
-			if (action.equals("soltar_dragon"))	send("CleanList,dragon,0");
-			new NextInQueue_VT(this,action);
+			
+			String totem="";
+			String okAction="";
+			if (action.equals("soltar_lobo")) {
+				send("CleanList,wolf,0");
+				totem="lobo";
+				okAction="coger_lobo";
+			}
+			if (action.equals("soltar_dragon")) {
+				send("CleanList,dragon,0");
+				totem="dragon";
+				okAction="coger_dragon";
+			}
+			
+			String ObjButtons[] = {"Yes","No"};
+	        int PromptResult = JOptionPane.showOptionDialog(null,"Se acaba de liberar el " +totem+ " y eres el siguiente en la cola. ¿Quieres cogerlo?",
+	        		"Liberación del Totem",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+	        if(PromptResult==JOptionPane.YES_OPTION)
+	        {
+	        	setAction(totem);
+				send("totem,"+okAction+","+myName);
+	        }
+	        else {
+	        	send(action);
+	        }
+			
 
 		}
 		else if(alert.getUser(action).equals("empty")) {
@@ -361,6 +383,7 @@ public class Panel_VT extends JPanel {
 	public void show_alert(String totem, String user_name) {
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " está solicitando el " + totem);
 	}
+	
 	
 	public void setAction(String totem) {
 		
