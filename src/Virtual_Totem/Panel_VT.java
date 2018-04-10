@@ -178,6 +178,10 @@ public class Panel_VT extends JPanel {
 	
 	public void initialize(){
 		isAction=false;
+		//------------------------------Develop mode--------------------------------
+		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+		//---------------------------------------------------------------------------
+		//myName=System.getProperty("user.name");
 		unlock_dragon=false;
 		unlock_wolf=false;
 		warning_exit=false;
