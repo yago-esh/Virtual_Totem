@@ -188,14 +188,12 @@ public class Alert_VT extends JDialog {
 		if(name_list.equals("soltar_lobo")){
 			if(!list_wolf.isEmpty()) {
 				user= list_wolf.get(0);
-				removeUserList(name_list, user);
 				return user;
 			}
 		}
 		if (name_list.equals("soltar_dragon")) {
 			if(!list_dragon.isEmpty()) {
 				user= list_dragon.get(0);
-				removeUserList(name_list, user);
 				return user;
 			}
 		}
@@ -208,7 +206,6 @@ public class Alert_VT extends JDialog {
 			for(int x=0; x<list_wolf.size(); x++) {
 				if (list_wolf.get(x).equals(user)) {
 					list_wolf.remove(x);
-					if(panel.isAction()) panel.send("CleanServer,wolf,"+String.valueOf(x));
 					break;
 				}
 			}
@@ -217,7 +214,6 @@ public class Alert_VT extends JDialog {
 			for(int x=0; x<list_dragon.size(); x++) {
 				if (list_dragon.get(x).equals(user)) {
 					list_dragon.remove(x);
-					if(panel.isAction()) panel.send("CleanServer,dragon,"+String.valueOf(x));
 					break;
 				}
 			}
@@ -242,30 +238,19 @@ public class Alert_VT extends JDialog {
 		}
 	}
 	
-	public void removeMeUserFromList(String mode) {
-		System.out.println("Entro aqui");
+	public void removeMeUserFromList() {
+
 		for(int x=0; x<list_wolf.size(); x++) {
 			if (list_wolf.get(x).equals(System.getProperty("user.name"))) {
-				if(mode.equals("JustMe")) {
-					panel.send("CleanServer,wolf,"+String.valueOf(x));
-				}
-				else if (mode.equals("All")) {
 					panel.send("CleanList,wolf,"+String.valueOf(x));
-				}
 				break;
 			}
 		}
 
-
 		for(int x=0; x<list_dragon.size(); x++) {
 			if (list_dragon.get(x).equals(System.getProperty("user.name"))) {
 				list_dragon.remove(x);
-				if(mode.equals("JustMe")) {
-					panel.send("CleanServer,dragon,"+String.valueOf(x));
-				}
-				else if (mode.equals("All")) {
 					panel.send("CleanList,dragon,"+String.valueOf(x));
-				}
 				break;
 			}
 		}

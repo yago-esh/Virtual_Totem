@@ -31,24 +31,32 @@ class Window_VT extends JFrame {
 			        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.","Advertencia de salida",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 			        if(PromptResult==JOptionPane.YES_OPTION)
 			        {
-			        	Panel_VT.getAlert_VT().removeMeUserFromList("JustMe");
-			        	
+			        	Panel_VT.getAlert_VT().removeMeUserFromList();
+
 			        	if (Panel_VT.warning_wolf()) {
 			    			cliente.enviar("soltar_lobo");
 			    		}
 			    		if ( Panel_VT.warning_dragon()) {
 			    			cliente.enviar("soltar_dragon");
 			    		}
+			    		
+			    		
+			        	try {
+			        		//Need to wait 2 second to let enough time to the server to read the last message and be available to read the next one before close the flows.
+							Thread.sleep(2000);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 			        	
 			        	Window_VT.this.cliente.terminar();
-			        	
-			            System.exit(0);
+			            System.exit(-1);
 			        }
 				}
 				else {
-					Panel_VT.getAlert_VT().removeMeUserFromList("All");
+					Panel_VT.getAlert_VT().removeMeUserFromList();
 					Window_VT.this.cliente.terminar();
-		            System.exit(0);
+		            System.exit(-1);
 				}
 			}
 		});

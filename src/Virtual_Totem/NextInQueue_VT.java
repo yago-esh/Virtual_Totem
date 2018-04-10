@@ -31,7 +31,7 @@ public class NextInQueue_VT extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 		this.setTitle("Eres el siguiente de la cola");
-		setBounds(100, 100, 321, 158);
+		setBounds(810, 425, 321, 158);
 		getRootPane().setDefaultButton(okButton);
 		getContentPane().setLayout(null);
 		

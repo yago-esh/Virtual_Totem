@@ -75,14 +75,10 @@ public class Info_VT extends JDialog {
 		
 		JLabel CreatedByYago = new JLabel("Created by Yago Echave-Sustaeta");
 		CreatedByYago.setForeground(Color.BLACK);
-		CreatedByYago.setBounds(12, 210, 258, 16);
+		CreatedByYago.setBounds(12, 215, 258, 16);
 		CreatedByYago.setFont(new Font("Tahoma", Font.BOLD, 13));
 		contentPanel.add(CreatedByYago);
 		
-		JLabel Version_lb = new JLabel("Versi\u00F3n 1.5.6");
-		Version_lb.setBounds(12, 225, 120, 14);
-		contentPanel.add(Version_lb);
-
 		JLabel background = new JLabel();
 		background.setBounds(0, 0, 450, 253);
 		background.setIcon(new ImageIcon(Info_VT.class.getResource("/Img/background.jpg")));

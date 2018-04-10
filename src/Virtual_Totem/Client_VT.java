@@ -28,7 +28,7 @@ class Client_VT {
 		Panel_VT = null;
 		terminar = false;
 		check_version=false;
-		version=154;
+		version=160;
 	}
 
 	public void associate(Panel_VT Panel_VT) {
@@ -37,7 +37,7 @@ class Client_VT {
 
 	public void execute() throws IOException {
 		// Crear socket cliente y establecer conexion
-		socketConexion = new Socket("10.1.2.34", 2029);
+		socketConexion = new Socket("10.0.1.95", 2029);
 
 		System.out.println("Cliente> Establecida conexion");
 

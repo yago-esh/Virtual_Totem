@@ -114,6 +114,7 @@ public class Panel_VT extends JPanel {
 		listeners();
 	}
 	
+	
 	public void listeners() {
 		
 		Wolf_bt.addActionListener(new ActionListener() {
@@ -124,7 +125,14 @@ public class Panel_VT extends JPanel {
 				}
 				else {
 					isAction=true;
-					client.enviar("soltar_lobo");
+	        		Wolf_bt.setForeground(Color.WHITE);
+	        		warning_exit=false;
+	        		Wolf_bt.setEnabled(false);
+	        		wolf_alert.setEnabled(true);
+	        		unlock_wolf=true;
+	        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		    		Wolf_bt.setText("En transición");
+		    		checkConexion("soltar_lobo");
 				}
 			}
 		});
@@ -137,7 +145,14 @@ public class Panel_VT extends JPanel {
 				}
 				else {
 					isAction=true;
-					client.enviar("soltar_dragon");
+	    			Wolf_bt.setForeground(Color.WHITE);
+	        		warning_exit=false;
+	        		Dragon_bt.setEnabled(false);
+	        		dragon_alert.setEnabled(true);
+	        		unlock_dragon=true;
+	        		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		    		Dragon_bt.setText("En transición");
+		    		checkConexion("soltar_dragon");
 				}
 			}
 		});
@@ -169,6 +184,14 @@ public class Panel_VT extends JPanel {
 		CanGo=false;
 		ImAlive=false;
 		check_user="";
+	}
+	
+	public void checkConexion(String mode) {
+		new CheckConexiones(mode,System.getProperty("user.name"),this);
+	}
+	
+	public void freeWolf() {
+		
 	}
 	
 	public void ParseMsg(String msg){
@@ -229,44 +252,20 @@ public class Panel_VT extends JPanel {
 	
 	public void chekList(String action, String name) {
 		
-		if (action.equals("soltar_lobo") || action.equals("soltar_dragon")) {
-			
-			switch (action){
-        	case "soltar_dragon":
-        		Dragon_bt.setText("En transición");
-        		if(isAction) {
-        			Wolf_bt.setForeground(Color.WHITE);
-	        		
-	        		if(Dragon_bt.getText()!="Soltar Dragon") {
-	        			warning_exit=false;
-	        		}
-	        		Dragon_bt.setEnabled(false);
-	        		dragon_alert.setEnabled(true);
-	        		unlock_dragon=true;
-	        		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-	        		isAction=false;
+		if(alert.getUser(action).equals(System.getProperty("user.name"))) {
+			if (action.equals("soltar_lobo"))	send("CleanList,wolf,0");
+			if (action.equals("soltar_dragon"))	send("CleanList,dragon,0");
+				
+				if(!isAction) {
+					new NextInQueue_VT(this,action);
 				}
-        		break;
-        	case "soltar_lobo":
-        		Wolf_bt.setText("En transición");
-        		if(isAction) {
-	        		Wolf_bt.setForeground(Color.WHITE);
-	        		if(Wolf_bt.getText()!="Soltar Lobo") {
-	        			warning_exit=false;
-	        		}	       		
-	        		Wolf_bt.setEnabled(false);
-	        		wolf_alert.setEnabled(true);
-	        		unlock_wolf=true;
-	        		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-	        		isAction=false;
+				else {
+					showMsg(action,name);
 				}
-        		break;
-        	}
-			
-			new CheckConexiones(action,name,this);
-			
 		}
-		else showMsg(action,name);
+		else if(alert.getUser(action).equals("empty")) {
+			showMsg(action,name);
+		}
 	}
 	
 	public void showMsg(String text, String user_name) {
@@ -364,14 +363,14 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public boolean warning_wolf() {
-		if (Wolf_bt.getText() == "Soltar Lobo") {
+		if (Wolf_bt.getText().equals("Soltar Lobo")) {
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean warning_dragon() {
-		if (Dragon_bt.getText() == "Soltar Dragon") {
+		if (Dragon_bt.getText().equals("Soltar Dragon")) {
 			return true;
 		}
 		return false;
@@ -425,11 +424,11 @@ public class Panel_VT extends JPanel {
                 	check_user=alert.getUser(action);
 
         			while (!CanGo &&!check_user.equals("empty")) {
-        					//Wait 5 seconds to know if the client is disconnected.
-	                	for(x=0; x<5; x++) {
+        				
+        					//Wait 3 seconds to know if the client is disconnected.
 	                		send("isAlive,NO_DATA,"+check_user);
 	                		try {
-								Thread.sleep(1000);
+								Thread.sleep(3000);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
@@ -438,26 +437,23 @@ public class Panel_VT extends JPanel {
 	                			CanGo=true;
 	                			break;
 	                		}
-	                	}
+	                		
 	                	if(!CanGo) {
+	                		if (action.equals("soltar_lobo"))	panel.send("CleanList,wolf,0");
+	        				if (action.equals("soltar_dragon"))	panel.send("CleanList,dragon,0");
+	        				try {
+	        					//Wait 2 second to let enough time to the server to read the last message and send us the CleanList back.
+								Thread.sleep(2000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 	                		check_user=alert.getUser(action);
 	                	}
         			}
         			CanGo=false;
         			ImAlive=false;
-        				
-        			if(check_user.equals(System.getProperty("user.name"))) {
-        				
-        					if(!isAction) {
-        						new NextInQueue_VT(panel,action);
-        					}
-        					else {
-        						showMsg(action,name);
-        					}
-        			}
-        			else if(check_user.equals("empty")) {
-        				showMsg(action,name);
-        			}
+        			isAction=false;
+        			send(action);
                 }
      
             }.start();
