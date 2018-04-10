@@ -113,6 +113,7 @@ public class Panel_VT extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (Wolf_bt.getText() == "Coger Lobo") {
 					Wolf_bt.setText("Soltar Lobo");
+					Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
 					client.enviar("totem,coger_lobo,"+myName);
 				}
 				else {
@@ -126,6 +127,7 @@ public class Panel_VT extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (Dragon_bt.getText() == "Coger Dragon") {
 					Dragon_bt.setText("Soltar Dragon");
+					Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
 					client.enviar("totem,coger_dragon,"+myName);
 				}
 				else {
@@ -177,6 +179,7 @@ public class Panel_VT extends JPanel {
 		Wolf_bt.setEnabled(true);
 		wolf_alert.setEnabled(false);
 		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
 		unlock_wolf=false;
 		Wolf_bt.setText("Coger Lobo");
 		
@@ -190,6 +193,7 @@ public class Panel_VT extends JPanel {
 		Dragon_bt.setEnabled(true);
 		dragon_alert.setEnabled(false);
 		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
 		unlock_dragon=false;
 		Dragon_bt.setText("Coger Dragon");
 		
@@ -201,6 +205,7 @@ public class Panel_VT extends JPanel {
 		dragon_alert.setEnabled(true);
 		unlock_dragon=true;
 		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
 		if(user_name.equals("")) {
 			Dragon_bt.setText("En transición");
 		}
@@ -215,6 +220,7 @@ public class Panel_VT extends JPanel {
 		wolf_alert.setEnabled(true);
 		unlock_wolf=true;
 		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
 		if(user_name.equals("")) {
 			Wolf_bt.setText("En transición");
 		}
