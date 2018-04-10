@@ -51,7 +51,10 @@ public class Alert_VT extends JDialog {
 		info_text.setForeground(Color.BLACK);
 		info_text.setFont(new Font("Tahoma", Font.BOLD, 13));
 		info_text.setBackground(UIManager.getColor("CheckBox.background"));
-		info_text.setText("A continuaci\u00F3n va a proceder a solicitar el \"totem\"\r\n\r\n\u2022 Se proceder\u00E1 a mandar una alerta al usuario que tiene actualmente el totem.\r\n\u2022 Se le incluir\u00E1 en la cola de usuarios.\r\n\u2022 Cuando el usuario actual suelte el totem, se enviar\u00E1 una notificaci\u00F3n al pr\u00F3ximo usuario de la cola.");
+		info_text.setText("A continuaci\u00F3n va a proceder a solicitar el \"totem\"\r\n\r\n\u2022 Se"
+				+ " proceder\u00E1 a mandar una alerta al usuario que tiene actualmente el totem.\r\n\u2022"
+				+ " Se le incluir\u00E1 en la cola de usuarios.\r\n\u2022 Cuando el usuario actual suelte el"
+				+ " totem, se enviar\u00E1 una notificaci\u00F3n al pr\u00F3ximo usuario de la cola.");
 		info_text.setBounds(149, 13, 275, 150);
 		contentPanel.add(info_text);
 		

@@ -40,7 +40,6 @@ class Window_VT extends JFrame {
 			    			cliente.enviar("soltar_dragon");
 			    		}
 			    		
-			    		
 			        	try {
 			        		//Need to wait 2 second to let enough time to the server to read the last message and be available to read the next one before close the flows.
 							Thread.sleep(2000);
