@@ -84,6 +84,7 @@ class Client_VT {
 			}
 			socketConexion = null;
 		}
+		
 	}
 
 	public void enviar(String linea) {

@@ -97,6 +97,11 @@ public class Panel_VT extends JPanel {
 		dragon_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
 		add(dragon_alert);
 		
+		JLabel Version_lb = new JLabel("Versi\u00F3n 1.6.0");
+		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
+		Version_lb.setBounds(10, 180, 120, 14);
+		add(Version_lb);
+		
 		//------------------------------------Labels------------------------------------------//
 		
 		JLabel background = new JLabel("New label");
@@ -356,6 +361,20 @@ public class Panel_VT extends JPanel {
 	
 	public boolean cant_exit() {
 		return warning_exit;
+	}
+	
+	public boolean warning_wolf() {
+		if (Wolf_bt.getText() == "Soltar Lobo") {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean warning_dragon() {
+		if (Dragon_bt.getText() == "Soltar Dragon") {
+			return true;
+		}
+		return false;
 	}
 	
 	public void show_error(String totem, String user_name) {

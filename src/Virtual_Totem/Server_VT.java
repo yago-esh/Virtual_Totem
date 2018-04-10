@@ -224,14 +224,14 @@ class Server_VT extends Thread{
         }
         
         private synchronized void break_free(int id_client) {
-        	System.out.println("comprobacion_brak_free");
-        	if(dragon_taken_id == id_client) {
+        	System.out.println("comprobacion_break_free");
+        	/*if(dragon_taken_id == id_client) {
         		enviar("soltar_dragon",id_client);
         	}
         	if (lobo_taken_id == id_client) {
         		enviar("soltar_lobo",id_client);
         	}
-        	
+        	*/
         	for (int x=0 ; x<Control_List_wolf.size() ; x++) {
         		if(id_client == Control_List_wolf.get(x)) {
         			enviar("CleanList,wolf,"+x,id_client);

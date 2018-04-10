@@ -32,7 +32,16 @@ class Window_VT extends JFrame {
 			        if(PromptResult==JOptionPane.YES_OPTION)
 			        {
 			        	Panel_VT.getAlert_VT().removeMeUserFromList("JustMe");
+			        	
+			        	if (Panel_VT.warning_wolf()) {
+			    			cliente.enviar("soltar_lobo");
+			    		}
+			    		if ( Panel_VT.warning_dragon()) {
+			    			cliente.enviar("soltar_dragon");
+			    		}
+			        	
 			        	Window_VT.this.cliente.terminar();
+			        	
 			            System.exit(0);
 			        }
 				}
