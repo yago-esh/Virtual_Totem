@@ -23,7 +23,7 @@ public class Panel_VT extends JPanel {
 	private Info_VT info;
 	private Alert_VT alert;
 	private Client_VT client;
-	private String check_user, myName;
+	private String myName;
 	static final long serialVersionUID = 42L;
 	private boolean unlock_dragon, unlock_wolf, CanGo, ImAlive;
 	private JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
@@ -163,11 +163,10 @@ public class Panel_VT extends JPanel {
 		unlock_wolf=false;
 		CanGo=false;
 		ImAlive=false;
-		check_user="";
 	}
 	
 	public void checkConexion(String mode) {
-		new CheckConexiones(mode,myName,this);
+		new CheckConexiones(mode,this);
 	}
 	
 	public void freeWolf(String user_name) {
@@ -224,7 +223,7 @@ public class Panel_VT extends JPanel {
 		}
 	}
 	public void ParseMsg(String msg){
-		System.out.println("Hemos recibido: "+msg);
+		System.out.println("Message received: "+msg);
 		if(msg.indexOf(",") != -1) {
 			
 			String[] parts = msg.split(",");
@@ -260,14 +259,12 @@ public class Panel_VT extends JPanel {
     			
 				case "isAlive":
 					if (parts[1].equals("NO_DATA")){
-						System.out.println("llegamos???");
 						if(parts[2].equals(myName)) {
 							send("isAlive,ImAlive,"+myName);
 						}
 					}
 					else if (parts[1].equals("ImAlive")) {
 						ImAlive=true;
-						System.out.println("Valor de ImAlive: "+ImAlive);
 					}
     			
 			}
@@ -319,7 +316,7 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void send(String text) {
-		System.out.println("Enviamos "+text);
+		System.out.println("We are sending: "+text);
 		client.enviar(text);
 	}
 	
@@ -387,21 +384,20 @@ public class Panel_VT extends JPanel {
 	
 	private class CheckConexiones{
     	
-    	public CheckConexiones(String action, String name, Panel_VT panel) {
+    	public CheckConexiones(String action, Panel_VT panel) {
             new Thread() {
                 public void run() {
-                	check_user=alert.getUser(action);
+                	String user=alert.getUser(action);
 
-        			while (!CanGo &&!check_user.equals("empty")) {
+        			while (!CanGo &&!user.equals("empty")) {
         				
         					//Wait 3 seconds to know if the client is disconnected.
-	                		send("isAlive,NO_DATA,"+check_user);
+	                		send("isAlive,NO_DATA,"+user);
 	                		try {
 								Thread.sleep(3000);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-	                		System.out.println("for de ImAlive: "+ImAlive);
 	                		if(ImAlive) {
 	                			CanGo=true;
 	                			break;
@@ -416,7 +412,7 @@ public class Panel_VT extends JPanel {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-	                		check_user=alert.getUser(action);
+	                		user=alert.getUser(action);
 	                	}
         			}
         			CanGo=false;
