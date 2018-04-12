@@ -18,7 +18,6 @@ class Window_VT extends JFrame {
 	static final long serialVersionUID = 42L;
 
 	public Window_VT(Client_VT cliente) {
-		
 		this.cliente = cliente;
 		Panel_VT = new Panel_VT(cliente);
 		this.setContentPane(Panel_VT);
