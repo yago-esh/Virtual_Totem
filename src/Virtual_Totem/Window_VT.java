@@ -1,10 +1,7 @@
 package Virtual_Totem;
 
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,14 +15,12 @@ class Window_VT extends JFrame {
 	static final long serialVersionUID = 42L;
 
 	public Window_VT(Client_VT cliente) {
-		
 		this.cliente = cliente;
 		Panel_VT = new Panel_VT(cliente);
 		this.setContentPane(Panel_VT);
 		this.setTitle("Virtual Totem");
 		this.setLocation(810, 425);
 		this.setSize(300, 230);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Img/totem.png")));
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
