@@ -4,15 +4,22 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URL;
+import java.util.concurrent.CountDownLatch;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Insets;
-
 import Virtual_Totem.Client_VT;
-
-import javax.swing.SwingUtilities;
+import sun.applet.Main;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -288,13 +295,14 @@ public class Panel_VT extends JPanel {
 				send("CleanList,wolf,0");
 				totem="lobo";
 				okAction="coger_lobo";
+				promt("free_wolf");
 			}
 			if (action.equals("soltar_dragon")) {
 				send("CleanList,dragon,0");
 				totem="dragon";
 				okAction="coger_dragon";
+				promt("free_dragon");
 			}
-			
 			String ObjButtons[] = {"Yes","No"};
 	        int PromptResult = JOptionPane.showOptionDialog(null,"Se acaba de liberar el " +totem+ " y eres el siguiente en la cola. ¿Quieres cogerlo?",
 	        		"Liberación del Totem",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
@@ -344,6 +352,67 @@ public class Panel_VT extends JPanel {
 	        	}
 	}
 	
+	public void promt(String wav) {
+			URL audio = Main.class.getResource("/Sounds/"+wav+".wav");
+			if(audio==null) {
+				audio = Main.class.getResource("/Sounds/user_default.wav");
+			}
+			Clip clip;
+			try {
+				clip = AudioSystem.getClip();
+				AudioInputStream inputStream = AudioSystem.getAudioInputStream(audio);
+				clip.addLineListener(event -> {
+			        if (event.getType().equals(LineEvent.Type.START)) {
+			        }
+			    });
+		        clip.open(inputStream);
+		        clip.start();
+			} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+				System.out.println("No se ha podido reproducir el archivo de: "+wav);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
+	public void promt(String wav, String wav2) {
+		URL audio = Main.class.getResource("/Sounds/"+wav+".wav");
+		if(audio==null) {
+			audio = Main.class.getResource("/Sounds/user_default.wav");
+		}
+		URL audio2 = Main.class.getResource("/Sounds/"+wav2+".wav");
+		Clip clip, clip2;
+		try {
+			CountDownLatch go = new CountDownLatch(1);
+			clip = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(audio);
+			clip.addLineListener(event -> {
+		        if (event.getType().equals(LineEvent.Type.START)) {
+		            go.countDown();
+		        }
+		    });
+	        clip.open(inputStream);
+	        clip.start();
+	        go.await();
+	        while(clip.isActive()) {
+	        	Thread.sleep(100);
+	        }
+		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException | InterruptedException e) {
+			System.out.println("No se ha podido reproducir el archivo de: "+wav);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			clip2 = AudioSystem.getClip();
+			AudioInputStream inputStream2 = AudioSystem.getAudioInputStream(audio2);
+	        clip2.open(inputStream2);
+	        clip2.start();
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+}
+	
 	public void send(String text) {
 		System.out.println("We are sending: "+text);
 		client.enviar(text);
@@ -378,10 +447,23 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void show_error(String totem, String user_name) {
+		if(totem.equals("lobo")) {
+			promt(user_name,"force_wolf");
+		}
+		else if(totem.equals("dragon")) {
+			promt(user_name,"force_dragon");
+		}
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " ha forzado la liberación del " + totem);
 	}
 	
 	public void show_alert(String totem, String user_name) {
+		promt(user_name);
+		if(totem.equals("lobo")) {
+			promt(user_name,"asking_wolf");
+		}
+		else if(totem.equals("dragon")) {
+			promt(user_name,"asking_dragon");
+		}
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " está solicitando el " + totem);
 	}
 	
