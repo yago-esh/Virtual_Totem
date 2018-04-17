@@ -2,7 +2,6 @@ package Virtual_Totem;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,12 +13,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JList;
 import java.awt.List;
 
 public class Alert_VT extends JDialog {
@@ -28,14 +25,15 @@ public class Alert_VT extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JButton okButton, cancelButton;
 	private ArrayList<String> list_dragon, list_wolf;
-	private String mode;
+	private String mode, myName;
 	private Panel_VT panel;
 	private List list;
 	private boolean action;
 
-	public Alert_VT(Panel_VT panel) {
+	public Alert_VT(Panel_VT panel, String name) {
 		
 		this.panel = panel;
+		this.myName = name;
 		this.setVisible(false);
 		setBounds(810, 425, 450, 245);
 		getContentPane().setLayout(new BorderLayout());
@@ -51,7 +49,10 @@ public class Alert_VT extends JDialog {
 		info_text.setForeground(Color.BLACK);
 		info_text.setFont(new Font("Tahoma", Font.BOLD, 13));
 		info_text.setBackground(UIManager.getColor("CheckBox.background"));
-		info_text.setText("A continuaci\u00F3n va a proceder a solicitar el \"totem\"\r\n\r\n\u2022 Se proceder\u00E1 a mandar una alerta al usuario que tiene actualmente el totem.\r\n\u2022 Se le incluir\u00E1 en la cola de usuarios.\r\n\u2022 Cuando el usuario actual suelte el totem, se enviar\u00E1 una notificaci\u00F3n al pr\u00F3ximo usuario de la cola.");
+		info_text.setText("A continuaci\u00F3n va a proceder a solicitar el \"totem\"\r\n\r\n\u2022 Se"
+				+ " proceder\u00E1 a mandar una alerta al usuario que tiene actualmente el totem.\r\n\u2022"
+				+ " Se le incluir\u00E1 en la cola de usuarios.\r\n\u2022 Cuando el usuario actual suelte el"
+				+ " totem, se enviar\u00E1 una notificaci\u00F3n al pr\u00F3ximo usuario de la cola.");
 		info_text.setBounds(149, 13, 275, 150);
 		contentPanel.add(info_text);
 		
@@ -93,12 +94,12 @@ public class Alert_VT extends JDialog {
 				
 				if(!isInList(mode)) {
 					action=true;
-					addList(mode, System.getProperty("user.name"));
+					addList(mode, myName);
 					if(mode.equals("coger_lobo")) {
-						panel.send("list,coger_lobo,"+System.getProperty("user.name"));
+						panel.send("list,coger_lobo,"+myName);
 					}
 					else if (mode.equals("coger_dragon")) {
-						panel.send("list,coger_dragon,"+System.getProperty("user.name"));
+						panel.send("list,coger_dragon,"+myName);
 					}
 				}
 				hideIt();
@@ -171,12 +172,12 @@ public class Alert_VT extends JDialog {
 		
 		if(mode.equals("coger_lobo")) {
 			for(String user: list_wolf) {
-				if(user.equals(System.getProperty("user.name"))) return true;
+				if(user.equals(myName)) return true;
 			}
 		}
 		else if (mode.equals("coger_dragon")) {
 			for(String user: list_dragon) {
-				if(user.equals(System.getProperty("user.name"))) return true;
+				if(user.equals(myName)) return true;
 			}
 		}
 		
@@ -241,14 +242,14 @@ public class Alert_VT extends JDialog {
 	public void removeMeUserFromList() {
 
 		for(int x=0; x<list_wolf.size(); x++) {
-			if (list_wolf.get(x).equals(System.getProperty("user.name"))) {
+			if (list_wolf.get(x).equals(myName)) {
 					panel.send("CleanList,wolf,"+String.valueOf(x));
 				break;
 			}
 		}
 
 		for(int x=0; x<list_dragon.size(); x++) {
-			if (list_dragon.get(x).equals(System.getProperty("user.name"))) {
+			if (list_dragon.get(x).equals(myName)) {
 				list_dragon.remove(x);
 					panel.send("CleanList,dragon,"+String.valueOf(x));
 				break;
