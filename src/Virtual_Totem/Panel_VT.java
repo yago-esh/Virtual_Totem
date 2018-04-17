@@ -39,9 +39,9 @@ public class Panel_VT extends JPanel {
 	public Panel_VT(Client_VT client) {
 		
 		//------------------------------Develop mode--------------------------------
-		//myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
 		//---------------------------------------------------------------------------
-		myName=System.getProperty("user.name");
+		//myName=System.getProperty("user.name");
 		
 		this.client=client;
 		client.associate(this);
@@ -101,7 +101,7 @@ public class Panel_VT extends JPanel {
 		dragon_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
 		add(dragon_alert);
 		
-		JLabel Version_lb = new JLabel("Versi\u00F3n 1.7.6");
+		JLabel Version_lb = new JLabel("Versi\u00F3n DEVELOP");
 		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
 		Version_lb.setBounds(10, 180, 120, 14);
 		add(Version_lb);
