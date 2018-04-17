@@ -32,9 +32,9 @@ public class Panel_VT extends JPanel {
 	public Panel_VT(Client_VT client) {
 		
 		//------------------------------Develop mode--------------------------------
-		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+		//myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
 		//---------------------------------------------------------------------------
-		//myName=System.getProperty("user.name");
+		myName=System.getProperty("user.name");
 		
 		this.client=client;
 		client.associate(this);
@@ -270,9 +270,7 @@ public class Panel_VT extends JPanel {
 					else if (parts[1].equals("ImAlive")) {
 						ImAlive=true;
 					}
-    			
 			}
-
 		}
 		else {
 			chekList(msg,"");
