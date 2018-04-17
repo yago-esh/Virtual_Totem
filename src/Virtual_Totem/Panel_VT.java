@@ -101,7 +101,7 @@ public class Panel_VT extends JPanel {
 		dragon_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
 		add(dragon_alert);
 		
-		JLabel Version_lb = new JLabel("Versi\u00F3n DEV 1");
+		JLabel Version_lb = new JLabel("Versi\u00F3n 1.7.6");
 		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
 		Version_lb.setBounds(10, 180, 120, 14);
 		add(Version_lb);
