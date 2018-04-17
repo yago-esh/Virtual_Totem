@@ -37,17 +37,19 @@ class Window_VT extends JFrame {
 			        if(PromptResult==JOptionPane.YES_OPTION)
 			        {
 			        	Panel_VT.getAlert_VT().removeMeUserFromList();
-
+			        	
 			        	if (Panel_VT.warning_wolf()) {
+			        		Panel_VT.blockWolf("");
 			    			cliente.enviar("soltar_lobo");
 			    		}
 			    		if ( Panel_VT.warning_dragon()) {
+			    			Panel_VT.blockDragon("");
 			    			cliente.enviar("soltar_dragon");
 			    		}
 			    		
 			        	try {
 			        		//Need to wait 2 second to let enough time to the server to read the last message and be available to read the next one before close the flows.
-							Thread.sleep(2000);
+							Thread.sleep(1000);
 						} catch (InterruptedException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
