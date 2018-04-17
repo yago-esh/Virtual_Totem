@@ -23,6 +23,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.awt.Font;
+import java.awt.Image;
 
 
 public class Panel_VT extends JPanel {
@@ -85,10 +86,13 @@ public class Panel_VT extends JPanel {
 		wolf_alert.setBorder(null);
 		wolf_alert.setOpaque(false);
 		wolf_alert.setEnabled(false);
+		wolf_alert.setSize(32, 32);
 		wolf_alert.setBounds(233, 36, 32, 32);
 		wolf_alert.setBackground(Color.LIGHT_GRAY);
 		wolf_alert.setMargin(new Insets(0, 0, 0, 0));
-		wolf_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		ImageIcon icono = new ImageIcon(Panel_VT.class.getResource("/Img/info_icon.png"));
+		Image icono_def = icono.getImage().getScaledInstance(16, 16, 5);
+		wolf_alert.setIcon(new ImageIcon(icono_def));
 		add(wolf_alert);
 		
 		dragon_alert = new JButton("");
@@ -99,6 +103,7 @@ public class Panel_VT extends JPanel {
 		dragon_alert.setBackground(Color.LIGHT_GRAY);
 		dragon_alert.setMargin(new Insets(0, 0, 0, 0));
 		dragon_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		System.out.println("tamaño icono: " + new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")).getIconHeight());
 		add(dragon_alert);
 		
 		JLabel Version_lb = new JLabel("Versi\u00F3n DEVELOP");
