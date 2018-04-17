@@ -11,9 +11,13 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -26,6 +30,7 @@ class Window_VT extends JFrame {
 	private Panel_VT Panel_VT;
 	private MenuItem exitItem, showItem;
 	private TrayIcon trayIcon;
+	private String[] options;
 	static final long serialVersionUID = 42L;
 
 	public Window_VT(Client_VT cliente) {
@@ -40,6 +45,8 @@ class Window_VT extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		Systray();
 		listeners();
+		
+		new Read_Data().read();
 	}
 	
 	public void listeners() {
@@ -118,9 +125,14 @@ class Window_VT extends JFrame {
 	        // Create a pop-up menu components
 	        exitItem = new MenuItem("Salir");
 	        showItem = new MenuItem("Abrir");
+	        Menu options = new Menu("Opciones");
+	        CheckboxMenuItem OpcMinimize = new CheckboxMenuItem("Minimizar al cerrar");
 	       
 	        //Add components to pop-up menu
 	        popup.add(showItem);
+	        popup.addSeparator();
+	        popup.add(options);
+	        options.add(OpcMinimize);
 	        popup.addSeparator();
 	        popup.add(exitItem);
 	       
