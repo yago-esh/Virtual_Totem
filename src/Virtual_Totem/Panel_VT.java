@@ -38,8 +38,6 @@ public class Panel_VT extends JPanel {
 	
 
 	public Panel_VT(Client_VT client) {
-		setBackground(Color.WHITE);
-		
 		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
@@ -66,7 +64,7 @@ public class Panel_VT extends JPanel {
 		
 		
 		Wolf_bt = new JButton("");
-		Wolf_bt.setBounds(60, 30, 150, 100);
+		Wolf_bt.setBounds(60, 26, 150, 100);
 		Wolf_bt.setOpaque(false);
 		Wolf_bt.setContentAreaFilled(false);
 		Wolf_bt.setBorderPainted(false);
@@ -147,13 +145,14 @@ public class Panel_VT extends JPanel {
 		Version_lb.setBounds(10, 300, 120, 14);
 		add(Version_lb);
 		
-		//---------------Background settings------------------------------------------------//
-		/*String path = "/Img/background.png";  
-		URL url = this.getClass().getResource(path);  
-		ImageIcon icon = new ImageIcon(url);  
-		  
-		JLabel label = new JLabel("PRUEBA");  
-		label.setIcon(icon); */
+		//---------------Background settings (need to create a background that fits properly)------------------------------------------------//
+		
+		/*JLabel background = new JLabel("New label");
+		background.setBounds(0, 0, 517, 620);
+		background.setSize(300, 300);
+		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/Background_main.png")));
+		add(background);*/
+		
 		
 		//------------------------------------Initialize Variables--------------------------------//
 		initialize();
