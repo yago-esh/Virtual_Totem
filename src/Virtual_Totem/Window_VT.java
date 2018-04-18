@@ -9,6 +9,7 @@ import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -36,7 +37,7 @@ class Window_VT extends JFrame {
 	public Window_VT(Client_VT cliente) {
 		
 		this.cliente = cliente;
-		Panel_VT = new Panel_VT(cliente);
+		Panel_VT = new Panel_VT(cliente, this);
 		this.setContentPane(Panel_VT);
 		this.setTitle("Virtual Totem");
 		this.setLocation(810, 425);
@@ -185,6 +186,10 @@ class Window_VT extends JFrame {
 			Window_VT.this.cliente.terminar();
             System.exit(-1);
 		}
+	}
+	
+	public void msgTry(String msg) {
+		trayIcon.displayMessage(msg, "Virtual Totem", MessageType.WARNING);
 	}
 }
 

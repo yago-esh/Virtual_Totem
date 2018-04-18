@@ -31,12 +31,13 @@ public class Panel_VT extends JPanel {
 	private Alert_VT alert;
 	private Client_VT client;
 	private String myName;
+	private Window_VT window;
 	static final long serialVersionUID = 42L;
 	private boolean dragon_blocked, wolf_blocked, ImAlive;
 	private JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
 	
 
-	public Panel_VT(Client_VT client) {
+	public Panel_VT(Client_VT client, Window_VT window) {
 		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
@@ -44,6 +45,7 @@ public class Panel_VT extends JPanel {
 		//myName=System.getProperty("user.name");
 		
 		this.client=client;
+		this.window=window;
 		client.associate(this);
 		info = new Info_VT(Panel_VT.this);
 		alert = new Alert_VT(this,myName);
@@ -301,6 +303,7 @@ public class Panel_VT extends JPanel {
 				okAction="coger_dragon";
 				promt("free_dragon");
 			}
+			window.msgTry("Se acaba de liberar el " +totem+ " y eres el siguiente en la cola.");
 			String ObjButtons[] = {"Yes","No"};
 	        int PromptResult = JOptionPane.showOptionDialog(null,"Se acaba de liberar el " +totem+ " y eres el siguiente en la cola. ¿Quieres cogerlo?",
 	        		"Liberación del Totem",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
@@ -445,6 +448,7 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void show_error(String totem, String user_name) {
+		window.msgTry("El usuario " +user_name+ " ha forzado la liberación del " + totem);
 		if(totem.equals("lobo")) {
 			promt(user_name,"force_wolf");
 		}
@@ -455,7 +459,7 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void show_alert(String totem, String user_name) {
-		promt(user_name);
+		window.msgTry("El usuario " +user_name+ " está solicitando el " + totem);
 		if(totem.equals("lobo")) {
 			promt(user_name,"asking_wolf");
 		}
