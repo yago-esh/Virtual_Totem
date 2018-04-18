@@ -149,7 +149,7 @@ class Client_VT {
                 public void run() {
                 	while(true) {
                 		try {
-							this.sleep(60000);
+							Thread.sleep(60000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
