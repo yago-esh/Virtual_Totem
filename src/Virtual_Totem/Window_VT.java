@@ -30,8 +30,8 @@ class Window_VT extends JFrame {
 	private MenuItem exitItem, showItem;
 	private TrayIcon trayIcon;
 	private String[] options;
-	private CheckboxMenuItem OpcMinimize;
-	private static int num_options = 1; 
+	private CheckboxMenuItem OpcMinimize, OpcSilence;
+	private static int num_options = 2; 
 	static final long serialVersionUID = 42L;
 
 	public Window_VT(Client_VT cliente) {
@@ -64,15 +64,13 @@ class Window_VT extends JFrame {
 	}
 	
 	public void setoptions() {
-		
 		OpcMinimize.setState(Boolean.valueOf(options[0]));
-		
+		OpcSilence.setState(Boolean.valueOf(options[1]));
 	}
 	
 	public void getoptions() {
-		
 		options[0]=String.valueOf(OpcMinimize.getState());
-		
+		options[1]=String.valueOf(OpcSilence.getState());
 	}
 	
 	
@@ -125,12 +123,14 @@ class Window_VT extends JFrame {
 	        showItem = new MenuItem("Abrir");
 	        Menu options = new Menu("Opciones");
 	        OpcMinimize = new CheckboxMenuItem("Minimizar al cerrar");
+	        OpcSilence = new CheckboxMenuItem("Silenciar voz");
 	       
 	        //Add components to pop-up menu
 	        popup.add(showItem);
 	        popup.addSeparator();
 	        popup.add(options);
 	        options.add(OpcMinimize);
+	        options.add(OpcSilence);
 	        popup.addSeparator();
 	        popup.add(exitItem);
 	       
@@ -190,6 +190,10 @@ class Window_VT extends JFrame {
 	
 	public void msgTry(String msg) {
 		trayIcon.displayMessage(msg, "Virtual Totem", MessageType.WARNING);
+	}
+	
+	public boolean isSilence() {
+		return OpcSilence.getState();
 	}
 }
 

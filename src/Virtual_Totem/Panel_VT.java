@@ -354,6 +354,7 @@ public class Panel_VT extends JPanel {
 	}
 	
 	public void promt(String wav) {
+		if(!window.isSilence()) {
 			URL audio = Main.class.getResource("/Sounds/"+wav+".wav");
 			if(audio==null) {
 				audio = Main.class.getResource("/Sounds/user_default.wav");
@@ -373,43 +374,46 @@ public class Panel_VT extends JPanel {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
 	}
 	
 	public void promt(String wav, String wav2) {
-		URL audio = Main.class.getResource("/Sounds/"+wav+".wav");
-		if(audio==null) {
-			audio = Main.class.getResource("/Sounds/user_default.wav");
-		}
-		URL audio2 = Main.class.getResource("/Sounds/"+wav2+".wav");
-		Clip clip, clip2;
-		try {
-			CountDownLatch go = new CountDownLatch(1);
-			clip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(audio);
-			clip.addLineListener(event -> {
-		        if (event.getType().equals(LineEvent.Type.START)) {
-		            go.countDown();
+		if(!window.isSilence()) {
+			URL audio = Main.class.getResource("/Sounds/"+wav+".wav");
+			if(audio==null) {
+				audio = Main.class.getResource("/Sounds/user_default.wav");
+			}
+			URL audio2 = Main.class.getResource("/Sounds/"+wav2+".wav");
+			Clip clip, clip2;
+			try {
+				CountDownLatch go = new CountDownLatch(1);
+				clip = AudioSystem.getClip();
+				AudioInputStream inputStream = AudioSystem.getAudioInputStream(audio);
+				clip.addLineListener(event -> {
+			        if (event.getType().equals(LineEvent.Type.START)) {
+			            go.countDown();
+			        }
+			    });
+		        clip.open(inputStream);
+		        clip.start();
+		        go.await();
+		        while(clip.isActive()) {
+		        	Thread.sleep(100);
 		        }
-		    });
-	        clip.open(inputStream);
-	        clip.start();
-	        go.await();
-	        while(clip.isActive()) {
-	        	Thread.sleep(100);
-	        }
-		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException | InterruptedException e) {
-			System.out.println("No se ha podido reproducir el archivo de: "+wav);
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			clip2 = AudioSystem.getClip();
-			AudioInputStream inputStream2 = AudioSystem.getAudioInputStream(audio2);
-	        clip2.open(inputStream2);
-	        clip2.start();
-		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (LineUnavailableException | UnsupportedAudioFileException | IOException | InterruptedException e) {
+				System.out.println("No se ha podido reproducir el archivo de: "+wav);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				clip2 = AudioSystem.getClip();
+				AudioInputStream inputStream2 = AudioSystem.getAudioInputStream(audio2);
+		        clip2.open(inputStream2);
+		        clip2.start();
+			} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	
 }

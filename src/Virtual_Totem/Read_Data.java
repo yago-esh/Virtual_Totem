@@ -25,7 +25,7 @@ public class Read_Data {
 		
 		String[] data = new String[size];
 		try {
-	        archivo = new File ("C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\Virtual_Totem\\Data_Options.txt");
+	        archivo = new File ("C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\Virtual_Totem\\Data_Option.txt");
 	        fr = new FileReader (archivo);
 	        br = new BufferedReader(fr);
 
