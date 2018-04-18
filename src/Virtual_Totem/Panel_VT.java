@@ -40,6 +40,7 @@ public class Panel_VT extends JPanel {
 	public Panel_VT(Client_VT client) {
 		setBackground(Color.WHITE);
 		
+		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
 		//---------------------------------------------------------------------------
@@ -75,7 +76,7 @@ public class Panel_VT extends JPanel {
 		//Wolf_bt.setVerticalTextPosition(SwingConstants.CENTER);
 		//Wolf_bt.setHorizontalTextPosition(SwingConstants.CENTER);
 		ImageIcon icono_wolf = new ImageIcon(Panel_VT.class.getResource("/Img/wolf_icon.png"));
-		Image icono_def_wolf = icono_wolf.getImage().getScaledInstance(64, 64, 5);
+		Image icono_def_wolf = icono_wolf.getImage().getScaledInstance(66, 66, 5);
 		Wolf_bt.setIcon(new ImageIcon(icono_def_wolf));
 		//ImageIcon icono_wolfDes = new ImageIcon(Panel_VT.class.getResource("/Img/wolf_iconRed.png"));
 		//Image icono_def_wolfDes = icono_wolfDes.getImage().getScaledInstance(32, 32, 5);
@@ -145,6 +146,14 @@ public class Panel_VT extends JPanel {
 		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
 		Version_lb.setBounds(10, 300, 120, 14);
 		add(Version_lb);
+		
+		//---------------Background settings------------------------------------------------//
+		/*String path = "/Img/background.png";  
+		URL url = this.getClass().getResource(path);  
+		ImageIcon icon = new ImageIcon(url);  
+		  
+		JLabel label = new JLabel("PRUEBA");  
+		label.setIcon(icon); */
 		
 		//------------------------------------Initialize Variables--------------------------------//
 		initialize();
