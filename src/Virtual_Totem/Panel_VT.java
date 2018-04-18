@@ -38,6 +38,7 @@ public class Panel_VT extends JPanel {
 	
 
 	public Panel_VT(Client_VT client) {
+		setBackground(Color.WHITE);
 		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
@@ -51,35 +52,67 @@ public class Panel_VT extends JPanel {
 		setLayout(null);
 		
 		//------------------------------------Buttons------------------------------------------//
-		Wolf_bt = new JButton("Coger Lobo");
-		Wolf_bt.setBounds(74, 25, 150, 50);
-		Wolf_bt.setForeground(Color.WHITE);
-		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		Wolf_bt.setVerticalTextPosition(SwingConstants.CENTER);
+		//Wolf_bt = new JButton("Coger Lobo");
+		//Wolf_bt.setBounds(85, 24, 150, 50);
+		//Wolf_bt.setForeground(Color.WHITE);
+		//Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		/*Wolf_bt.setVerticalTextPosition(SwingConstants.CENTER);
 		Wolf_bt.setHorizontalTextPosition(SwingConstants.CENTER);
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
 		Wolf_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_Wolf_bt.jpg")));
 		Wolf_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_Wolf_bt_disabled.jpg")));
+		add(Wolf_bt);*/
+		
+		
+		Wolf_bt = new JButton("");
+		Wolf_bt.setBounds(60, 30, 150, 100);
+		Wolf_bt.setOpaque(false);
+		Wolf_bt.setContentAreaFilled(false);
+		Wolf_bt.setBorderPainted(false);
+		//Wolf_bt.setForeground(Color.WHITE);
+		//Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		Wolf_bt.setSize(180, 60);
+		//Wolf_bt.setVerticalTextPosition(SwingConstants.CENTER);
+		//Wolf_bt.setHorizontalTextPosition(SwingConstants.CENTER);
+		ImageIcon icono_wolf = new ImageIcon(Panel_VT.class.getResource("/Img/wolf_icon.png"));
+		Image icono_def_wolf = icono_wolf.getImage().getScaledInstance(64, 64, 5);
+		Wolf_bt.setIcon(new ImageIcon(icono_def_wolf));
+		//ImageIcon icono_wolfDes = new ImageIcon(Panel_VT.class.getResource("/Img/wolf_iconRed.png"));
+		//Image icono_def_wolfDes = icono_wolfDes.getImage().getScaledInstance(32, 32, 5);
+		//Wolf_bt.setDisabledIcon(new ImageIcon(icono_def_wolfDes));
 		add(Wolf_bt);
 		
-		Dragon_bt = new JButton("Coger Dragon");		
-		Dragon_bt.setForeground(Color.WHITE);
-		Dragon_bt.setBounds(74, 95, 150, 50);
-		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		Dragon_bt.setVerticalTextPosition(SwingConstants.CENTER);
-		Dragon_bt.setHorizontalTextPosition(SwingConstants.CENTER);
-		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
-		Dragon_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon.jpg")));
-		Dragon_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon_disabled.jpg")));
+		
+		Dragon_bt = new JButton("");
+		Dragon_bt.setBounds(60, 173, 150, 100);
+		Dragon_bt.setOpaque(false);
+		Dragon_bt.setContentAreaFilled(false);
+		Dragon_bt.setBorderPainted(false);
+		//Wolf_bt.setForeground(Color.WHITE);
+		//Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		Dragon_bt.setSize(180, 60);
+		//Wolf_bt.setVerticalTextPosition(SwingConstants.CENTER);
+		//Wolf_bt.setHorizontalTextPosition(SwingConstants.CENTER);
+		ImageIcon icono_dragon = new ImageIcon(Panel_VT.class.getResource("/Img/dragon_icon.png"));
+		Image icono_def_dragon = icono_dragon.getImage().getScaledInstance(64, 64, 5);
+		Dragon_bt.setIcon(new ImageIcon(icono_def_dragon));
+		//ImageIcon icono_wolfDes = new ImageIcon(Panel_VT.class.getResource("/Img/wolf_iconRed.png"));
+		//Image icono_def_wolfDes = icono_wolfDes.getImage().getScaledInstance(32, 32, 5);
+		//Wolf_bt.setDisabledIcon(new ImageIcon(icono_def_wolfDes));
 		add(Dragon_bt);
+		
+		
 		
 		Info_bt = new JButton("");
 		Info_bt.setBorder(null);
 		Info_bt.setOpaque(false);
-		Info_bt.setBounds(133, 154, 32, 32);
+		Info_bt.setSize(32, 32);
+		Info_bt.setBounds(283, 282, 32, 32);
 		Info_bt.setBackground(Color.LIGHT_GRAY);
 		Info_bt.setMargin(new Insets(0, 0, 0, 0));
-		Info_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
+		ImageIcon icono_warning = new ImageIcon(Panel_VT.class.getResource("/Img/warning_icon.png"));
+		Image icono_def_warning = icono_warning.getImage().getScaledInstance(32, 32, 5);
+		Info_bt.setIcon(new ImageIcon(icono_def_warning));;
 		add(Info_bt);
 		
 		wolf_alert = new JButton("");
@@ -87,36 +120,31 @@ public class Panel_VT extends JPanel {
 		wolf_alert.setOpaque(false);
 		wolf_alert.setEnabled(false);
 		wolf_alert.setSize(32, 32);
-		wolf_alert.setBounds(233, 36, 32, 32);
-		wolf_alert.setBackground(Color.LIGHT_GRAY);
+		wolf_alert.setBounds(139, 130, 32, 32);
+		wolf_alert.setBackground(Color.BLACK);
 		wolf_alert.setMargin(new Insets(0, 0, 0, 0));
-		ImageIcon icono = new ImageIcon(Panel_VT.class.getResource("/Img/info_icon.png"));
-		Image icono_def = icono.getImage().getScaledInstance(16, 16, 5);
-		wolf_alert.setIcon(new ImageIcon(icono_def));
+		ImageIcon icono_info1 = new ImageIcon(Panel_VT.class.getResource("/Img/info_icon.png"));
+		Image icono_def_info1 = icono_info1.getImage().getScaledInstance(32, 32, 5);
+		wolf_alert.setIcon(new ImageIcon(icono_def_info1));
 		add(wolf_alert);
 		
 		dragon_alert = new JButton("");
 		dragon_alert.setBorder(null);
 		dragon_alert.setOpaque(false);
 		dragon_alert.setEnabled(false);
-		dragon_alert.setBounds(233, 106, 32, 32);
-		dragon_alert.setBackground(Color.LIGHT_GRAY);
+		dragon_alert.setSize(32, 32);
+		dragon_alert.setBounds(139, 282, 32, 32);
+		dragon_alert.setBackground(Color.black);
 		dragon_alert.setMargin(new Insets(0, 0, 0, 0));
-		dragon_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
-		System.out.println("tamaño icono: " + new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")).getIconHeight());
+		ImageIcon icono_info2 = new ImageIcon(Panel_VT.class.getResource("/Img/info_icon.png"));
+		Image icono_def_info2 = icono_info2.getImage().getScaledInstance(32, 32, 5);
+		dragon_alert.setIcon(new ImageIcon(icono_def_info2));
 		add(dragon_alert);
 		
 		JLabel Version_lb = new JLabel("Versi\u00F3n DEVELOP");
 		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
-		Version_lb.setBounds(10, 180, 120, 14);
+		Version_lb.setBounds(10, 300, 120, 14);
 		add(Version_lb);
-		
-		//------------------------------------Labels------------------------------------------//
-		
-		JLabel background = new JLabel("New label");
-		background.setBounds(0, 0, 299, 212);
-		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/Background_main.png")));
-		add(background);
 		
 		//------------------------------------Initialize Variables--------------------------------//
 		initialize();
@@ -516,5 +544,4 @@ public class Panel_VT extends JPanel {
             }.start();
         }
     }
-	
 }

@@ -23,7 +23,7 @@ class Window_VT extends JFrame {
 		this.setContentPane(Panel_VT);
 		this.setTitle("Virtual Totem");
 		this.setLocation(810, 425);
-		this.setSize(300, 230);
+		this.setSize(325, 350);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Img/totem.png")));
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
