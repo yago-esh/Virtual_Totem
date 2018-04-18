@@ -84,7 +84,6 @@ public class Panel_VT extends JPanel {
 		wolf_alert = new JButton("");
 		wolf_alert.setBorder(null);
 		wolf_alert.setOpaque(false);
-		wolf_alert.setEnabled(false);
 		wolf_alert.setBounds(233, 36, 32, 32);
 		wolf_alert.setBackground(Color.LIGHT_GRAY);
 		wolf_alert.setMargin(new Insets(0, 0, 0, 0));
@@ -94,7 +93,6 @@ public class Panel_VT extends JPanel {
 		dragon_alert = new JButton("");
 		dragon_alert.setBorder(null);
 		dragon_alert.setOpaque(false);
-		dragon_alert.setEnabled(false);
 		dragon_alert.setBounds(233, 106, 32, 32);
 		dragon_alert.setBackground(Color.LIGHT_GRAY);
 		dragon_alert.setMargin(new Insets(0, 0, 0, 0));
@@ -180,7 +178,7 @@ public class Panel_VT extends JPanel {
 			show_error("lobo",user_name);
 		}
 		Wolf_bt.setEnabled(true);
-		wolf_alert.setEnabled(false);
+		alert.changeActiveOkButton("wolf", false);
 		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
 		wolf_blocked=false;
@@ -194,7 +192,7 @@ public class Panel_VT extends JPanel {
 			show_error("dragon",user_name);
 		}
 		Dragon_bt.setEnabled(true);
-		dragon_alert.setEnabled(false);
+		alert.changeActiveOkButton("dragon", false);
 		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
 		dragon_blocked=false;
@@ -205,7 +203,7 @@ public class Panel_VT extends JPanel {
 	public void blockDragon(String user_name) {
 		
 		Dragon_bt.setEnabled(false);
-		dragon_alert.setEnabled(true);
+		alert.changeActiveOkButton("dragon", true);
 		dragon_blocked=true;
 		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
@@ -220,7 +218,7 @@ public class Panel_VT extends JPanel {
 	public void blockWolf(String user_name) {
 		
 		Wolf_bt.setEnabled(false);
-		wolf_alert.setEnabled(true);
+		alert.changeActiveOkButton("wolf", true);
 		wolf_blocked=true;
 		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));

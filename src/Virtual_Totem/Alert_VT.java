@@ -28,6 +28,7 @@ public class Alert_VT extends JDialog {
 	private String mode, myName;
 	private Panel_VT panel;
 	private List list;
+	private boolean active_wolf, active_dragon;
 	private boolean action;
 
 	public Alert_VT(Panel_VT panel, String name) {
@@ -124,19 +125,33 @@ public class Alert_VT extends JDialog {
 		list_wolf = new ArrayList<String>();
 		mode="";
 		action=false;
+		active_wolf=false;
+		active_dragon=false;
+	}
+	
+	public void changeActiveOkButton(String totem, boolean state) {
+		if(totem.equals("wolf")){
+			active_wolf=state;
+		}
+		else if(totem.equals("dragon")) {
+			active_dragon=state;
+		}
 	}
 	
 	public void showIt(String totem) {
 		mode=totem;
 		this.setVisible(true);
-		this.setTitle("Cola de usuarios para el "+totem);
 		
 		if(mode.equals("coger_lobo")) {
+			okButton.setEnabled(active_wolf);
+			this.setTitle("Cola de usuarios para el lobo");
 			for(String user: list_wolf) {
 				list.add(user);
 			}
 		}
 		else if (mode.equals("coger_dragon")) {
+			okButton.setEnabled(active_dragon);
+			this.setTitle("Cola de usuarios para el dragon");
 			for(String user: list_dragon) {
 				list.add(user);
 			}
