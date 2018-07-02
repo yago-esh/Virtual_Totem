@@ -46,9 +46,9 @@ public class Panel_VT extends JPanel {
 	public Panel_VT(Client_VT client, Window_VT window) {
 		
 		//------------------------------Develop mode--------------------------------
-		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+		//myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
 		//---------------------------------------------------------------------------
-		//myName=System.getProperty("user.name");
+		myName=System.getProperty("user.name");
 		
 		this.client=client;
 		this.window=window;
