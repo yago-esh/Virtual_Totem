@@ -123,7 +123,7 @@ public class Panel_VT extends JPanel {
 		dragon_time_lb.setBounds(74, 145, 150, 15);
 		add(dragon_time_lb);
 		
-		JLabel Version_lb = new JLabel("Versi\u00F3n DEVELOP");
+		JLabel Version_lb = new JLabel("Versi\u00F3n 1.8.8");
 		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
 		Version_lb.setBounds(10, 195, 120, 14);
 		add(Version_lb);
