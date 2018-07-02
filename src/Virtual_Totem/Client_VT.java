@@ -37,12 +37,12 @@ class Client_VT {
 
 	public void execute() throws IOException {
 		//------------------------------Develop mode--------------------------------
-		//	socketConexion = new Socket("localhost", 2029);
+			socketConexion = new Socket("localhost", 2029);
 		//	socketConexion = new Socket("10.1.2.34", 2029);
 		//---------------------------------------------------------------------------
 		// Crear socket cliente y establecer conexion
 		
-		socketConexion = new Socket("10.0.1.95", 2029);
+		//socketConexion = new Socket("10.0.1.95", 2029);
 
 		System.out.println("Cliente> Establecida conexion");
 
@@ -154,7 +154,7 @@ class Client_VT {
 							e.printStackTrace();
 						}
                 		System.out.println("COMPROBANDO CONEXIONES");
-                		Panel_VT.send("Are you there?");
+                		Panel_VT.send("ACK");
                 	}
                 }
      

@@ -26,7 +26,7 @@ class Client_VT_graphic {
 	public void execute() {
 		Client_VT client = new Client_VT();
 		window = new Window_VT(client);
-		checkIfRunning();
+		//checkIfRunning();
 		try {
 			client.execute();
 			window.showIt();

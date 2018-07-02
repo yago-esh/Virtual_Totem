@@ -4,6 +4,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
@@ -20,6 +24,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -35,14 +40,15 @@ public class Panel_VT extends JPanel {
 	static final long serialVersionUID = 42L;
 	private boolean dragon_blocked, wolf_blocked, ImAlive;
 	private JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
-	
+	private JLabel wolf_time_lb, dragon_time_lb;
+	private Integer time_wolf[], time_dragon[];
 
 	public Panel_VT(Client_VT client, Window_VT window) {
 		
 		//------------------------------Develop mode--------------------------------
-		//myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
 		//---------------------------------------------------------------------------
-		myName=System.getProperty("user.name");
+		//myName=System.getProperty("user.name");
 		
 		this.client=client;
 		this.window=window;
@@ -77,7 +83,7 @@ public class Panel_VT extends JPanel {
 		Info_bt = new JButton("");
 		Info_bt.setBorder(null);
 		Info_bt.setOpaque(false);
-		Info_bt.setBounds(133, 154, 32, 32);
+		Info_bt.setBounds(133, 169, 32, 32);
 		Info_bt.setBackground(Color.LIGHT_GRAY);
 		Info_bt.setMargin(new Insets(0, 0, 0, 0));
 		Info_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
@@ -101,15 +107,31 @@ public class Panel_VT extends JPanel {
 		dragon_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
 		add(dragon_alert);
 		
-		JLabel Version_lb = new JLabel("Versi\u00F3n 1.8.5");
+		wolf_time_lb = new JLabel("");
+		wolf_time_lb.setBackground(Color.BLACK);
+		wolf_time_lb.setFont(new Font("Tahoma", Font.BOLD, 11));
+		wolf_time_lb.setForeground(Color.BLACK);
+		wolf_time_lb.setHorizontalAlignment(SwingConstants.CENTER);
+		wolf_time_lb.setBounds(74, 75, 150, 15);
+		add(wolf_time_lb);
+		
+		dragon_time_lb = new JLabel("");
+		dragon_time_lb.setHorizontalAlignment(SwingConstants.CENTER);
+		dragon_time_lb.setForeground(Color.BLACK);
+		dragon_time_lb.setFont(new Font("Tahoma", Font.BOLD, 11));
+		dragon_time_lb.setBackground(Color.BLACK);
+		dragon_time_lb.setBounds(74, 145, 150, 15);
+		add(dragon_time_lb);
+		
+		JLabel Version_lb = new JLabel("Versi\u00F3n DEVELOP");
 		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
-		Version_lb.setBounds(10, 180, 120, 14);
+		Version_lb.setBounds(10, 195, 120, 14);
 		add(Version_lb);
 		
 		//------------------------------------Labels------------------------------------------//
 		
 		JLabel background = new JLabel("New label");
-		background.setBounds(0, 0, 299, 212);
+		background.setBounds(0, 0, 299, 221);
 		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/Background_main.png")));
 		add(background);
 		
@@ -172,6 +194,14 @@ public class Panel_VT extends JPanel {
 		dragon_blocked=false;
 		wolf_blocked=false;
 		ImAlive=false;
+		time_wolf = new Integer[3];
+        time_wolf[0]=1;
+        time_wolf[1]=0;
+        time_wolf[2]=0;
+        time_dragon = new Integer[3];
+        time_dragon[0]=1;
+        time_dragon[1]=0;
+        time_dragon[2]=0;
 	}
 	
 	public void freeWolf(String user_name) {
@@ -207,6 +237,14 @@ public class Panel_VT extends JPanel {
 		Dragon_bt.setEnabled(false);
 		alert.changeActiveOkButton("dragon", true);
 		dragon_blocked=true;
+		if(time_dragon[0]+time_dragon[1]+time_dragon[2] == 1) { //If the time is not already running
+			time("dragon");
+		}
+		else {
+			time_dragon[0]=1;
+	        time_dragon[1]=0;
+	        time_dragon[2]=0;
+		}
 		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
 		if(user_name.equals("")) {
@@ -215,6 +253,7 @@ public class Panel_VT extends JPanel {
 		else {
 			Dragon_bt.setText("<html><font color = black>Dragon: " + user_name+"</html>");
 		}
+		
 	}
 	
 	public void blockWolf(String user_name) {
@@ -222,6 +261,14 @@ public class Panel_VT extends JPanel {
 		Wolf_bt.setEnabled(false);
 		alert.changeActiveOkButton("wolf", true);
 		wolf_blocked=true;
+		if(time_wolf[0]+time_wolf[1]+time_wolf[2] == 1) { //If the time is not already running
+			time("wolf");
+		}
+		else {
+			time_wolf[0]=1;
+			time_wolf[1]=0;
+			time_wolf[2]=0;
+		}
 		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
 		if(user_name.equals("")) {
@@ -277,6 +324,21 @@ public class Panel_VT extends JPanel {
 					else if (parts[1].equals("ImAlive")) {
 						ImAlive=true;
 					}
+					
+				case "time":
+					System.out.println("Hora recibida: "+parts[2]);
+					String[] times = parts[2].split(":");
+					if(parts[1].equals("wolf")) {
+						time_wolf[0]=Integer.valueOf(times[2]);
+				        time_wolf[1]=Integer.valueOf(times[1]);
+				        time_wolf[2]=Integer.valueOf(times[0]);
+					}
+					else if(parts[1].equals("dragon")) {
+						time_dragon[0]=Integer.valueOf(times[2]);
+						time_dragon[1]=Integer.valueOf(times[1]);
+						time_dragon[2]=Integer.valueOf(times[0]);
+					}
+    				break;
 			}
 		}
 		else {
@@ -335,12 +397,12 @@ public class Panel_VT extends JPanel {
 				
 				switch (text){
 	        	case "coger_dragon":
-	        		if(!user_name.equals(myName)) {
+	        		if(!Dragon_bt.getText().equals("Soltar Dragon")) {
 	        			blockDragon(user_name);
 	        		}
 	        		break;
 	        	case "coger_lobo":
-	        		if(!user_name.equals(myName)) {
+	        		if(!Wolf_bt.getText().equals("Soltar Lobo")) {
 	        			blockWolf(user_name);
 	        		}
 	        		break;
@@ -477,6 +539,85 @@ public class Panel_VT extends JPanel {
 		return alert;
 	}
 	
+	public void time(String totem) {
+		Thread t1 = new Thread(new Runnable() {
+	         public void run() {
+	        	 try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+	        	 if(totem.equals("dragon")) {
+	        		 while(dragon_blocked) {
+	        			 
+	        			 if(time_dragon[0]==60) {
+	        				 time_dragon[0]=0;
+	        				 time_dragon[1]+=1;
+	        			 }
+	        			 if(time_dragon[1]==60) {
+	        				 time_dragon[1]=0;
+	        				 time_dragon[2]+=1;
+	        			 }
+	        			 if(time_dragon[2] != 0) {
+	        				 dragon_time_lb.setText("Retenido: "+ String.valueOf(time_dragon[2]) + " h " + String.valueOf(time_dragon[1]) + " min "+ String.valueOf(time_dragon[0])+ " seg");
+	        			 }
+	        			 else if(time_dragon[1] !=0) {
+	        				 dragon_time_lb.setText("Retenido: "+ String.valueOf(time_dragon[1]) + " min "+ String.valueOf(time_dragon[0])+ " seg");
+	        			 }
+	        			 else {
+	        				 dragon_time_lb.setText("Retenido: "+ String.valueOf(time_dragon[0])+ " seg");
+	        			 }
+	        			 time_dragon[0]++;
+			        	 try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	 }
+	        		 time_dragon[0]=1;
+	        		 time_dragon[1]=0;
+	        		 time_dragon[2]=0;
+	        		 dragon_time_lb.setText("");
+	        	 }
+	        	 else if (totem.equals("wolf")) {
+	        		 while(wolf_blocked) {
+	        			 if(time_wolf[0]==60) {
+	        				 time_wolf[0]=0;
+	        				 time_wolf[1]+=1;
+	        			 }
+	        			 if(time_wolf[1]==60) {
+	        				 time_wolf[1]=0;
+	        				 time_wolf[2]+=1;
+	        			 }
+	        			 if(time_wolf[2] != 0) {
+	        				 wolf_time_lb.setText("Retenido: "+ String.valueOf(time_wolf[2]) + " h " + String.valueOf(time_wolf[1]) + " min "+ String.valueOf(time_wolf[0])+ " seg");
+	        			 }
+	        			 else if(time_wolf[1] !=0) {
+	        				 wolf_time_lb.setText("Retenido: "+ String.valueOf(time_wolf[1]) + " min "+ String.valueOf(time_wolf[0])+ " seg");
+	        			 }
+	        			 else {
+	        				 wolf_time_lb.setText("Retenido: "+ String.valueOf(time_wolf[0])+ " seg");
+	        			 }
+	        			 time_wolf[0]++;
+			        	 try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	 }
+	        		 time_wolf[0]=1;
+	        		 time_wolf[1]=0;
+	        		 time_wolf[2]=0;
+	        		 wolf_time_lb.setText("");
+	        	 }
+	         }
+	    });  
+	    t1.start();
+		
+	}
+	
 	private class CheckConexiones{
     	
     	public CheckConexiones(String action, Panel_VT panel) {
@@ -517,5 +658,4 @@ public class Panel_VT extends JPanel {
             }.start();
         }
     }
-	
 }

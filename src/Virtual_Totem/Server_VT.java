@@ -37,6 +37,8 @@ class Server_VT extends Thread{
 	private int compatible_version = 176;
 	private ArrayList<String> List_wolf, List_dragon;
 	private ArrayList<Integer> Control_List_wolf, Control_List_dragon;
+	private Log_VT log;
+	private Integer time_wolf[], time_dragon[];
 	
     public Server_VT() {
         listaConexiones = new ListaConexiones();
@@ -47,6 +49,15 @@ class Server_VT extends Thread{
         List_dragon = new ArrayList<String>();
         Control_List_wolf = new ArrayList<Integer>();
         Control_List_dragon = new ArrayList<Integer>();
+        log = new Log_VT();
+        time_wolf = new Integer[3];
+        time_wolf[0]=1;
+        time_wolf[1]=0;
+        time_wolf[2]=0;
+        time_dragon = new Integer[3];
+        time_dragon[0]=1;
+        time_dragon[1]=0;
+        time_dragon[2]=0;
     }
 
     private void ejecutar() {
@@ -163,20 +174,43 @@ class Server_VT extends Thread{
 	        	switch (state){
 	        	case "coger_dragon":
 	        		dragon_taken=true;
+	        		if(time_dragon[0]+time_dragon[1]+time_dragon[2] == 1) { //If the time is not already running
+	        			time("dragon");
+	        		}
+	        		else {
+	        			time_dragon[0]=1;
+	        	        time_dragon[1]=0;
+	        	        time_dragon[2]=0;
+	        		}
 	        		dragon_user=name;
 	        		dragon_taken_id=id_client;
+	        		
 	        		break;
 	        	case "coger_lobo":
 	        		lobo_taken=true;
+	        		if(time_wolf[0]+time_wolf[1]+time_wolf[2] == 1) { //If the time is not already running
+	        			time("wolf");
+	        		}
+	        		else {
+	        			time_wolf[0]=1;
+	        			time_wolf[1]=0;
+	        			time_wolf[2]=0;
+	        		}
 	        		lobo_user=name;
 	        		lobo_taken_id=id_client;
 	        		break;
 	        	case "soltar_dragon":
+	        		time_dragon[0]=1;
+	                time_dragon[1]=0;
+	                time_dragon[2]=0;
 	        		if(List_dragon.isEmpty()) {
 	        			dragon_taken=false;
 	        		}
 	        		break;
 	        	case "soltar_lobo":
+	        		time_wolf[0]=1;
+	        		time_wolf[1]=0;
+	        		time_wolf[2]=0;
 	        		if(List_wolf.isEmpty()) {
 	        			lobo_taken=false;
 	        		}
@@ -184,7 +218,7 @@ class Server_VT extends Thread{
 	        	}
         	}
         }
-
+        
         private synchronized void enviar(String texto, int id_client) {
             
         	change_totem(texto,id_client);
@@ -216,7 +250,7 @@ class Server_VT extends Thread{
 	                    e.getMessage();
 	                }
 	                if(out!=null) {
-		                out.println("Are you there?");
+		                out.println("ACK");
 		                out.flush();;
 	                }
             	}
@@ -275,9 +309,13 @@ class Server_VT extends Thread{
                             if(lobo_taken) {
                             	out.println("totem,coger_lobo,"+lobo_user);
                             	out.flush();
+                            	out.println("time,wolf,"+time_wolf[2]+":"+time_wolf[1]+":"+time_wolf[0]);
+                            	out.flush();
                             }
                             if(dragon_taken) {
                             	out.println("totem,coger_dragon,"+dragon_user);
+                            	out.flush();
+                            	out.println("time,dragon,"+time_dragon[2]+":"+time_dragon[1]+":"+time_dragon[0]);
                             	out.flush();
                             }
                             System.out.println("La lista contiene: " + List_wolf);
@@ -297,6 +335,7 @@ class Server_VT extends Thread{
                                    
                                     // todas las conexiones de la lista
                                     // --------------------------------
+                                	log.crearLog(linea);
                                     listaConexiones.enviar(linea,id_client);
                                     // --------------------------------
                             }
@@ -312,6 +351,64 @@ class Server_VT extends Thread{
         }
     }
 
+    public void time(String totem) {
+		Thread t1 = new Thread(new Runnable() {
+	         public void run() {
+	        	 try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+	        	 if(totem.equals("dragon")) {
+	        		 while(dragon_taken) {
+	        			 if(time_dragon[0]==60) {
+	        				 time_dragon[0]=0;
+	        				 time_dragon[1]+=1;
+	        			 }
+	        			 if(time_dragon[1]==60) {
+	        				 time_dragon[1]=0;
+	        				 time_dragon[2]+=1;
+	        			 }
+	        			 time_dragon[0]++;
+	        			 System.out.println("Retenido: "+ String.valueOf(time_dragon[2]) + " h " + String.valueOf(time_dragon[1]) + " min "+ String.valueOf(time_dragon[0])+ " seg");
+			        	 try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	 }
+	        		 time_dragon[0]=1;
+	        		 time_dragon[1]=0;
+	        		 time_dragon[2]=0;
+	        	 }
+	        	 else if (totem.equals("wolf")) {
+	        		 while(lobo_taken) {
+	        			 if(time_wolf[0]==60) {
+	        				 time_wolf[0]=0;
+	        				 time_wolf[1]+=1;
+	        			 }
+	        			 if(time_wolf[1]==60) {
+	        				 time_wolf[1]=0;
+	        				 time_wolf[2]+=1;
+	        			 }
+	        			 time_wolf[0]++;
+			        	 try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	 }
+	        		 time_wolf[0]=1;
+	        	     time_wolf[1]=0;
+	        	     time_wolf[2]=0;
+	        	 }
+	         }
+	    });  
+	    t1.start();
+	}
+    
     private class CheckConexiones{
     	
     	public CheckConexiones() {
