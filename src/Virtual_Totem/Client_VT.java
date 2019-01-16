@@ -17,7 +17,7 @@ class Client_VT {
 	private Socket socketConexion;
 	private PrintWriter out;
 	private BufferedReader in;
-	private Panel_VT Panel_VT;
+	private Generic_client client;
 	private int version;
 	private boolean terminar,check_version;
 
@@ -25,14 +25,14 @@ class Client_VT {
 		socketConexion = null;
 		out = null;
 		in = null;
-		Panel_VT = null;
+		client = null;
 		terminar = false;
 		check_version=false;
 		version=187;
 	}
 
-	public void associate(Panel_VT Panel_VT) {
-		this.Panel_VT = Panel_VT;
+	public void associate(Generic_client client) {
+		this.client = client;
 	}
 
 	public void execute() throws IOException {
@@ -125,7 +125,7 @@ class Client_VT {
 								salir=true;
 							}
 						}
-						Panel_VT.ParseMsg(lineaRecibir);
+						client.ParseMsg(lineaRecibir);
 					}
 				}
 			} catch (IOException ex) {
@@ -154,7 +154,7 @@ class Client_VT {
 							e.printStackTrace();
 						}
                 		System.out.println("COMPROBANDO CONEXIONES");
-                		Panel_VT.send("ACK");
+                		client.send("ACK");
                 	}
                 }
      

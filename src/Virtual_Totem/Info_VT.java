@@ -18,13 +18,13 @@ import javax.swing.ImageIcon;
 
 public class Info_VT extends JDialog {
 
-	private Panel_VT panel;
+	private Generic_client panel;
 	private boolean unlock_dragon, unlock_wolf;
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JButton BT_unlock_dragon, BT_unlock_wolf, okButton, cancelButton;
 	
-	public Info_VT(Panel_VT panel) {
+	public Info_VT(Generic_client panel) {
 		
 		this.panel=panel;
 		this.setVisible(false);

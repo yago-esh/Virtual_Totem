@@ -26,20 +26,21 @@ import javax.swing.SwingConstants;
 import sun.applet.Main;
 
 
-public class Panel_VT extends JPanel {
+public class Generic_client extends JPanel {
 	
-	private Info_VT info;
-	private Alert_VT alert;
-	private Client_VT client;
-	private String myName;
-	private Window_VT window;
+	protected Info_VT info;
+	protected Alert_VT alert;
+	protected Client_VT client;
+	protected String myName;
+	protected Window_VT window;
 	static final long serialVersionUID = 42L;
-	private boolean dragon_blocked, wolf_blocked, ImAlive;
-	private JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
-	private JLabel wolf_time_lb, dragon_time_lb;
-	private Integer time_wolf[], time_dragon[];
+	protected boolean dragon_blocked, wolf_blocked, ImAlive;
+	protected JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
+	protected JLabel wolf_time_lb, dragon_time_lb;
+	protected Integer time_wolf[], time_dragon[];
+	protected JLabel clientIcon;
 
-	public Panel_VT(Client_VT client, Window_VT window) {
+	public Generic_client(Client_VT client, Window_VT window) {
 		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
@@ -48,9 +49,9 @@ public class Panel_VT extends JPanel {
 		
 		this.client=client;
 		this.window=window;
-//		client.associate(this);
-//		info = new Info_VT(Panel_VT.this);
-//		alert = new Alert_VT(this,myName);
+		client.associate(this);
+		info = new Info_VT(Generic_client.this);
+		alert = new Alert_VT(this,myName);
 		setLayout(null);
 		
 		//------------------------------------Buttons------------------------------------------//
@@ -61,8 +62,8 @@ public class Panel_VT extends JPanel {
 		Wolf_bt.setVerticalTextPosition(SwingConstants.CENTER);
 		Wolf_bt.setHorizontalTextPosition(SwingConstants.CENTER);
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
-		Wolf_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_Wolf_bt.jpg")));
-		Wolf_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_Wolf_bt_disabled.jpg")));
+		Wolf_bt.setIcon(new ImageIcon(Generic_client.class.getResource("/Img/bt_Wolf_bt.jpg")));
+		Wolf_bt.setDisabledIcon(new ImageIcon(Generic_client.class.getResource("/Img/bt_Wolf_bt_disabled.jpg")));
 		add(Wolf_bt);
 		
 		Dragon_bt = new JButton("Coger Dragon");		
@@ -72,8 +73,8 @@ public class Panel_VT extends JPanel {
 		Dragon_bt.setVerticalTextPosition(SwingConstants.CENTER);
 		Dragon_bt.setHorizontalTextPosition(SwingConstants.CENTER);
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
-		Dragon_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon.jpg")));
-		Dragon_bt.setDisabledIcon(new ImageIcon(Panel_VT.class.getResource("/Img/bt_dragon_disabled.jpg")));
+		Dragon_bt.setIcon(new ImageIcon(Generic_client.class.getResource("/Img/bt_dragon.jpg")));
+		Dragon_bt.setDisabledIcon(new ImageIcon(Generic_client.class.getResource("/Img/bt_dragon_disabled.jpg")));
 		add(Dragon_bt);
 		
 		Info_bt = new JButton("");
@@ -82,7 +83,7 @@ public class Panel_VT extends JPanel {
 		Info_bt.setBounds(133, 169, 32, 32);
 		Info_bt.setBackground(Color.LIGHT_GRAY);
 		Info_bt.setMargin(new Insets(0, 0, 0, 0));
-		Info_bt.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
+		Info_bt.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
 		add(Info_bt);
 		
 		wolf_alert = new JButton("");
@@ -91,7 +92,7 @@ public class Panel_VT extends JPanel {
 		wolf_alert.setBounds(233, 36, 32, 32);
 		wolf_alert.setBackground(Color.LIGHT_GRAY);
 		wolf_alert.setMargin(new Insets(0, 0, 0, 0));
-		wolf_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		wolf_alert.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
 		add(wolf_alert);
 		
 		dragon_alert = new JButton("");
@@ -100,7 +101,7 @@ public class Panel_VT extends JPanel {
 		dragon_alert.setBounds(233, 106, 32, 32);
 		dragon_alert.setBackground(Color.LIGHT_GRAY);
 		dragon_alert.setMargin(new Insets(0, 0, 0, 0));
-		dragon_alert.setIcon(new ImageIcon(Panel_VT.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		dragon_alert.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
 		add(dragon_alert);
 		
 		wolf_time_lb = new JLabel("");
@@ -124,11 +125,15 @@ public class Panel_VT extends JPanel {
 		Version_lb.setBounds(10, 195, 120, 14);
 		add(Version_lb);
 		
+		clientIcon = new JLabel("");
+		clientIcon.setBounds(10, 63, 50, 50);
+		add(clientIcon);
+		
 		//------------------------------------Labels------------------------------------------//
 		
 		JLabel background = new JLabel("New label");
 		background.setBounds(0, 0, 299, 221);
-		background.setIcon(new ImageIcon(Panel_VT.class.getResource("/Img/Background_main.png")));
+		background.setIcon(new ImageIcon(Generic_client.class.getResource("/Img/Background_main.png")));
 		add(background);
 		
 		//------------------------------------Initialize Variables--------------------------------//
@@ -148,7 +153,7 @@ public class Panel_VT extends JPanel {
 				}
 				else {
 					blockWolf("");
-					new CheckConexiones("soltar_lobo",Panel_VT.this);
+					new CheckConexiones("soltar_lobo",Generic_client.this);
 				}
 			}
 		});
@@ -162,7 +167,7 @@ public class Panel_VT extends JPanel {
 				}
 				else {
 	        		blockDragon("");
-	        		new CheckConexiones("soltar_dragon",Panel_VT.this);
+	        		new CheckConexiones("soltar_dragon",Generic_client.this);
 				}
 			}
 		});
@@ -614,9 +619,9 @@ public class Panel_VT extends JPanel {
 		
 	}
 	
-	private class CheckConexiones{
+	protected class CheckConexiones{
     	
-    	public CheckConexiones(String action, Panel_VT panel) {
+    	public CheckConexiones(String action, Generic_client panel) {
             new Thread() {
                 public void run() {
                 	String user=alert.getUser(action);

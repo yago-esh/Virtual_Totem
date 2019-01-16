@@ -26,12 +26,12 @@ public class Alert_VT extends JDialog {
 	private JButton okButton, cancelButton;
 	private ArrayList<String> list_dragon, list_wolf;
 	private String mode, myName;
-	private Panel_VT panel;
+	private Generic_client panel;
 	private List list;
 	private boolean active_wolf, active_dragon;
 	private boolean action;
 
-	public Alert_VT(Panel_VT panel, String name) {
+	public Alert_VT(Generic_client panel, String name) {
 		
 		this.panel = panel;
 		this.myName = name;
