@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,19 +27,33 @@ class Window_VT extends JFrame {
 
 	private Client_VT cliente;
 	private Read_Data IO;
-	private Panel_VT Panel_VT;
+	private Vodafone_client Vodafone_client;
 	private MenuItem exitItem, showItem;
 	private TrayIcon trayIcon;
 	private String[] options;
 	private CheckboxMenuItem OpcMinimize, OpcSilence;
-	private static int num_options = 2; 
+	private CheckboxMenuItem opcClientVodafone;
+	private CheckboxMenuItem opcClientCaser;
+	private ArrayList<String> clientsList;
+	private ArrayList<CheckboxMenuItem> opcClients;
+	private static int num_options = 3; 
 	static final long serialVersionUID = 42L;
 
 	public Window_VT(Client_VT cliente) {
 		
 		this.cliente = cliente;
-		Panel_VT = new Panel_VT(cliente, this);
-		this.setContentPane(Panel_VT);
+		
+		clientsList = new ArrayList<String>();
+		clientsList.add("Vodafone");
+		clientsList.add("Caser");
+		clientsList.add("Mapfre");
+		clientsList.add("LDA");
+		clientsList.add("Multiasistencia");
+		
+		
+		opcClients = new ArrayList<CheckboxMenuItem>();
+		Vodafone_client = new Vodafone_client(cliente, this);
+		this.setContentPane(Vodafone_client);
 		this.setTitle("Virtual Totem");
 		this.setLocation(810, 425);
 		this.setSize(300, 240);
@@ -117,20 +132,29 @@ class Window_VT extends JFrame {
 	        Image img = Toolkit.getDefaultToolkit().getImage(url);
 	        trayIcon = new TrayIcon(img, "Virtual Totem", popup);
 	        final SystemTray tray = SystemTray.getSystemTray();
-	       
 	        // Create a pop-up menu components
 	        exitItem = new MenuItem("Salir");
 	        showItem = new MenuItem("Abrir");
 	        Menu options = new Menu("Opciones");
 	        OpcMinimize = new CheckboxMenuItem("Minimizar al cerrar");
 	        OpcSilence = new CheckboxMenuItem("Silenciar voz");
+	        Menu clients = new Menu("Clientes");
+	        opcClientVodafone = new CheckboxMenuItem("Vodafone");
+	        opcClientCaser = new CheckboxMenuItem("Caser");
 	       
 	        //Add components to pop-up menu
 	        popup.add(showItem);
 	        popup.addSeparator();
 	        popup.add(options);
+	        popup.addSeparator();
+	        popup.add(clients);
 	        options.add(OpcMinimize);
 	        options.add(OpcSilence);
+	        for (String string : clientsList) {
+	        	CheckboxMenuItem aux = new CheckboxMenuItem(string);
+				opcClients.add(aux);
+				clients.add(aux);
+			}
 	        popup.addSeparator();
 	        popup.add(exitItem);
 	       
@@ -149,7 +173,7 @@ class Window_VT extends JFrame {
 	}
 	
 	public void exit() {
-		if(Panel_VT.cant_exit()) {
+		if(Vodafone_client.cant_exit()) {
 			String ObjButtons[] = {"Yes","No"};
 	        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.",
 	        		"Advertencia de salida",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
@@ -157,14 +181,14 @@ class Window_VT extends JFrame {
 	        {
 	        	getoptions();
 	        	IO.write(options);
-	        	Panel_VT.getAlert_VT().removeMeUserFromList();
+	        	Vodafone_client.getAlert_VT().removeMeUserFromList();
 	        	
-	        	if (Panel_VT.warning_wolf()) {
-	        		Panel_VT.blockWolf("");
+	        	if (Vodafone_client.warning_wolf()) {
+	        		Vodafone_client.blockWolf("");
 	    			cliente.enviar("soltar_lobo");
 	    		}
-	    		if ( Panel_VT.warning_dragon()) {
-	    			Panel_VT.blockDragon("");
+	    		if ( Vodafone_client.warning_dragon()) {
+	    			Vodafone_client.blockDragon("");
 	    			cliente.enviar("soltar_dragon");
 	    		}
 	    		
@@ -182,7 +206,7 @@ class Window_VT extends JFrame {
 		else {
 			getoptions();
         	IO.write(options);
-			Panel_VT.getAlert_VT().removeMeUserFromList();
+			Vodafone_client.getAlert_VT().removeMeUserFromList();
 			Window_VT.this.cliente.terminar();
             System.exit(-1);
 		}
