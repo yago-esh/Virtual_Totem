@@ -12,6 +12,8 @@ import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -19,9 +21,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-import Virtual_Totem.Client_VT;
-import Virtual_Totem.Window_VT;
 
 class Window_VT extends JFrame {
 
@@ -32,8 +31,6 @@ class Window_VT extends JFrame {
 	private TrayIcon trayIcon;
 	private String[] options;
 	private CheckboxMenuItem OpcMinimize, OpcSilence;
-	private CheckboxMenuItem opcClientVodafone;
-	private CheckboxMenuItem opcClientCaser;
 	private ArrayList<String> clientsList;
 	private ArrayList<CheckboxMenuItem> opcClients;
 	private static int num_options = 3; 
@@ -49,7 +46,6 @@ class Window_VT extends JFrame {
 		clientsList.add("Mapfre");
 		clientsList.add("LDA");
 		clientsList.add("Multiasistencia");
-		
 		
 		opcClients = new ArrayList<CheckboxMenuItem>();
 		Vodafone_client = new Vodafone_client(cliente, this);
@@ -70,22 +66,30 @@ class Window_VT extends JFrame {
 		
 		IO = new Read_Data(num_options);
 		options = IO.read();
-		if(options != null) {
+		if(options != null && options[num_options-1] != null) {
 			setoptions();
 		}
 		else {
 			options = new String[num_options];
+			opcClients.get(0).setState(true);
 		}
 	}
 	
 	public void setoptions() {
 		OpcMinimize.setState(Boolean.valueOf(options[0]));
 		OpcSilence.setState(Boolean.valueOf(options[1]));
+		opcClients.get(Integer.valueOf(options[2])).setState(true);;
 	}
 	
 	public void getoptions() {
 		options[0]=String.valueOf(OpcMinimize.getState());
 		options[1]=String.valueOf(OpcSilence.getState());
+		for(int x=0;x<opcClients.size();x++) {
+			if(opcClients.get(x).getState()==true) {
+				options[2]=String.valueOf(x);
+				break;
+			}
+		}
 	}
 	
 	
@@ -119,6 +123,25 @@ class Window_VT extends JFrame {
             }
         });
 		
+		for (CheckboxMenuItem menuItem : opcClients) {
+			menuItem.addItemListener(new ItemListener(){
+	            public void itemStateChanged(ItemEvent ie)
+	            {
+	            	if(menuItem.getState()) {
+	            		for (CheckboxMenuItem clients : opcClients) {
+							if(!clients.equals(menuItem)) {
+								clients.setState(false);
+							}
+						}
+	            	}
+	            	else {
+	            		menuItem.setState(true);
+	            		JOptionPane.showMessageDialog(null,"Es necesario que un cliente esté seleccionado");
+	            	}
+	            }
+	        });
+		}
+		
 	}
 	
 	public void Systray() {
@@ -139,8 +162,6 @@ class Window_VT extends JFrame {
 	        OpcMinimize = new CheckboxMenuItem("Minimizar al cerrar");
 	        OpcSilence = new CheckboxMenuItem("Silenciar voz");
 	        Menu clients = new Menu("Clientes");
-	        opcClientVodafone = new CheckboxMenuItem("Vodafone");
-	        opcClientCaser = new CheckboxMenuItem("Caser");
 	       
 	        //Add components to pop-up menu
 	        popup.add(showItem);
