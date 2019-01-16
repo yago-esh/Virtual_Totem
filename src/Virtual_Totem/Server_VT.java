@@ -27,11 +27,7 @@ class Server_VT extends Thread{
     private String linea;
     private boolean lobo_taken;
 	private boolean dragon_taken;
-	private int lobo_taken_id;
-	private int dragon_taken_id;
 	private int id;
-	private boolean save_lobo;
-	private boolean save_dragon;
 	private String lobo_user;
 	private String dragon_user;
 	private int compatible_version = 187;
@@ -43,8 +39,6 @@ class Server_VT extends Thread{
     public Server_VT() {
         listaConexiones = new ListaConexiones();
         id=1;
-        save_dragon=false;
-        save_lobo=false;
         List_wolf = new ArrayList<String>();
         List_dragon = new ArrayList<String>();
         Control_List_wolf = new ArrayList<Integer>();
@@ -183,7 +177,6 @@ class Server_VT extends Thread{
 	        	        time_dragon[2]=0;
 	        		}
 	        		dragon_user=name;
-	        		dragon_taken_id=id_client;
 	        		
 	        		break;
 	        	case "coger_lobo":
@@ -197,7 +190,6 @@ class Server_VT extends Thread{
 	        			time_wolf[2]=0;
 	        		}
 	        		lobo_user=name;
-	        		lobo_taken_id=id_client;
 	        		break;
 	        	case "soltar_dragon":
 	        		time_dragon[0]=1;
@@ -374,7 +366,6 @@ class Server_VT extends Thread{
 			        	 try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 		        	 }
@@ -396,7 +387,6 @@ class Server_VT extends Thread{
 			        	 try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 		        	 }
@@ -416,7 +406,7 @@ class Server_VT extends Thread{
                 public void run() {
                 	while(true) {
                 		try {
-							this.sleep(60000);
+							Thread.sleep(60000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

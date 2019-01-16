@@ -1,33 +1,29 @@
 package Virtual_Totem;
 
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.Insets;
-import Virtual_Totem.Client_VT;
-import sun.applet.Main;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import sun.applet.Main;
 
 
 public class Panel_VT extends JPanel {
@@ -46,9 +42,9 @@ public class Panel_VT extends JPanel {
 	public Panel_VT(Client_VT client, Window_VT window) {
 		
 		//------------------------------Develop mode--------------------------------
-		//myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
 		//---------------------------------------------------------------------------
-		myName=System.getProperty("user.name");
+//		myName=System.getProperty("user.name");
 		
 		this.client=client;
 		this.window=window;
@@ -123,7 +119,7 @@ public class Panel_VT extends JPanel {
 		dragon_time_lb.setBounds(74, 145, 150, 15);
 		add(dragon_time_lb);
 		
-		JLabel Version_lb = new JLabel("Versi\u00F3n 1.8.8");
+		JLabel Version_lb = new JLabel("Versi\u00F3n DEV");
 		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
 		Version_lb.setBounds(10, 195, 120, 14);
 		add(Version_lb);

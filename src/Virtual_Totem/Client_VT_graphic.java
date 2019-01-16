@@ -7,10 +7,6 @@ import java.net.ServerSocket;
 
 import javax.swing.JOptionPane;
 
-import Virtual_Totem.Client_VT;
-import Virtual_Totem.Client_VT_graphic;
-import Virtual_Totem.Window_VT;
-
 class Client_VT_graphic {
 	
 	private static final int PORT = 9999;
