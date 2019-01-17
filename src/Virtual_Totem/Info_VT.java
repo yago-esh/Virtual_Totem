@@ -132,7 +132,7 @@ public class Info_VT extends JDialog {
 					send = true;
 				}
 				if(unlock_wolf) {
-					panel.send("freedom,soltar_lobo,"+System.getProperty("user.name"));
+					panel.send("freedom,soltar_lobo,"+panel.getClientName()+","+System.getProperty("user.name"));
 					BT_unlock_wolf.setForeground(Color.BLACK);
 					unlock_wolf=false;
 					if(!send)JOptionPane.showMessageDialog(null,"Lobo desbloqueado correctamente");

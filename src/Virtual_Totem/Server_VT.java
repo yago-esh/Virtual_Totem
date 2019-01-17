@@ -161,6 +161,25 @@ class Server_VT extends Thread{
     			case "update":
     				compatible_version = Integer.parseInt(parts[1]);
     				break;
+    				
+    			case "soltar_dragon":
+    				change=false;
+	        		time_dragon[0]=1;
+	                time_dragon[1]=0;
+	                time_dragon[2]=0;
+	        		if(List_dragon.isEmpty()) {
+	        			dragon_taken=false;
+	        		}
+	        		break;
+	        	case "soltar_lobo":
+	        		change=false;
+	        		time_wolf[0]=1;
+	        		time_wolf[1]=0;
+	        		time_wolf[2]=0;
+	        		if(List_wolf.isEmpty()) {
+	        			lobo_taken=false;
+	        		}
+	        		break;
     			}
     			
     		}
