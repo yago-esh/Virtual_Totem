@@ -21,18 +21,19 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 class Window_VT extends JFrame {
 
 	private Client_VT cliente;
 	private Read_Data IO;
-	private Vodafone_client Vodafone_client;
 	private MenuItem exitItem, showItem;
 	private TrayIcon trayIcon;
 	private String[] options;
 	private CheckboxMenuItem OpcMinimize, OpcSilence;
 	private ArrayList<String> clientsList;
 	private ArrayList<CheckboxMenuItem> opcClients;
+	private ArrayList<Generic_client> genericClients;
 	private static int num_options = 3; 
 	static final long serialVersionUID = 42L;
 
@@ -40,16 +41,19 @@ class Window_VT extends JFrame {
 		
 		this.cliente = cliente;
 		
+		
+		genericClients = new ArrayList<Generic_client>();
+		opcClients = new ArrayList<CheckboxMenuItem>();
 		clientsList = new ArrayList<String>();
+		
 		clientsList.add("Vodafone");
+		genericClients.add(new Client_Vodafone(cliente, this));
 		clientsList.add("Caser");
+		genericClients.add(new Client_Caser(cliente, this));
 		clientsList.add("Mapfre");
 		clientsList.add("LDA");
 		clientsList.add("Multiasistencia");
 		
-		opcClients = new ArrayList<CheckboxMenuItem>();
-		Vodafone_client = new Vodafone_client(cliente, this);
-		this.setContentPane(Vodafone_client);
 		this.setTitle("Virtual Totem");
 		this.setLocation(810, 425);
 		this.setSize(300, 240);
@@ -58,8 +62,9 @@ class Window_VT extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		Systray();
-		listeners();
 		initializer();
+		selectClient(Integer.valueOf(options[2]));
+		listeners();
 	}
 	
 	public void initializer() {
@@ -71,11 +76,22 @@ class Window_VT extends JFrame {
 		}
 		else {
 			options = new String[num_options];
+			options[2]="0";
 			opcClients.get(0).setState(true);
 		}
 	}
 	
+	public void selectClient(int num) {
+		
+		this.getContentPane().removeAll();
+		this.getContentPane().add(genericClients.get(num));
+		this.getContentPane().revalidate();
+		this.getContentPane().repaint();
+
+	}
+	
 	public void setoptions() {
+//		System.out.println(Boolean.valueOf(options[0]));
 		OpcMinimize.setState(Boolean.valueOf(options[0]));
 		OpcSilence.setState(Boolean.valueOf(options[1]));
 		opcClients.get(Integer.valueOf(options[2])).setState(true);;
@@ -128,11 +144,18 @@ class Window_VT extends JFrame {
 	            public void itemStateChanged(ItemEvent ie)
 	            {
 	            	if(menuItem.getState()) {
+	            		int x=0;
 	            		for (CheckboxMenuItem clients : opcClients) {
 							if(!clients.equals(menuItem)) {
 								clients.setState(false);
 							}
+							else {
+								System.out.println("esto ha entrado");
+								selectClient(x);
+							}
+							x++;
 						}
+	            		
 	            	}
 	            	else {
 	            		menuItem.setState(true);
@@ -194,7 +217,8 @@ class Window_VT extends JFrame {
 	}
 	
 	public void exit() {
-		if(Vodafone_client.cant_exit()) {
+		Generic_client clientExit = genericClients.get(Integer.valueOf(options[2]));
+		if(clientExit.cant_exit()) {
 			String ObjButtons[] = {"Yes","No"};
 	        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.",
 	        		"Advertencia de salida",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
@@ -202,14 +226,14 @@ class Window_VT extends JFrame {
 	        {
 	        	getoptions();
 	        	IO.write(options);
-	        	Vodafone_client.getAlert_VT().removeMeUserFromList();
+	        	clientExit.getAlert_VT().removeMeUserFromList();
 	        	
-	        	if (Vodafone_client.warning_wolf()) {
-	        		Vodafone_client.blockWolf("");
+	        	if (clientExit.warning_wolf()) {
+	        		clientExit.blockWolf("");
 	    			cliente.enviar("soltar_lobo");
 	    		}
-	    		if ( Vodafone_client.warning_dragon()) {
-	    			Vodafone_client.blockDragon("");
+	    		if ( clientExit.warning_dragon()) {
+	    			clientExit.blockDragon("");
 	    			cliente.enviar("soltar_dragon");
 	    		}
 	    		
@@ -227,7 +251,7 @@ class Window_VT extends JFrame {
 		else {
 			getoptions();
         	IO.write(options);
-			Vodafone_client.getAlert_VT().removeMeUserFromList();
+        	clientExit.getAlert_VT().removeMeUserFromList();
 			Window_VT.this.cliente.terminar();
             System.exit(-1);
 		}
