@@ -47,12 +47,10 @@ class Window_VT extends JFrame {
 		clientsList = new ArrayList<String>();
 		
 		clientsList.add("Vodafone");
-		genericClients.add(new Client_Vodafone(cliente, this));
 		clientsList.add("Caser");
-		genericClients.add(new Client_Caser(cliente, this));
 		clientsList.add("Mapfre");
-		clientsList.add("LDA");
-		clientsList.add("Multiasistencia");
+//		clientsList.add("LDA");
+//		clientsList.add("Multiasistencia");
 		
 		this.setTitle("Virtual Totem");
 		this.setLocation(810, 425);
@@ -84,7 +82,21 @@ class Window_VT extends JFrame {
 	public void selectClient(int num) {
 		
 		this.getContentPane().removeAll();
-		this.getContentPane().add(genericClients.get(num));
+		switch (num) {
+		case 0:
+			this.getContentPane().add(new Client_Vodafone(cliente, this));
+			break;
+			
+		case 1:
+			this.getContentPane().add(new Client_Caser(cliente, this));
+			break;
+			
+		case 2:
+			this.getContentPane().add(new Client_Mapfre(cliente, this));
+			break;
+		default:
+			break;
+		}
 		this.getContentPane().revalidate();
 		this.getContentPane().repaint();
 
@@ -217,7 +229,8 @@ class Window_VT extends JFrame {
 	}
 	
 	public void exit() {
-		Generic_client clientExit = genericClients.get(Integer.valueOf(options[2]));
+		Generic_client clientExit = (Generic_client) this.getContentPane().getComponent(0);
+		
 		if(clientExit.cant_exit()) {
 			String ObjButtons[] = {"Yes","No"};
 	        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.",

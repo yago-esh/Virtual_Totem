@@ -31,7 +31,7 @@ public class Generic_client extends JPanel {
 	protected Info_VT info;
 	protected Alert_VT alert;
 	protected Client_VT client;
-	protected String myName;
+	protected String myName, clientName;
 	protected Window_VT window;
 	static final long serialVersionUID = 42L;
 	protected boolean dragon_blocked, wolf_blocked, ImAlive;
@@ -40,7 +40,7 @@ public class Generic_client extends JPanel {
 	protected Integer time_wolf[], time_dragon[];
 	protected JLabel clientIcon;
 
-	public Generic_client(Client_VT client, Window_VT window) {
+	public Generic_client(Client_VT client, Window_VT window, String clientName) {
 		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
@@ -49,6 +49,7 @@ public class Generic_client extends JPanel {
 		
 		this.client=client;
 		this.window=window;
+		this.clientName=clientName;
 		client.associate(this);
 		info = new Info_VT(Generic_client.this);
 		alert = new Alert_VT(this,myName);
