@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 class Window_VT extends JFrame {
 
@@ -33,16 +32,13 @@ class Window_VT extends JFrame {
 	private CheckboxMenuItem OpcMinimize, OpcSilence;
 	private ArrayList<String> clientsList;
 	private ArrayList<CheckboxMenuItem> opcClients;
-	private ArrayList<Generic_client> genericClients;
 	private static int num_options = 3; 
 	static final long serialVersionUID = 42L;
 
 	public Window_VT(Client_VT cliente) {
 		
 		this.cliente = cliente;
-		
-		
-		genericClients = new ArrayList<Generic_client>();
+
 		opcClients = new ArrayList<CheckboxMenuItem>();
 		clientsList = new ArrayList<String>();
 		

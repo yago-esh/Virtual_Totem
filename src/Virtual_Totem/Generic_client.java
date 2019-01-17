@@ -362,7 +362,7 @@ public class Generic_client extends JPanel {
 				okAction="coger_lobo";
 				promt("free_wolf");
 			}
-			if (action.equals("soltar_dragon")) {
+			if (action.equals("soltar_dragon,"+clientName)) {
 				send("CleanList,dragon,0");
 				totem="dragon";
 				okAction="coger_dragon";
@@ -379,7 +379,7 @@ public class Generic_client extends JPanel {
 	        		Wolf_bt.setText("Soltar Lobo");
 					Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
 				}
-				if (action.equals("soltar_dragon")) {
+				if (action.equals("soltar_dragon,"+clientName)) {
 					freeDragon(name);
 					Dragon_bt.setText("Soltar Dragon");
 					Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
@@ -482,7 +482,7 @@ public class Generic_client extends JPanel {
 }
 	
 	public void send(String text) {
-		System.out.println("We are sending: "+text);
+		System.out.println("We are sending: "+text+","+clientName);
 		client.enviar(text+","+clientName);
 	}
 	
@@ -642,7 +642,7 @@ public class Generic_client extends JPanel {
 	                		
 	                	if(!CanGo) {
 	                		if (action.equals("soltar_lobo,"+clientName))	panel.send("CleanList,wolf,0");
-	        				if (action.equals("soltar_dragon"))	panel.send("CleanList,dragon,0");
+	        				if (action.equals("soltar_dragon,"+clientName))	panel.send("CleanList,dragon,0");
 	        				try {
 	        					//Wait 2 second to let enough time to the server to read the last message and send us the CleanList back.
 								Thread.sleep(2000);

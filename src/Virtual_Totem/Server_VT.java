@@ -25,33 +25,20 @@ class Server_VT extends Thread{
     private ServerSocket socketServidor;
     private Socket socketConexion;
     private String linea;
-    private boolean lobo_taken;
-	private boolean dragon_taken;
+    private ArrayList<Server_Client> serverClient;
 	private int id;
-	private String lobo_user;
-	private String dragon_user;
 	private int compatible_version = 187;
-	private ArrayList<String> List_wolf, List_dragon;
-	private ArrayList<Integer> Control_List_wolf, Control_List_dragon;
 	private Log_VT log;
-	private Integer time_wolf[], time_dragon[];
 	
     public Server_VT() {
         listaConexiones = new ListaConexiones();
         id=1;
-        List_wolf = new ArrayList<String>();
-        List_dragon = new ArrayList<String>();
-        Control_List_wolf = new ArrayList<Integer>();
-        Control_List_dragon = new ArrayList<Integer>();
         log = new Log_VT();
-        time_wolf = new Integer[3];
-        time_wolf[0]=1;
-        time_wolf[1]=0;
-        time_wolf[2]=0;
-        time_dragon = new Integer[3];
-        time_dragon[0]=1;
-        time_dragon[1]=0;
-        time_dragon[2]=0;
+        
+        serverClient = new ArrayList<Server_Client>();
+        serverClient.add(new Server_Client("Vodafone"));
+        serverClient.add(new Server_Client("Caser"));
+        serverClient.add(new Server_Client("Mapfre"));
     }
 
     private void ejecutar() {
@@ -108,22 +95,28 @@ class Server_VT extends Thread{
         
         private synchronized void change_totem(String state, int id_client) {
         	
-
         	boolean change=true;
         	String name = "";
+        	Server_Client clientSelected = null;
         	if(state.indexOf(",") != -1) {
     			
     			String[] parts = state.split(",");
+    			for (Server_Client client : serverClient) {
+					if(client.getName().equals(parts[parts.length-1])) {
+						clientSelected = client;
+						break;
+					}
+				}
     			switch(parts[0]) {
     			
     			case "list":
     				if(parts[1].equals("coger_lobo")) {
-    					Control_List_wolf.add(id_client);
-    					List_wolf.add(parts[2]);
+    					clientSelected.getTotemTopControlList().add(id_client);
+    					clientSelected.getTotemTopList().add(parts[2]);
     				}
     				if(parts[1].equals("coger_dragon")) {
-    					Control_List_dragon.add(id_client);
-    					List_dragon.add(parts[2]);
+    					clientSelected.getTotemBotControlList().add(id_client);
+    					clientSelected.getTotemBotList().add(parts[2]);
     				}
     				change=false;
     				break;
@@ -136,26 +129,26 @@ class Server_VT extends Thread{
     			case "CleanList": case "CleanServer":
     				change=false;
     				if(parts[1].equals("wolf")) {
-    					List_wolf.remove(Integer.parseInt(parts[2]));
-    					Control_List_wolf.remove(Integer.parseInt(parts[2]));
+    					clientSelected.getTotemTopList().remove(Integer.parseInt(parts[2]));
+    					clientSelected.getTotemTopControlList().remove(Integer.parseInt(parts[2]));
     				}
     				else if (parts[1].equals("dragon")) {
-    					List_dragon.remove(Integer.parseInt(parts[2]));
-    					Control_List_dragon.remove(Integer.parseInt(parts[2]));
+    					clientSelected.getTotemBotList().remove(Integer.parseInt(parts[2]));
+    					clientSelected.getTotemBotControlList().remove(Integer.parseInt(parts[2]));
     				}
     				break;
     				
     			case "freedom":
     				change=false;
     				if(parts[1].equals("soltar_lobo")) {
-    					Control_List_wolf.clear();
-    					List_wolf.clear();
-    					lobo_taken=false;
+    					clientSelected.getTotemTopControlList().clear();
+    					clientSelected.getTotemTopList().clear();
+    					clientSelected.setTotemTopTaken(false);
     				}
     				else if (parts[1].equals("soltar_dragon")) {
-    					Control_List_dragon.clear();
-    					List_dragon.clear();
-    					dragon_taken=false;
+    					clientSelected.getTotemBotControlList().clear();
+    					clientSelected.getTotemBotList().clear();
+    					clientSelected.setTotemBotTaken(false);
     				}
     				break;
     			case "update":
@@ -164,20 +157,16 @@ class Server_VT extends Thread{
     				
     			case "soltar_dragon":
     				change=false;
-	        		time_dragon[0]=1;
-	                time_dragon[1]=0;
-	                time_dragon[2]=0;
-	        		if(List_dragon.isEmpty()) {
-	        			dragon_taken=false;
+    				clientSelected.setTotemBotTime();
+	        		if(clientSelected.getTotemBotList().isEmpty()) {
+	        			clientSelected.setTotemBotTaken(false);
 	        		}
 	        		break;
 	        	case "soltar_lobo":
 	        		change=false;
-	        		time_wolf[0]=1;
-	        		time_wolf[1]=0;
-	        		time_wolf[2]=0;
-	        		if(List_wolf.isEmpty()) {
-	        			lobo_taken=false;
+	        		clientSelected.setTotemTopTime();
+	        		if(clientSelected.getTotemTopList().isEmpty()) {
+	        			clientSelected.setTotemTopTaken(false);
 	        		}
 	        		break;
     			}
@@ -186,44 +175,36 @@ class Server_VT extends Thread{
         	if(change) {
 	        	switch (state){
 	        	case "coger_dragon":
-	        		dragon_taken=true;
-	        		if(time_dragon[0]+time_dragon[1]+time_dragon[2] == 1) { //If the time is not already running
-	        			time("dragon");
+	        		clientSelected.setTotemBotTaken(true);
+	        		if(clientSelected.getTotemBotTime() == 1) { //If the time is not already running
+	        			time("dragon",clientSelected);
 	        		}
 	        		else {
-	        			time_dragon[0]=1;
-	        	        time_dragon[1]=0;
-	        	        time_dragon[2]=0;
+	        			clientSelected.setTotemBotTime();
 	        		}
-	        		dragon_user=name;
+	        		clientSelected.setTotemBotUser(name);
 	        		
 	        		break;
 	        	case "coger_lobo":
-	        		lobo_taken=true;
-	        		if(time_wolf[0]+time_wolf[1]+time_wolf[2] == 1) { //If the time is not already running
-	        			time("wolf");
+	        		clientSelected.setTotemTopTaken(true);
+	        		if(clientSelected.getTotemTopTime() == 1) { //If the time is not already running
+	        			time("wolf",clientSelected);
 	        		}
 	        		else {
-	        			time_wolf[0]=1;
-	        			time_wolf[1]=0;
-	        			time_wolf[2]=0;
+	        			clientSelected.setTotemTopTime();
 	        		}
-	        		lobo_user=name;
+	        		clientSelected.setTotemTopUser(name);
 	        		break;
 	        	case "soltar_dragon":
-	        		time_dragon[0]=1;
-	                time_dragon[1]=0;
-	                time_dragon[2]=0;
-	        		if(List_dragon.isEmpty()) {
-	        			dragon_taken=false;
+	        		clientSelected.setTotemBotTime();
+	        		if(clientSelected.getTotemBotList().isEmpty()) {
+	        			clientSelected.setTotemBotTaken(false);
 	        		}
 	        		break;
 	        	case "soltar_lobo":
-	        		time_wolf[0]=1;
-	        		time_wolf[1]=0;
-	        		time_wolf[2]=0;
-	        		if(List_wolf.isEmpty()) {
-	        			lobo_taken=false;
+	        		clientSelected.setTotemTopTime();
+	        		if(clientSelected.getTotemTopList().isEmpty()) {
+	        			clientSelected.setTotemTopTaken(false);
 	        		}
 	        		break;
 	        	}
@@ -277,17 +258,20 @@ class Server_VT extends Thread{
         		enviar("soltar_lobo",id_client);
         	}
         	*/
-        	for (int x=0 ; x<Control_List_wolf.size() ; x++) {
-        		if(id_client == Control_List_wolf.get(x)) {
-        			enviar("CleanList,wolf,"+x,id_client);
-        		}
-        	}
-        	
-        	for (int x=0 ; x<Control_List_dragon.size() ; x++) {
-        		if(id_client == Control_List_dragon.get(x)) {
-        			enviar("CleanList,dragon,"+List_dragon.get(x),id_client);
-        		}
-        	}  
+        	for (Server_Client server_Client : serverClient) {
+        		for (int x=0 ; x<server_Client.getTotemTopControlList().size() ; x++) {
+            		if(id_client == server_Client.getTotemTopControlList().get(x)) {
+            			enviar("CleanList,wolf,"+x,id_client);
+            		}
+            	}
+            	
+            	for (int x=0 ; x<server_Client.getTotemBotControlList().size() ; x++) {
+            		if(id_client == server_Client.getTotemBotControlList().get(x)) {
+            			enviar("CleanList,dragon,"+x,id_client);
+            		}
+            	}
+			}
+        	  
         }
     }
 
@@ -317,28 +301,31 @@ class Server_VT extends Thread{
                                     "Servidor> Obtenido flujo de lectura");
                             out.println(compatible_version);
                             out.flush();
-                            if(lobo_taken) {
-                            	out.println("totem,coger_lobo,"+lobo_user);
-                            	out.flush();
-                            	out.println("time,wolf,"+time_wolf[2]+":"+time_wolf[1]+":"+time_wolf[0]);
-                            	out.flush();
-                            }
-                            if(dragon_taken) {
-                            	out.println("totem,coger_dragon,"+dragon_user);
-                            	out.flush();
-                            	out.println("time,dragon,"+time_dragon[2]+":"+time_dragon[1]+":"+time_dragon[0]);
-                            	out.flush();
-                            }
-                            System.out.println("La lista contiene: " + List_wolf);
-        					System.out.println();
-                            for(String user_list: List_wolf) {
-                            	out.println("list,coger_lobo,"+user_list);
-                            	out.flush();
-                            }
-                            for(String user_list: List_dragon) {
-                            	out.println("list,coger_dragon,"+user_list);
-                            	out.flush();
-                            }
+                            for (Server_Client server_Client : serverClient) {
+								if(server_Client.isTotemTopTaken()) {
+									out.println("totem,coger_lobo,"+server_Client.getTotemTopUser()+","+server_Client.getName());
+	                            	out.flush();
+	                            	out.println("time,wolf,"+server_Client.getTotemTopTimeParse()+","+server_Client.getName());
+	                            	out.flush();
+								}
+								if(server_Client.isTotemBotTaken()) {
+									out.println("totem,coger_dragon,"+server_Client.getTotemBotUser()+","+server_Client.getName());
+	                            	out.flush();
+	                            	out.println("time,dragon,"+server_Client.getTotemBotTimeParse()+","+server_Client.getName());
+	                            	out.flush();
+								}
+							}
+                            for (Server_Client server_Client : serverClient) {
+                            	for(String user_list: server_Client.getTotemTopList()) {
+                                	out.println("list,coger_lobo,"+user_list+","+server_Client.getName());
+                                	out.flush();
+                                }
+                                for(String user_list: server_Client.getTotemBotList()) {
+                                	out.println("list,coger_dragon,"+user_list+","+server_Client.getName());
+                                	out.flush();
+                                }
+							}
+
                             // Leer y escribir en los flujos
                             while ((linea = in.readLine()) != null) {
                                 System.out.println("Servidor> Recibida linea = "
@@ -362,7 +349,7 @@ class Server_VT extends Thread{
         }
     }
 
-    public void time(String totem) {
+    public void time(String totem, Server_Client clientSelected) {
 		Thread t1 = new Thread(new Runnable() {
 	         public void run() {
 	        	 try {
@@ -371,47 +358,26 @@ class Server_VT extends Thread{
 					e1.printStackTrace();
 				}
 	        	 if(totem.equals("dragon")) {
-	        		 while(dragon_taken) {
-	        			 if(time_dragon[0]==60) {
-	        				 time_dragon[0]=0;
-	        				 time_dragon[1]+=1;
-	        			 }
-	        			 if(time_dragon[1]==60) {
-	        				 time_dragon[1]=0;
-	        				 time_dragon[2]+=1;
-	        			 }
-	        			 time_dragon[0]++;
-	        			 System.out.println("Retenido: "+ String.valueOf(time_dragon[2]) + " h " + String.valueOf(time_dragon[1]) + " min "+ String.valueOf(time_dragon[0])+ " seg");
+	        		 while(clientSelected.isTotemBotTaken()) {
+	        			 clientSelected.totemBotTimeIncrement();
 			        	 try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 		        	 }
-	        		 time_dragon[0]=1;
-	        		 time_dragon[1]=0;
-	        		 time_dragon[2]=0;
+	        		 clientSelected.setTotemBotTime();
 	        	 }
 	        	 else if (totem.equals("wolf")) {
-	        		 while(lobo_taken) {
-	        			 if(time_wolf[0]==60) {
-	        				 time_wolf[0]=0;
-	        				 time_wolf[1]+=1;
-	        			 }
-	        			 if(time_wolf[1]==60) {
-	        				 time_wolf[1]=0;
-	        				 time_wolf[2]+=1;
-	        			 }
-	        			 time_wolf[0]++;
+	        		 while(clientSelected.isTotemTopTaken()) {
+	        			 clientSelected.totemTopTimeIncrement();
 			        	 try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 		        	 }
-	        		 time_wolf[0]=1;
-	        	     time_wolf[1]=0;
-	        	     time_wolf[2]=0;
+	        		 clientSelected.setTotemTopTime();
 	        	 }
 	         }
 	    });  
