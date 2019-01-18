@@ -19,7 +19,8 @@ class Client_VT {
 	private BufferedReader in;
 	private Generic_client client;
 	private int version;
-	private boolean terminar,check_version;
+	private boolean terminar,check_version,parse_id;
+	private String myId;
 
 	public Client_VT() {
 		socketConexion = null;
@@ -28,6 +29,7 @@ class Client_VT {
 		client = null;
 		terminar = false;
 		check_version=false;
+		parse_id=false;
 		version=187;
 	}
 
@@ -100,7 +102,7 @@ class Client_VT {
 	private class HiloRecibir extends Thread {
 
 		private BufferedReader in;
-
+		
 		private HiloRecibir(BufferedReader in) {
 			this.in = in;
 		}
@@ -124,6 +126,12 @@ class Client_VT {
 								System.exit(-1);
 								salir=true;
 							}
+						}
+						else if(!parse_id){
+							parse_id=true;
+							myId = lineaRecibir;
+							System.out.println("Mi Id es: "+myId);
+							client.setId(myId);
 						}
 						client.ParseMsg(lineaRecibir);
 					}
@@ -161,4 +169,15 @@ class Client_VT {
             }.start();
         }
     }
+
+	
+	public String getMyId() {
+		return myId;
+	}
+
+	public void setMyId(String myId) {
+		this.myId = myId;
+	}
+	
+	
 }

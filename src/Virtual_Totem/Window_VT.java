@@ -163,7 +163,7 @@ class Window_VT extends JFrame {
 									}
 									else {
 										selectClient(x);
-										cliente.enviar("clientChanged,x,"+getClient().getMyName()+","+getClient().getClientName());
+										cliente.enviar("clientChanged,"+cliente.getMyId()+","+getClient().getMyName()+","+getClient().getClientName());
 									}
 									x++;
 								}

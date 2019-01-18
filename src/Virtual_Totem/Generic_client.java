@@ -31,7 +31,7 @@ public class Generic_client extends JPanel {
 	protected Info_VT info;
 	protected Alert_VT alert;
 	protected Client_VT client;
-	protected String myName, clientName;
+	protected String myName, clientName, id;
 	protected Window_VT window;
 	static final long serialVersionUID = 42L;
 	protected boolean dragon_blocked, wolf_blocked, ImAlive;
@@ -205,6 +205,15 @@ public class Generic_client extends JPanel {
         time_dragon[2]=0;
 	}
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+		System.out.println("id puesto a: "+id);
+	}
+
 	public String getClientName() {
 		return clientName;
 	}

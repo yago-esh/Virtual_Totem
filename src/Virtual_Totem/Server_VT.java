@@ -32,7 +32,7 @@ class Server_VT extends Thread{
 	
     public Server_VT() {
         listaConexiones = new ListaConexiones();
-        id=1;
+        id=0;
         log = new Log_VT();
         
         serverClient = new ArrayList<Server_Client>();
@@ -172,20 +172,35 @@ class Server_VT extends Thread{
     				}
 	        		break;
     			case "clientChanged":
+    				
+    				Iterator<Socket> iter = listaConexiones.iterator();
+    	            PrintWriter out = null;
+    	            try {
+						out = new PrintWriter(listaConexiones.get(Integer.parseInt(parts[1])).getOutputStream());
+					} catch (NumberFormatException | IOException e) {
+						e.printStackTrace();
+					}
+    				
     				if(clientSelected.isTotemTopTaken()) {
-    					sendMsgtoClients("totem,coger_lobo,"+clientSelected.getTotemTopUser()+","+clientSelected.getName());
-    					sendMsgtoClients("time,wolf,"+clientSelected.getTotemTopTimeParse()+","+clientSelected.getName());
+    					out.println("totem,coger_lobo,"+clientSelected.getTotemTopUser()+","+clientSelected.getName());
+		                out.flush();
+		                out.println("time,wolf,"+clientSelected.getTotemTopTimeParse()+","+clientSelected.getName());
+		                out.flush();
     				}
     				if(clientSelected.isTotemBotTaken()) {
-    					sendMsgtoClients("totem,coger_dragon,"+clientSelected.getTotemBotUser()+","+clientSelected.getName());
-    	            	sendMsgtoClients("time,dragon,"+clientSelected.getTotemBotTimeParse()+","+clientSelected.getName());
+    					out.println("totem,coger_dragon,"+clientSelected.getTotemBotUser()+","+clientSelected.getName());
+		                out.flush();
+		                out.println("time,dragon,"+clientSelected.getTotemBotTimeParse()+","+clientSelected.getName());
+		                out.flush();
     				}
     				
 		        	for(String user_list: clientSelected.getTotemTopList()) {
-		        		sendMsgtoClients("list,coger_lobo,"+user_list+","+clientSelected.getName());
+		        		out.println("list,coger_lobo,"+user_list+","+clientSelected.getName());
+		                out.flush();
 		            }
 		            for(String user_list: clientSelected.getTotemBotList()) {
-		            	sendMsgtoClients("list,coger_dragon,"+user_list+","+clientSelected.getName());
+		            	out.println("list,coger_dragon,"+user_list+","+clientSelected.getName());
+		                out.flush();
 		            }
     			}
     			
@@ -333,6 +348,8 @@ class Server_VT extends Thread{
                             System.out.println(
                                     "Servidor> Obtenido flujo de lectura");
                             out.println(compatible_version);
+                            out.flush();
+                            out.println(id);
                             out.flush();
                             sendInfoServer(out);
                             // Leer y escribir en los flujos
