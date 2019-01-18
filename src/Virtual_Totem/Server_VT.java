@@ -171,6 +171,15 @@ class Server_VT extends Thread{
     	        		}
     				}
 	        		break;
+    			case "clientChanged":
+    				if(clientSelected.isTotemTopTaken()) {
+    					sendMsgtoClients("totem,coger_lobo,"+clientSelected.getTotemTopUser()+","+clientSelected.getName());
+    					sendMsgtoClients("time,wolf,"+clientSelected.getTotemTopTimeParse()+","+clientSelected.getName());
+    				}
+    				if(clientSelected.isTotemBotTaken()) {
+    					sendMsgtoClients("totem,coger_dragon,"+clientSelected.getTotemBotUser()+","+clientSelected.getName());
+    	            	sendMsgtoClients("time,dragon,"+clientSelected.getTotemBotTimeParse()+","+clientSelected.getName());
+    				}
     			}
     			
     		}
@@ -204,6 +213,11 @@ class Server_VT extends Thread{
         private synchronized void enviar(String texto, int id_client) {
             
         	change_totem(texto,id_client);
+            sendMsgtoClients(texto);
+        }
+        
+        private synchronized void sendMsgtoClients(String texto) {
+            
             Iterator<Socket> iter = listaConexiones.iterator();
             PrintWriter out = null;
             if(!(texto.indexOf("ACK")!=-1)) {
@@ -243,13 +257,6 @@ class Server_VT extends Thread{
         
         private synchronized void break_free(int id_client) {
         	System.out.println("comprobacion_break_free");
-        	/*if(dragon_taken_id == id_client) {
-        		enviar("soltar_dragon",id_client);
-        	}
-        	if (lobo_taken_id == id_client) {
-        		enviar("soltar_lobo",id_client);
-        	}
-        	*/
         	for (Server_Client server_Client : serverClient) {
         		for (int x=0 ; x<server_Client.getTotemTopControlList().size() ; x++) {
             		if(id_client == server_Client.getTotemTopControlList().get(x)) {
@@ -267,6 +274,33 @@ class Server_VT extends Thread{
         }
     }
 
+    private void sendInfoServer(PrintWriter out) {
+    	for (Server_Client server_Client : serverClient) {
+			if(server_Client.isTotemTopTaken()) {
+				out.println("totem,coger_lobo,"+server_Client.getTotemTopUser()+","+server_Client.getName());
+            	out.flush();
+            	out.println("time,wolf,"+server_Client.getTotemTopTimeParse()+","+server_Client.getName());
+            	out.flush();
+			}
+			if(server_Client.isTotemBotTaken()) {
+				out.println("totem,coger_dragon,"+server_Client.getTotemBotUser()+","+server_Client.getName());
+            	out.flush();
+            	out.println("time,dragon,"+server_Client.getTotemBotTimeParse()+","+server_Client.getName());
+            	out.flush();
+			}
+		}
+        for (Server_Client server_Client : serverClient) {
+        	for(String user_list: server_Client.getTotemTopList()) {
+            	out.println("list,coger_lobo,"+user_list+","+server_Client.getName());
+            	out.flush();
+            }
+            for(String user_list: server_Client.getTotemBotList()) {
+            	out.println("list,coger_dragon,"+user_list+","+server_Client.getName());
+            	out.flush();
+            }
+		}
+    }
+    
     private class HiloConexiones {
 
         public HiloConexiones(int id) {
@@ -293,31 +327,7 @@ class Server_VT extends Thread{
                                     "Servidor> Obtenido flujo de lectura");
                             out.println(compatible_version);
                             out.flush();
-                            for (Server_Client server_Client : serverClient) {
-								if(server_Client.isTotemTopTaken()) {
-									out.println("totem,coger_lobo,"+server_Client.getTotemTopUser()+","+server_Client.getName());
-	                            	out.flush();
-	                            	out.println("time,wolf,"+server_Client.getTotemTopTimeParse()+","+server_Client.getName());
-	                            	out.flush();
-								}
-								if(server_Client.isTotemBotTaken()) {
-									out.println("totem,coger_dragon,"+server_Client.getTotemBotUser()+","+server_Client.getName());
-	                            	out.flush();
-	                            	out.println("time,dragon,"+server_Client.getTotemBotTimeParse()+","+server_Client.getName());
-	                            	out.flush();
-								}
-							}
-                            for (Server_Client server_Client : serverClient) {
-                            	for(String user_list: server_Client.getTotemTopList()) {
-                                	out.println("list,coger_lobo,"+user_list+","+server_Client.getName());
-                                	out.flush();
-                                }
-                                for(String user_list: server_Client.getTotemBotList()) {
-                                	out.println("list,coger_dragon,"+user_list+","+server_Client.getName());
-                                	out.flush();
-                                }
-							}
-
+                            sendInfoServer(out);
                             // Leer y escribir en los flujos
                             while ((linea = in.readLine()) != null) {
                                 System.out.println("Servidor> Recibida linea = "

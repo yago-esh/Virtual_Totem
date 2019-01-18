@@ -116,6 +116,9 @@ class Window_VT extends JFrame {
 		}
 	}
 	
+	public Generic_client getClient() {
+		return (Generic_client) this.getContentPane().getComponent(0);
+	}
 	
 	public void listeners() {
 		this.addWindowListener(new WindowAdapter() {
@@ -151,24 +154,28 @@ class Window_VT extends JFrame {
 			menuItem.addItemListener(new ItemListener(){
 	            public void itemStateChanged(ItemEvent ie)
 	            {
-	            	if(menuItem.getState()) {
-	            		int x=0;
-	            		for (CheckboxMenuItem clients : opcClients) {
-							if(!clients.equals(menuItem)) {
-								clients.setState(false);
-							}
-							else {
-								System.out.println("esto ha entrado");
-								selectClient(x);
-							}
-							x++;
-						}
-	            		
-	            	}
-	            	else {
-	            		menuItem.setState(true);
-	            		JOptionPane.showMessageDialog(null,"Es necesario que un cliente esté seleccionado");
-	            	}
+	            		if(menuItem.getState()) {
+	            			if(canIExitClient()) {
+			            		int x=0;
+			            		for (CheckboxMenuItem clients : opcClients) {
+									if(!clients.equals(menuItem)) {
+										clients.setState(false);
+									}
+									else {
+										selectClient(x);
+										cliente.enviar("clientChanged,x,"+getClient().getMyName()+","+getClient().getClientName());
+									}
+									x++;
+								}
+	            			}
+	            			else {
+	    	            		menuItem.setState(false);
+	    	            	}
+		            	}
+		            	else {
+		            		menuItem.setState(true);
+		            		JOptionPane.showMessageDialog(null,"Es necesario que un cliente esté seleccionado");
+		            	}
 	            }
 	        });
 		}
@@ -224,17 +231,14 @@ class Window_VT extends JFrame {
 		this.setVisible(true);
 	}
 	
-	public void exit() {
-		Generic_client clientExit = (Generic_client) this.getContentPane().getComponent(0);
-		
+	public boolean canIExitClient() {
+		Generic_client clientExit = getClient();
 		if(clientExit.cant_exit()) {
 			String ObjButtons[] = {"Yes","No"};
 	        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.",
 	        		"Advertencia de salida",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 	        if(PromptResult==JOptionPane.YES_OPTION)
 	        {
-	        	getoptions();
-	        	IO.write(options);
 	        	clientExit.getAlert_VT().removeMeUserFromList();
 	        	
 	        	if (clientExit.warning_wolf()) {
@@ -245,22 +249,26 @@ class Window_VT extends JFrame {
 	    			clientExit.blockDragon("");
 	    			cliente.enviar("freeTotem,soltar_dragon,"+clientExit.getMyName()+","+clientExit.getClientName());
 	    		}
-	    		
 	        	try {
 	        		//Need to wait 2 second to let enough time to the server to read the last message and be available to read the next one before close the flows.
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-	        	Window_VT.this.cliente.terminar();
-	            System.exit(-1);
+	        	return true;
 	        }
+	        else {
+	        	return false;
+	        }
+		}else {
+			return true;
 		}
-		else {
+	}
+	
+	public void exit() {
+		if(canIExitClient()) {
 			getoptions();
         	IO.write(options);
-        	clientExit.getAlert_VT().removeMeUserFromList();
 			Window_VT.this.cliente.terminar();
             System.exit(-1);
 		}
