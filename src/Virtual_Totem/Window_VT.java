@@ -261,6 +261,7 @@ class Window_VT extends JFrame {
 	        	return false;
 	        }
 		}else {
+			clientExit.getAlert_VT().removeMeUserFromList();
 			return true;
 		}
 	}

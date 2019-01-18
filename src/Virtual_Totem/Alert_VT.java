@@ -141,21 +141,20 @@ public class Alert_VT extends JDialog {
 	public void showIt(String totem) {
 		mode=totem;
 		this.setVisible(true);
-		
-		if(mode.equals("coger_lobo")) {
-			okButton.setEnabled(active_wolf);
-			this.setTitle("Cola de usuarios para el lobo");
-			for(String user: list_wolf) {
-				list.add(user);
+			if(mode.equals("coger_lobo")) {
+				okButton.setEnabled(active_wolf);
+				this.setTitle("Cola de usuarios para el lobo");
+				for(String user: list_wolf) {
+					list.add(user);
+				}
 			}
-		}
-		else if (mode.equals("coger_dragon")) {
-			okButton.setEnabled(active_dragon);
-			this.setTitle("Cola de usuarios para el dragon");
-			for(String user: list_dragon) {
-				list.add(user);
+			else if (mode.equals("coger_dragon")) {
+				okButton.setEnabled(active_dragon);
+				this.setTitle("Cola de usuarios para el dragon");
+				for(String user: list_dragon) {
+					list.add(user);
+				}
 			}
-		}
 	}
 	
 	public void hideIt() {
