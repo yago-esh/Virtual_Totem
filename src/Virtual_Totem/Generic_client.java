@@ -209,6 +209,9 @@ public class Generic_client extends JPanel {
 		return clientName;
 	}
 	
+	public String getMyName() {
+		return myName;
+	}
 	public void freeWolf(String user_name) {
 		
 		if (Wolf_bt.getText() == "Soltar Lobo") {
@@ -349,7 +352,7 @@ public class Generic_client extends JPanel {
 							
 		    				break;
 						case "freeTotem":
-							chekList(parts[1]+","+parts[3],"");
+							chekList(parts[1],"");
 		    			default:
 		    				chekList(msg,"");
 					}
@@ -364,13 +367,13 @@ public class Generic_client extends JPanel {
 			
 			String totem="";
 			String okAction="";
-			if (action.equals("soltar_lobo,"+clientName)) {
+			if (action.equals("soltar_lobo")) {
 				send("CleanList,wolf,0");
 				totem="lobo";
 				okAction="coger_lobo";
 				promt("free_wolf");
 			}
-			if (action.equals("soltar_dragon,"+clientName)) {
+			if (action.equals("soltar_dragon")) {
 				send("CleanList,dragon,0");
 				totem="dragon";
 				okAction="coger_dragon";
@@ -382,12 +385,12 @@ public class Generic_client extends JPanel {
 	        		"Liberación del Totem",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 	        if(PromptResult==JOptionPane.YES_OPTION)
 	        {
-	        	if (action.equals("soltar_lobo,"+clientName)) {
+	        	if (action.equals("soltar_lobo")) {
 	        		freeWolf(name);
 	        		Wolf_bt.setText("Soltar Lobo");
 					Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
 				}
-				if (action.equals("soltar_dragon,"+clientName)) {
+				if (action.equals("soltar_dragon")) {
 					freeDragon(name);
 					Dragon_bt.setText("Soltar Dragon");
 					Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
@@ -395,7 +398,7 @@ public class Generic_client extends JPanel {
 				send("totem,"+okAction+","+myName);
 	        }
 	        else {
-	        	send(action);
+	        	send("freeTotem,"+action+","+myName);
 	        }
 			
 		}
@@ -416,10 +419,10 @@ public class Generic_client extends JPanel {
 				blockWolf(user_name);
 			}
 		}
-		else if(("soltar_dragon,"+clientName).equals(text)){
+		else if(("soltar_dragon").equals(text)){
 			freeDragon(user_name);
 		}
-		else if(("soltar_lobo,"+clientName).equals(text)){
+		else if(("soltar_lobo").equals(text)){
 			freeWolf(user_name);
 		}
 	}

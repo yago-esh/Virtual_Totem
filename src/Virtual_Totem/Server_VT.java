@@ -221,7 +221,6 @@ class Server_VT extends Thread{
                 	}
                 }
             }
-            
         }
         
         private synchronized void checkConexiones() {

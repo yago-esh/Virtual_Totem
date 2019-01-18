@@ -239,11 +239,11 @@ class Window_VT extends JFrame {
 	        	
 	        	if (clientExit.warning_wolf()) {
 	        		clientExit.blockWolf("");
-	    			cliente.enviar("soltar_lobo,"+clientExit.getClientName());
+	    			cliente.enviar("freeTotem,soltar_lobo,"+clientExit.getMyName()+","+clientExit.getClientName());
 	    		}
 	    		if ( clientExit.warning_dragon()) {
 	    			clientExit.blockDragon("");
-	    			cliente.enviar("soltar_dragon");
+	    			cliente.enviar("freeTotem,soltar_dragon,"+clientExit.getMyName()+","+clientExit.getClientName());
 	    		}
 	    		
 	        	try {
