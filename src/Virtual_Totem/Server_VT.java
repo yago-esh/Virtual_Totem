@@ -155,19 +155,21 @@ class Server_VT extends Thread{
     				compatible_version = Integer.parseInt(parts[1]);
     				break;
     				
-    			case "soltar_dragon":
-    				change=false;
-    				clientSelected.setTotemBotTime();
-	        		if(clientSelected.getTotemBotList().isEmpty()) {
-	        			clientSelected.setTotemBotTaken(false);
-	        		}
-	        		break;
-	        	case "soltar_lobo":
-	        		change=false;
-	        		clientSelected.setTotemTopTime();
-	        		if(clientSelected.getTotemTopList().isEmpty()) {
-	        			clientSelected.setTotemTopTaken(false);
-	        		}
+    			case "freeTotem":
+    				if(parts[1].equals("soltar_dragon")){
+    					change=false;
+        				clientSelected.setTotemBotTime();
+    	        		if(clientSelected.getTotemBotList().isEmpty()) {
+    	        			clientSelected.setTotemBotTaken(false);
+    	        		}
+    				}
+    				else if(parts[1].equals("soltar_lobo")) {
+    					change=false;
+    	        		clientSelected.setTotemTopTime();
+    	        		if(clientSelected.getTotemTopList().isEmpty()) {
+    	        			clientSelected.setTotemTopTaken(false);
+    	        		}
+    				}
 	        		break;
     			}
     			
@@ -195,18 +197,6 @@ class Server_VT extends Thread{
 	        		}
 	        		clientSelected.setTotemTopUser(name);
 	        		break;
-	        	case "soltar_dragon":
-	        		clientSelected.setTotemBotTime();
-	        		if(clientSelected.getTotemBotList().isEmpty()) {
-	        			clientSelected.setTotemBotTaken(false);
-	        		}
-	        		break;
-	        	case "soltar_lobo":
-	        		clientSelected.setTotemTopTime();
-	        		if(clientSelected.getTotemTopList().isEmpty()) {
-	        			clientSelected.setTotemTopTaken(false);
-	        		}
-	        		break;
 	        	}
         	}
         }
@@ -216,19 +206,22 @@ class Server_VT extends Thread{
         	change_totem(texto,id_client);
             Iterator<Socket> iter = listaConexiones.iterator();
             PrintWriter out = null;
-            while (iter.hasNext()) {
-            	if (iter != null) {
-	                try {
-	                    out = new PrintWriter(iter.next().getOutputStream());
-	                } catch (IOException e) {
-	                    e.getMessage();
-	                }
-	                if(out!=null) {
-		                out.println(texto);
-		                out.flush();;
-	                }
-            	}
+            if(!(texto.indexOf("ACK")!=-1)) {
+            	while (iter.hasNext()) {
+                	if (iter != null) {
+    	                try {
+    	                    out = new PrintWriter(iter.next().getOutputStream());
+    	                } catch (IOException e) {
+    	                    e.getMessage();
+    	                }
+    	                if(out!=null) {
+    		                out.println(texto);
+    		                out.flush();;
+    	                }
+                	}
+                }
             }
+            
         }
         
         private synchronized void checkConexiones() {

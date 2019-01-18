@@ -120,7 +120,7 @@ public class Server_Client {
 			 totemTopTime[2]+=1;
 		 }
 		 totemTopTime[0]++;
-		 System.out.println("Time: "+totemBotTime[2]+":"+totemBotTime[1]+":"+totemBotTime[0]);
+		 System.out.println("Time: "+totemTopTime[2]+":"+totemTopTime[1]+":"+totemTopTime[0]);
 	}
 	
 	public void totemBotTimeIncrement() {

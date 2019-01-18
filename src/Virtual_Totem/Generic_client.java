@@ -266,6 +266,7 @@ public class Generic_client extends JPanel {
 		Wolf_bt.setEnabled(false);
 		alert.changeActiveOkButton("wolf", true);
 		wolf_blocked=true;
+		System.out.println("La hora con la que entro al bucle es: "+time_wolf[2]+":"+time_wolf[1]+":"+time_wolf[0]);
 		if(time_wolf[0]+time_wolf[1]+time_wolf[2] == 1) { //If the time is not already running
 			time("wolf");
 		}
@@ -290,62 +291,69 @@ public class Generic_client extends JPanel {
 		if(msg.indexOf(",") != -1) {
 			
 			String[] parts = msg.split(",");
-			
-			switch(parts[0]){
-				case "totem":
-					showMsg(parts[1],parts[2],parts[3]);
-					break;
-				case "list":
-						alert.addList(parts[1],parts[2]);
-						switch (parts[1]){
-			        	case "coger_dragon":
-			        		if (Dragon_bt.getText().equals("Soltar Dragon")) {
-			        			show_alert("dragon",parts[2]);
-			        		}
-			        		break;
-			        	case "coger_lobo":
-			        		if (Wolf_bt.getText().equals("Soltar Lobo")) {
-			        			show_alert("lobo",parts[2]);
-			        		}
-			        		break;
-			        	}
-					break;
-					
-				case "freedom":
-					alert.clearList(parts[1]);
-					showMsg(parts[1],parts[2],parts[3]);
-					break;
-					
-				case "CleanList":
-					alert.removeNumList(parts[1], Integer.parseInt(parts[2]));
-    				break;
-    			
-				case "isAlive":
-					if (parts[1].equals("NO_DATA")){
-						if(parts[2].equals(myName)) {
-							send("isAlive,ImAlive,"+myName);
-						}
+			if(!"ACK".equals(parts[0])) {
+				if(clientName.equals(parts[3])) {
+					switch(parts[0]){
+						case "totem":
+							showMsg(parts[1],parts[2],parts[3]);
+							break;
+						case "list":
+								alert.addList(parts[1],parts[2]);
+								switch (parts[1]){
+					        	case "coger_dragon":
+					        		if (Dragon_bt.getText().equals("Soltar Dragon")) {
+					        			show_alert("dragon",parts[2]);
+					        		}
+					        		break;
+					        	case "coger_lobo":
+					        		if (Wolf_bt.getText().equals("Soltar Lobo")) {
+					        			show_alert("lobo",parts[2]);
+					        		}
+					        		break;
+					        	}
+							break;
+							
+						case "freedom":
+							alert.clearList(parts[1]);
+							showMsg(parts[1],parts[2],parts[3]);
+							break;
+							
+						case "CleanList":
+							alert.removeNumList(parts[1], Integer.parseInt(parts[2]));
+		    				break;
+		    			
+						case "isAlive":
+							if (parts[1].equals("NO_DATA")){
+								if(parts[2].equals(myName)) {
+									send("isAlive,ImAlive,"+myName);
+								}
+							}
+							else if (parts[1].equals("ImAlive")) {
+								ImAlive=true;
+							}
+							
+						case "time":
+							
+								System.out.println("Hora recibida: "+parts[2]);
+								String[] times = parts[2].split(":");
+								if(parts[1].equals("wolf")) {
+									time_wolf[0]=Integer.valueOf(times[2]);
+							        time_wolf[1]=Integer.valueOf(times[1]);
+							        time_wolf[2]=Integer.valueOf(times[0]);
+								}
+								else if(parts[1].equals("dragon")) {
+									time_dragon[0]=Integer.valueOf(times[2]);
+									time_dragon[1]=Integer.valueOf(times[1]);
+									time_dragon[2]=Integer.valueOf(times[0]);
+								}
+							
+		    				break;
+						case "freeTotem":
+							chekList(parts[1]+","+parts[3],"");
+		    			default:
+		    				chekList(msg,"");
 					}
-					else if (parts[1].equals("ImAlive")) {
-						ImAlive=true;
-					}
-					
-				case "time":
-					System.out.println("Hora recibida: "+parts[2]);
-					String[] times = parts[2].split(":");
-					if(parts[1].equals("wolf")) {
-						time_wolf[0]=Integer.valueOf(times[2]);
-				        time_wolf[1]=Integer.valueOf(times[1]);
-				        time_wolf[2]=Integer.valueOf(times[0]);
-					}
-					else if(parts[1].equals("dragon")) {
-						time_dragon[0]=Integer.valueOf(times[2]);
-						time_dragon[1]=Integer.valueOf(times[1]);
-						time_dragon[2]=Integer.valueOf(times[0]);
-					}
-    				break;
-    			default:
-    				chekList(msg,"");
+				}
 			}
 		}
 	}
@@ -653,9 +661,8 @@ public class Generic_client extends JPanel {
 	                	}
         			}
         			ImAlive=false;
-        			send(action);
+        			send("freeTotem,"+action+","+myName);
                 }
-     
             }.start();
         }
     }
