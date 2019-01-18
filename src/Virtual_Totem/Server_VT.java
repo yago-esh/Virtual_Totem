@@ -180,6 +180,13 @@ class Server_VT extends Thread{
     					sendMsgtoClients("totem,coger_dragon,"+clientSelected.getTotemBotUser()+","+clientSelected.getName());
     	            	sendMsgtoClients("time,dragon,"+clientSelected.getTotemBotTimeParse()+","+clientSelected.getName());
     				}
+    				
+		        	for(String user_list: clientSelected.getTotemTopList()) {
+		        		sendMsgtoClients("list,coger_lobo,"+user_list+","+clientSelected.getName());
+		            }
+		            for(String user_list: clientSelected.getTotemBotList()) {
+		            	sendMsgtoClients("list,coger_dragon,"+user_list+","+clientSelected.getName());
+		            }
     			}
     			
     		}

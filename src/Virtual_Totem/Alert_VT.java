@@ -201,7 +201,7 @@ public class Alert_VT extends JDialog {
 	
 	public String getUser(String name_list) {
 		String user;
-		if(name_list.equals("soltar_lobo,"+panel.getClientName())){
+		if(name_list.equals("soltar_lobo")){
 			if(!list_wolf.isEmpty()) {
 				user= list_wolf.get(0);
 				return user;
@@ -218,7 +218,7 @@ public class Alert_VT extends JDialog {
 	
 	public void removeUserList(String name_list, String user) {
 		
-		if(name_list.equals("soltar_lobo,"+panel.getClientName())){
+		if(name_list.equals("soltar_lobo")){
 			for(int x=0; x<list_wolf.size(); x++) {
 				if (list_wolf.get(x).equals(user)) {
 					list_wolf.remove(x);
@@ -246,7 +246,7 @@ public class Alert_VT extends JDialog {
 	}
 	
 	public void clearList(String name_list) {
-		if(name_list.equals("soltar_lobo,"+panel.getClientName())){
+		if(name_list.equals("soltar_lobo")){
 			list_wolf.clear();
 		}
 		if (name_list.equals("soltar_dragon")) {
