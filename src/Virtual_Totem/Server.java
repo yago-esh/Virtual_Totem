@@ -23,7 +23,7 @@ class Server extends Thread{
     private Socket connectionSocket;
     private String line;
     private Log_VT log;
-    private ArrayList<Server_Company> serverCompany;
+    private ArrayList<ServerCompany> serverCompany;
 	private int id;
 	private int compatibleVersion = 208;
 	private int currentVersion = 208;
@@ -37,13 +37,13 @@ class Server extends Thread{
         id=0;
         
         //Initialize the different companies
-        serverCompany = new ArrayList<Server_Company>();
-        serverCompany.add(new Server_Company("Vodafone"));
-        serverCompany.add(new Server_Company("Caser"));
-        serverCompany.add(new Server_Company("Mapfre"));
-        serverCompany.add(new Server_Company("Multiasistencia"));
-        serverCompany.add(new Server_Company("LDA"));
-        serverCompany.add(new Server_Company("AXA"));
+        serverCompany = new ArrayList<ServerCompany>();
+        serverCompany.add(new ServerCompany("Vodafone"));
+        serverCompany.add(new ServerCompany("Caser"));
+        serverCompany.add(new ServerCompany("Mapfre"));
+        serverCompany.add(new ServerCompany("Multiasistencia"));
+        serverCompany.add(new ServerCompany("LDA"));
+        serverCompany.add(new ServerCompany("AXA"));
     }
 
     private void execute() {
@@ -99,14 +99,14 @@ class Server extends Thread{
         
         private synchronized void changeServerStatus(String text, int id_client) {
         	
-        	Server_Company clientSelected = null;
+        	ServerCompany clientSelected = null;
     		
         	//The message is separated by commas to separate the different levels of the functions
 			String[] parts = text.split(",");
 			
 			//The server reads the text and select the company which is involved in
 			//Always the company is the last word of the message
-			for (Server_Company client : serverCompany) {
+			for (ServerCompany client : serverCompany) {
 				if(client.getName().equals(parts[parts.length-1])) {
 					clientSelected = client;
 					break;
@@ -128,12 +128,12 @@ class Server extends Thread{
 	    	        		clientSelected.setTotemTopTaken(true);
 	    	        		
 	    	        		//If the timer is not already running, start the timer
-	    	        		if(clientSelected.getTotemTopTime() == 1) { 
+	    	        		if(clientSelected.isTotemTopTimerStoped()) { 
 	    	        			setTimer("totemTop",clientSelected);
 	    	        		}
 	    	        		//If is running, set the current timer
 	    	        		else {
-	    	        			clientSelected.setTotemTopTime();
+	    	        			clientSelected.setTotemTopTimerToCero();
 	    	        		}
 	    	        		//Mark the user that has taken the totem
 	    	        		clientSelected.setTotemTopUser(parts[2]);
@@ -141,11 +141,11 @@ class Server extends Thread{
 	    	        		
 	    	        	case "takeTotemBot":
 	    	        		clientSelected.setTotemBotTaken(true);
-	    	        		if(clientSelected.getTotemBotTime() == 1) {
+	    	        		if(clientSelected.isTotemBotTimerStoped()) {
 	    	        			setTimer("totemBot",clientSelected);
 	    	        		}
 	    	        		else {
-	    	        			clientSelected.setTotemBotTime();
+	    	        			clientSelected.setTotemBotTimerToCero();
 	    	        		}
 	    	        		clientSelected.setTotemBotUser(parts[2]);
 	    	        		break;
@@ -158,14 +158,14 @@ class Server extends Thread{
     				//Difference between top and bot totem
     				if(parts[1].equals("freeTotemBot")){
     					//Set the timer to 0
-        				clientSelected.setTotemBotTime();
+        				clientSelected.setTotemBotTimerToCero();
         				//Looks if some is in the waiting list, if not set the totem free
     	        		if(clientSelected.getTotemBotList().isEmpty()) {
     	        			clientSelected.setTotemBotTaken(false);
     	        		}
     				}
     				else if(parts[1].equals("freeTotemTop")) {
-    	        		clientSelected.setTotemTopTime();
+    	        		clientSelected.setTotemTopTimerToCero();
     	        		if(clientSelected.getTotemTopList().isEmpty()) {
     	        			clientSelected.setTotemTopTaken(false);
     	        		}
@@ -236,11 +236,11 @@ class Server extends Thread{
     				//Send the info of the totem if is taken
     				if(clientSelected.isTotemTopTaken()) {
     					sendMsgtoOneClient("totem,takeTotemTop,"+clientSelected.getTotemTopUser()+","+clientSelected.getName(), id);
-    					sendMsgtoOneClient("time,wolf,"+clientSelected.getTotemTopTimeParse()+","+clientSelected.getName(), id);
+    					sendMsgtoOneClient("time,wolf,"+clientSelected.getTotemTopTimer()+","+clientSelected.getName(), id);
     				}
     				if(clientSelected.isTotemBotTaken()) {
     					sendMsgtoOneClient("totem,takeTotemBot,"+clientSelected.getTotemBotUser()+","+clientSelected.getName(), id);
-    					sendMsgtoOneClient("time,dragon,"+clientSelected.getTotemBotTimeParse()+","+clientSelected.getName(), id);
+    					sendMsgtoOneClient("time,dragon,"+clientSelected.getTotemBotTimer()+","+clientSelected.getName(), id);
     				}
     				//Send the info of the lists if someone is on it
 		        	for(String user_list: clientSelected.getTotemTopList()) {
@@ -319,15 +319,15 @@ class Server extends Thread{
         private synchronized void controlDisconnectedClient(int id_client) {
         	
         	// The Server looks if the client that has disconnected was on some list and if was, it sends a message to remove him from the others client list
-        	for (Server_Company server_Company : serverCompany) {
-        		for (int x=0 ; x<server_Company.getTotemTopControlList().size() ; x++) {
-            		if(id_client == server_Company.getTotemTopControlList().get(x)) {
+        	for (ServerCompany serverCompany : serverCompany) {
+        		for (int x=0 ; x<serverCompany.getTotemTopControlList().size() ; x++) {
+            		if(id_client == serverCompany.getTotemTopControlList().get(x)) {
             			processLine("CleanList,totemTop,"+x,id_client);
             		}
             	}
             	
-            	for (int x=0 ; x<server_Company.getTotemBotControlList().size() ; x++) {
-            		if(id_client == server_Company.getTotemBotControlList().get(x)) {
+            	for (int x=0 ; x<serverCompany.getTotemBotControlList().size() ; x++) {
+            		if(id_client == serverCompany.getTotemBotControlList().get(x)) {
             			processLine("CleanList,totemBot,"+x,id_client);
             		}
             	}
@@ -335,7 +335,7 @@ class Server extends Thread{
         	  
         }
     
-        public void setTimer(String totem, Server_Company clientSelected) {
+        public void setTimer(String totem, ServerCompany clientSelected) {
     		Thread t1 = new Thread(new Runnable() {
     	         public void run() {
     	        	 try {
@@ -358,7 +358,7 @@ class Server extends Thread{
     						}
     		        	 }
     	        		 //If not, restart the timer
-    	        		 clientSelected.setTotemTopTime();
+    	        		 clientSelected.setTotemTopTimerToCero();
     	        	 }
     	        	 else if(totem.equals("totemBot")) {
     	        		 while(clientSelected.isTotemBotTaken()) {
@@ -369,7 +369,7 @@ class Server extends Thread{
     							e.printStackTrace();
     						}
     		        	 }
-    	        		 clientSelected.setTotemBotTime();
+    	        		 clientSelected.setTotemBotTimerToCero();
     	        	 }
     	         }
     	    });  
@@ -429,29 +429,29 @@ class Server extends Thread{
             out.flush();
             
             //The server sends the info of the taken totems to the client
-        	for (Server_Company server_Company : serverCompany) {
-    			if(server_Company.isTotemTopTaken()) {
-    				out.println("totem,takeTotemTop,"+server_Company.getTotemTopUser()+","+server_Company.getName());
+        	for (ServerCompany serverCompany : serverCompany) {
+    			if(serverCompany.isTotemTopTaken()) {
+    				out.println("totem,takeTotemTop,"+serverCompany.getTotemTopUser()+","+serverCompany.getName());
                 	out.flush();
-                	out.println("time,wolf,"+server_Company.getTotemTopTimeParse()+","+server_Company.getName());
+                	out.println("time,wolf,"+serverCompany.getTotemTopTimer()+","+serverCompany.getName());
                 	out.flush();
     			}
-    			if(server_Company.isTotemBotTaken()) {
-    				out.println("totem,takeTotemBot,"+server_Company.getTotemBotUser()+","+server_Company.getName());
+    			if(serverCompany.isTotemBotTaken()) {
+    				out.println("totem,takeTotemBot,"+serverCompany.getTotemBotUser()+","+serverCompany.getName());
                 	out.flush();
-                	out.println("time,dragon,"+server_Company.getTotemBotTimeParse()+","+server_Company.getName());
+                	out.println("time,dragon,"+serverCompany.getTotemBotTimer()+","+serverCompany.getName());
                 	out.flush();
     			}
     		}
         	
         	//The server sends the info of the users that are in a list
-            for (Server_Company server_Company : serverCompany) {
-            	for(String user_list: server_Company.getTotemTopList()) {
-                	out.println("list,takeTotemTop,"+user_list+","+server_Company.getName());
+            for (ServerCompany serverCompany : serverCompany) {
+            	for(String user_list: serverCompany.getTotemTopList()) {
+                	out.println("list,takeTotemTop,"+user_list+","+serverCompany.getName());
                 	out.flush();
                 }
-                for(String user_list: server_Company.getTotemBotList()) {
-                	out.println("list,takeTotemBot,"+user_list+","+server_Company.getName());
+                for(String user_list: serverCompany.getTotemBotList()) {
+                	out.println("list,takeTotemBot,"+user_list+","+serverCompany.getName());
                 	out.flush();
                 }
     		}

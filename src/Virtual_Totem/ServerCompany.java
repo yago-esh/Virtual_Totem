@@ -2,15 +2,15 @@ package Virtual_Totem;
 
 import java.util.ArrayList;
 
-public class Server_Company {
+public class ServerCompany {
 	
 	private String name, totemTopUser, totemBotUser;
 	private boolean totemTopTaken, totemBotTaken;
 	private ArrayList<String> totemTopList, totemBotList;
 	private ArrayList<Integer> totemTopControlList, totemBotControlList;
-	private Integer totemTopTime[], totemBotTime[];
+	private Integer totemTopTimer[], totemBotTimer[];
 	
-	public Server_Company(String name) {
+	public ServerCompany(String name) {
 		this.name = name;
 		
 		totemTopList = new ArrayList<String>();
@@ -18,18 +18,15 @@ public class Server_Company {
 		totemTopControlList = new ArrayList<Integer>();
 		totemBotControlList = new ArrayList<Integer>();
 		
-		totemTopTime = new Integer[3];
-		totemTopTime[0]=1;
-		totemTopTime[1]=0;
-		totemTopTime[2]=0;
-		totemBotTime = new Integer[3];
-		totemBotTime[0]=1;
-		totemBotTime[1]=0;
-		totemBotTime[2]=0;
-	}
-	
-	public void manageList() {
-		
+		//Set the timer to 1 second instead of 0 to have a better synchronization with the clients
+		totemTopTimer = new Integer[3];
+		totemTopTimer[0]=1;
+		totemTopTimer[1]=0;
+		totemTopTimer[2]=0;
+		totemBotTimer = new Integer[3];
+		totemBotTimer[0]=1;
+		totemBotTimer[1]=0;
+		totemBotTimer[2]=0;
 	}
 	
 	public String getName() {
@@ -84,54 +81,64 @@ public class Server_Company {
 	public void setTotemBotControlList(ArrayList<Integer> totemBotControlList) {
 		this.totemBotControlList = totemBotControlList;
 	}
-	public int getTotemTopTime() {
-		return totemTopTime[0]+totemTopTime[1]+totemTopTime[2];
+	
+	public boolean isTotemTopTimerStoped() {
+		//Only when the timer is set to 0:0:1h means that is stopped
+		return (totemTopTimer[0]+(totemTopTimer[1]*60)+(totemTopTimer[2]*3600) == 1);
 	}
 	
-	public String getTotemTopTimeParse() {
-		return totemTopTime[2]+":"+totemTopTime[1]+":"+totemTopTime[0];
+	public String getTotemTopTimer() {
+		//Return the timer in a String mode
+		return totemTopTimer[2]+":"+totemTopTimer[1]+":"+totemTopTimer[0];
 	}
-	public void setTotemTopTime() {
-		totemTopTime[0]=1;
-		totemTopTime[1]=0;
-		totemTopTime[2]=0;
+	public void setTotemTopTimerToCero() {
+		//Set the timer to 1 (Because of the synchronization)
+		totemTopTimer[0]=1;
+		totemTopTimer[1]=0;
+		totemTopTimer[2]=0;
 	}
-	public int getTotemBotTime() {
-		return totemBotTime[0]+totemBotTime[1]+totemBotTime[2];
+
+	public boolean isTotemBotTimerStoped() {
+		//Only when the timer is set to 0:0:1h means that is stopped
+		return (totemBotTimer[0]+(totemBotTimer[1]*60)+(totemBotTimer[2]*3600) == 1);
 	}
 	
-	public String getTotemBotTimeParse() {
-		return totemBotTime[2]+":"+totemBotTime[1]+":"+totemBotTime[0];
+	public String getTotemBotTimer() {
+		//Return the timer in a String mode
+		return totemBotTimer[2]+":"+totemBotTimer[1]+":"+totemBotTimer[0];
 	}
 	
-	public void setTotemBotTime() {
-		totemBotTime[0]=1;
-		totemBotTime[1]=0;
-		totemBotTime[2]=0;
+	public void setTotemBotTimerToCero() {
+		//Set the timer to 1 (Because of the synchronization)
+		totemBotTimer[0]=1;
+		totemBotTimer[1]=0;
+		totemBotTimer[2]=0;
 	}
 	
 	public void totemTopTimeIncrement() {
-		if(totemTopTime[0]==60) {
-			totemTopTime[0]=0;
-			totemTopTime[1]+=1;
+		//Increment the timer in 1 second
+		if(totemTopTimer[0]==60) {
+			totemTopTimer[0]=0;
+			totemTopTimer[1]+=1;
 		 }
-		 if(totemTopTime[1]==60) {
-			 totemTopTime[1]=0;
-			 totemTopTime[2]+=1;
+		 if(totemTopTimer[1]==60) {
+			 totemTopTimer[1]=0;
+			 totemTopTimer[2]+=1;
 		 }
-		 totemTopTime[0]++;
+		 totemTopTimer[0]++;
 	}
 	
 	public void totemBotTimeIncrement() {
-		if(totemBotTime[0]==60) {
-			totemBotTime[0]=0;
-			totemBotTime[1]+=1;
+		//Increment the timer in 1 second
+		if(totemBotTimer[0]==60) {
+			totemBotTimer[0]=0;
+			totemBotTimer[1]+=1;
 		 }
-		 if(totemBotTime[1]==60) {
-			 totemBotTime[1]=0;
-			 totemBotTime[2]+=1;
+		 if(totemBotTimer[1]==60) {
+			 totemBotTimer[1]=0;
+			 totemBotTimer[2]+=1;
 		 }
-		 totemBotTime[0]++;
+		 totemBotTimer[0]++;
 	}
 	
 }
