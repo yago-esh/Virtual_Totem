@@ -27,7 +27,7 @@ class Server_VT extends Thread{
     private String linea;
     private ArrayList<Server_Client> serverClient;
 	private int id;
-	private int compatible_version = 187;
+	private int compatible_version = 206;
 	private Log_VT log;
 	
     public Server_VT() {
@@ -46,7 +46,7 @@ class Server_VT extends Thread{
 
     private void ejecutar() {
     	try {
-			socketServidor = new ServerSocket(2029);
+			socketServidor = new ServerSocket(2030);
 			this.start();
 			this.new CheckConexiones();
 		} catch (IOException e) {

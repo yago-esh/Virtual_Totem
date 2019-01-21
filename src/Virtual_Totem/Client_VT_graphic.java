@@ -1,13 +1,15 @@
 package Virtual_Totem;
 
 import java.io.IOException;
+import java.net.BindException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 
 import javax.swing.JOptionPane;
 
 class Client_VT_graphic {
 	
-//	private static final int PORT = 9999;
+	private static final int PORT = 6666;
 	@SuppressWarnings("unused")
 	private static ServerSocket socket; 
 	private static Window_VT window;
@@ -20,7 +22,7 @@ class Client_VT_graphic {
 	public void execute() {
 		Client_VT client = new Client_VT();
 		window = new Window_VT(client);
-//		checkIfRunning();
+		checkIfRunning();
 		try {
 			client.execute();
 			window.showIt();
@@ -33,23 +35,23 @@ class Client_VT_graphic {
 		}
     }
 	
-//	private static void checkIfRunning() {
-//	  try {
-//	    socket = new ServerSocket(PORT,0,InetAddress.getByAddress(new byte[] {127,0,0,1}));
-//	  }
-//	  catch (BindException e) {
-//		  JOptionPane.showMessageDialog(window,
-//					"La aplicación ya se está ejecutando",
-//					"ERROR", JOptionPane.ERROR_MESSAGE);
-//			System.exit(-1);
-//	    System.exit(1);
-//	  }
-//	  catch (IOException e) {
-//		  JOptionPane.showMessageDialog(window,
-//					"Unexpected error.",
-//					"ERROR", JOptionPane.ERROR_MESSAGE);
-//	    e.printStackTrace();
-//	    System.exit(2);
-//	  }
-//	}
+	private static void checkIfRunning() {
+	  try {
+	    socket = new ServerSocket(PORT,0,InetAddress.getByAddress(new byte[] {127,0,0,1}));
+	  }
+	  catch (BindException e) {
+		  JOptionPane.showMessageDialog(window,
+					"La aplicación ya se está ejecutando",
+					"ERROR", JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
+	    System.exit(1);
+	  }
+	  catch (IOException e) {
+		  JOptionPane.showMessageDialog(window,
+					"Unexpected error.",
+					"ERROR", JOptionPane.ERROR_MESSAGE);
+	    e.printStackTrace();
+	    System.exit(2);
+	  }
+	}
 }

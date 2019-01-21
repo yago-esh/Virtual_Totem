@@ -47,9 +47,9 @@ public class Generic_client extends JPanel {
 	public Generic_client(Client_VT client, Window_VT window, String clientName) {
 		
 		//------------------------------Develop mode--------------------------------
-		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+//		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
 		//---------------------------------------------------------------------------
-//		myName=System.getProperty("user.name");
+		myName=System.getProperty("user.name");
 		
 		this.client=client;
 		this.window=window;
