@@ -263,7 +263,6 @@ class Server extends Thread{
             
             Iterator<Socket> iter = connectionList.iterator();
             PrintWriter out = null;
-            
             //The server avoid to send the ACK message from the others clients
             if(!(text.indexOf("ACK")!=-1)) {
             	
