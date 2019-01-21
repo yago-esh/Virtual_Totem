@@ -34,7 +34,7 @@ public class Info_VT extends JDialog {
 		this.setResizable(false);
 		contentPanel.setLayout(null);
 		setBounds(810, 425, 450, 275);
-		this.setTitle("Info of Virtual Totem");
+		this.setTitle("Info del Virtual Totem");
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
@@ -48,8 +48,8 @@ public class Info_VT extends JDialog {
 		info_text.setBackground(UIManager.getColor("CheckBox.background"));
 		info_text.setText("A continuaci\u00F3n va a proceder a desbloquear uno de los totem"+
 				".\r\nEsta acci\u00F3n solo debe realizarse en los siguientes casos y solo tras haber"+
-				"corroborado la acci\u00F3n con el resto del equipo:\r\n\r\n\u2022 El programa ha"+
-				"bloqueado de forma incorrecta un totem.\r\n\u2022 Un usuario ha bloqueado de forma"+
+				"corroborado la acci\u00F3n con el resto del equipo:\r\n\r\n\u2022 El programa ha "+
+				"bloqueado de forma incorrecta un totem.\r\n\u2022 Un usuario ha bloqueado de forma "+
 				"indefinida un totem, no est\u00E1 siendo utilizado y no puede liberarlo de forma manual.");
 		info_text.setBounds(12, 13, 408, 142);
 		contentPanel.add(info_text);
