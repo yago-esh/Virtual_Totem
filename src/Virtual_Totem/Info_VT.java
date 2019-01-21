@@ -135,13 +135,13 @@ public class Info_VT extends JDialog {
 					send = true;
 				}
 				if(unlock_wolf) {
-					panel.send("freedom,soltar_lobo,"+System.getProperty("user.name"));
+					panel.send("freedom,freeTotemTop,"+System.getProperty("user.name"));
 					BT_unlock_wolf.setForeground(Color.BLACK);
 					unlock_wolf=false;
 					if(!send)JOptionPane.showMessageDialog(null,"Lobo desbloqueado correctamente");
 				}
 				if(unlock_dragon){
-					panel.send("freedom,soltar_dragon,"+System.getProperty("user.name"));
+					panel.send("freedom,freeTotemBot,"+System.getProperty("user.name"));
 					BT_unlock_dragon.setForeground(Color.BLACK);
 					unlock_dragon=false;
 					if(!send)JOptionPane.showMessageDialog(null,"Dragón desbloqueado correctamente");

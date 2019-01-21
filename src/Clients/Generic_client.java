@@ -155,11 +155,11 @@ public class Generic_client extends JPanel {
 				if (Wolf_bt.getText() == "Coger Lobo") {
 					Wolf_bt.setText("Soltar Lobo");
 					Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
-					send("totem,coger_lobo,"+myName);
+					send("totem,takeTotemTop,"+myName);
 				}
 				else {
 					blockWolf("");
-					new CheckConexiones("soltar_lobo",Generic_client.this);
+					new CheckConexiones("freeTotemTop",Generic_client.this);
 				}
 			}
 		});
@@ -169,11 +169,11 @@ public class Generic_client extends JPanel {
 				if (Dragon_bt.getText() == "Coger Dragon") {
 					Dragon_bt.setText("Soltar Dragon");
 					Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
-					send("totem,coger_dragon,"+myName);
+					send("totem,takeTotemBot,"+myName);
 				}
 				else {
 	        		blockDragon("");
-	        		new CheckConexiones("soltar_dragon",Generic_client.this);
+	        		new CheckConexiones("freeTotemBot",Generic_client.this);
 				}
 			}
 		});
@@ -186,13 +186,13 @@ public class Generic_client extends JPanel {
 		
 		wolf_alert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				alert.showIt("coger_lobo");
+				alert.showIt("takeTotemTop");
 			}
 		});
 		
 		dragon_alert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				alert.showIt("coger_dragon");
+				alert.showIt("takeTotemBot");
 			}
 		});
 	}
@@ -318,12 +318,12 @@ public class Generic_client extends JPanel {
 						case "list":
 								alert.addList(parts[1],parts[2]);
 								switch (parts[1]){
-					        	case "coger_dragon":
+					        	case "takeTotemBot":
 					        		if (Dragon_bt.getText().equals("Soltar Dragon")) {
 					        			show_alert("dragon",parts[2]);
 					        		}
 					        		break;
-					        	case "coger_lobo":
+					        	case "takeTotemTop":
 					        		if (Wolf_bt.getText().equals("Soltar Lobo")) {
 					        			show_alert("lobo",parts[2]);
 					        		}
@@ -382,16 +382,16 @@ public class Generic_client extends JPanel {
 			
 			String totem="";
 			String okAction="";
-			if (action.equals("soltar_lobo")) {
+			if (action.equals("freeTotemTop")) {
 				send("CleanList,wolf,0");
 				totem="lobo";
-				okAction="coger_lobo";
+				okAction="takeTotemTop";
 				promt("free_wolf");
 			}
-			if (action.equals("soltar_dragon")) {
+			if (action.equals("freeTotemBot")) {
 				send("CleanList,dragon,0");
 				totem="dragon";
-				okAction="coger_dragon";
+				okAction="takeTotemBot";
 				promt("free_dragon");
 			}
 			window.msgTry("Se acaba de liberar el " +totem+ " y eres el siguiente en la cola.");
@@ -400,12 +400,12 @@ public class Generic_client extends JPanel {
 	        		"Liberación del Totem",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 	        if(PromptResult==JOptionPane.YES_OPTION)
 	        {
-	        	if (action.equals("soltar_lobo")) {
+	        	if (action.equals("freeTotemTop")) {
 	        		freeWolf(name);
 	        		Wolf_bt.setText("Soltar Lobo");
 					Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
 				}
-				if (action.equals("soltar_dragon")) {
+				if (action.equals("freeTotemBot")) {
 					freeDragon(name);
 					Dragon_bt.setText("Soltar Dragon");
 					Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
@@ -424,20 +424,20 @@ public class Generic_client extends JPanel {
 	
 	public void showMsg(String text, String user_name, String client) {
 				
-		if("coger_dragon".equals(text) && clientName.equals(client)){
+		if("takeTotemBot".equals(text) && clientName.equals(client)){
 			if(!Dragon_bt.getText().equals("Soltar Dragon")) {
 				blockDragon(user_name);
 			}
 		}
-		else if("coger_lobo".equals(text) && clientName.equals(client)){
+		else if("takeTotemTop".equals(text) && clientName.equals(client)){
 			if(!Wolf_bt.getText().equals("Soltar Lobo")) {
 				blockWolf(user_name);
 			}
 		}
-		else if(("soltar_dragon").equals(text)){
+		else if(("freeTotemBot").equals(text)){
 			freeDragon(user_name);
 		}
-		else if(("soltar_lobo").equals(text)){
+		else if(("freeTotemTop").equals(text)){
 			freeWolf(user_name);
 		}
 	}
@@ -667,8 +667,8 @@ public class Generic_client extends JPanel {
 	                		}
 	                		
 	                	if(!CanGo) {
-	                		if (action.equals("soltar_lobo,"+clientName))	panel.send("CleanList,wolf,0");
-	        				if (action.equals("soltar_dragon,"+clientName))	panel.send("CleanList,dragon,0");
+	                		if (action.equals("freeTotemTop,"+clientName))	panel.send("CleanList,wolf,0");
+	        				if (action.equals("freeTotemBot,"+clientName))	panel.send("CleanList,dragon,0");
 	        				try {
 	        					//Wait 2 second to let enough time to the server to read the last message and send us the CleanList back.
 								Thread.sleep(2000);

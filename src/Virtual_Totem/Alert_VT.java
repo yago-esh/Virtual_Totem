@@ -99,11 +99,11 @@ public class Alert_VT extends JDialog {
 				if(!isInList(mode)) {
 					action=true;
 					addList(mode, myName);
-					if(mode.equals("coger_lobo")) {
-						panel.send("list,coger_lobo,"+myName);
+					if(mode.equals("takeTotemTop")) {
+						panel.send("list,takeTotemTop,"+myName);
 					}
-					else if (mode.equals("coger_dragon")) {
-						panel.send("list,coger_dragon,"+myName);
+					else if (mode.equals("takeTotemBot")) {
+						panel.send("list,takeTotemBot,"+myName);
 					}
 				}
 				hideIt();
@@ -144,14 +144,14 @@ public class Alert_VT extends JDialog {
 	public void showIt(String totem) {
 		mode=totem;
 		this.setVisible(true);
-			if(mode.equals("coger_lobo")) {
+			if(mode.equals("takeTotemTop")) {
 				okButton.setEnabled(active_wolf);
 				this.setTitle("Cola de usuarios para el lobo");
 				for(String user: list_wolf) {
 					list.add(user);
 				}
 			}
-			else if (mode.equals("coger_dragon")) {
+			else if (mode.equals("takeTotemBot")) {
 				okButton.setEnabled(active_dragon);
 				this.setTitle("Cola de usuarios para el dragon");
 				for(String user: list_dragon) {
@@ -166,7 +166,7 @@ public class Alert_VT extends JDialog {
 	}
 	
 	public void addList(String mode, String user){
-		if(mode.equals("coger_lobo")) {
+		if(mode.equals("takeTotemTop")) {
 			if(!action) {
 				
 				list_wolf.add(user);
@@ -175,7 +175,7 @@ public class Alert_VT extends JDialog {
 				action=false;
 			}
 		}
-		else if (mode.equals("coger_dragon")) {
+		else if (mode.equals("takeTotemBot")) {
 			if(!action) {
 				list_dragon.add(user);
 			}
@@ -187,12 +187,12 @@ public class Alert_VT extends JDialog {
 	
 	public boolean isInList(String mode) {
 		
-		if(mode.equals("coger_lobo")) {
+		if(mode.equals("takeTotemTop")) {
 			for(String user: list_wolf) {
 				if(user.equals(myName)) return true;
 			}
 		}
-		else if (mode.equals("coger_dragon")) {
+		else if (mode.equals("takeTotemBot")) {
 			for(String user: list_dragon) {
 				if(user.equals(myName)) return true;
 			}
@@ -203,13 +203,13 @@ public class Alert_VT extends JDialog {
 	
 	public String getUser(String name_list) {
 		String user;
-		if(name_list.equals("soltar_lobo")){
+		if(name_list.equals("freeTotemTop")){
 			if(!list_wolf.isEmpty()) {
 				user= list_wolf.get(0);
 				return user;
 			}
 		}
-		if (name_list.equals("soltar_dragon")) {
+		if (name_list.equals("freeTotemBot")) {
 			if(!list_dragon.isEmpty()) {
 				user= list_dragon.get(0);
 				return user;
@@ -220,7 +220,7 @@ public class Alert_VT extends JDialog {
 	
 	public void removeUserList(String name_list, String user) {
 		
-		if(name_list.equals("soltar_lobo")){
+		if(name_list.equals("freeTotemTop")){
 			for(int x=0; x<list_wolf.size(); x++) {
 				if (list_wolf.get(x).equals(user)) {
 					list_wolf.remove(x);
@@ -228,7 +228,7 @@ public class Alert_VT extends JDialog {
 				}
 			}
 		}
-		if (name_list.equals("soltar_dragon")) {
+		if (name_list.equals("freeTotemBot")) {
 			for(int x=0; x<list_dragon.size(); x++) {
 				if (list_dragon.get(x).equals(user)) {
 					list_dragon.remove(x);
@@ -248,10 +248,10 @@ public class Alert_VT extends JDialog {
 	}
 	
 	public void clearList(String name_list) {
-		if(name_list.equals("soltar_lobo")){
+		if(name_list.equals("freeTotemTop")){
 			list_wolf.clear();
 		}
-		if (name_list.equals("soltar_dragon")) {
+		if (name_list.equals("freeTotemBot")) {
 			list_dragon.clear();
 		}
 	}

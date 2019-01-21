@@ -263,11 +263,11 @@ public class Window_VT extends JFrame {
 	        	
 	        	if (clientExit.warning_wolf()) {
 	        		clientExit.blockWolf("");
-	    			cliente.enviar("freeTotem,soltar_lobo,"+clientExit.getMyName()+","+clientExit.getClientName());
+	    			cliente.enviar("freeTotem,freeTotemTop,"+clientExit.getMyName()+","+clientExit.getClientName());
 	    		}
 	    		if ( clientExit.warning_dragon()) {
 	    			clientExit.blockDragon("");
-	    			cliente.enviar("freeTotem,soltar_dragon,"+clientExit.getMyName()+","+clientExit.getClientName());
+	    			cliente.enviar("freeTotem,freeTotemBot,"+clientExit.getMyName()+","+clientExit.getClientName());
 	    		}
 	        	try {
 	        		//Need to wait 2 second to let enough time to the server to read the last message and be available to read the next one before close the flows.

@@ -114,11 +114,11 @@ class Server_VT extends Thread{
     			switch(parts[0]) {
     			
     			case "list":
-    				if(parts[1].equals("coger_lobo")) {
+    				if(parts[1].equals("takeTotemTop")) {
     					clientSelected.getTotemTopControlList().add(id_client);
     					clientSelected.getTotemTopList().add(parts[2]);
     				}
-    				if(parts[1].equals("coger_dragon")) {
+    				if(parts[1].equals("takeTotemBot")) {
     					clientSelected.getTotemBotControlList().add(id_client);
     					clientSelected.getTotemBotList().add(parts[2]);
     				}
@@ -144,12 +144,12 @@ class Server_VT extends Thread{
     				
     			case "freedom":
     				change=false;
-    				if(parts[1].equals("soltar_lobo")) {
+    				if(parts[1].equals("freeTotemTop")) {
     					clientSelected.getTotemTopControlList().clear();
     					clientSelected.getTotemTopList().clear();
     					clientSelected.setTotemTopTaken(false);
     				}
-    				else if (parts[1].equals("soltar_dragon")) {
+    				else if (parts[1].equals("freeTotemBot")) {
     					clientSelected.getTotemBotControlList().clear();
     					clientSelected.getTotemBotList().clear();
     					clientSelected.setTotemBotTaken(false);
@@ -161,14 +161,14 @@ class Server_VT extends Thread{
     				break;
     				
     			case "freeTotem":
-    				if(parts[1].equals("soltar_dragon")){
+    				if(parts[1].equals("freeTotemBot")){
     					change=false;
         				clientSelected.setTotemBotTime();
     	        		if(clientSelected.getTotemBotList().isEmpty()) {
     	        			clientSelected.setTotemBotTaken(false);
     	        		}
     				}
-    				else if(parts[1].equals("soltar_lobo")) {
+    				else if(parts[1].equals("freeTotemTop")) {
     					change=false;
     	        		clientSelected.setTotemTopTime();
     	        		if(clientSelected.getTotemTopList().isEmpty()) {
@@ -186,24 +186,24 @@ class Server_VT extends Thread{
 					}
     				
     				if(clientSelected.isTotemTopTaken()) {
-    					out.println("totem,coger_lobo,"+clientSelected.getTotemTopUser()+","+clientSelected.getName());
+    					out.println("totem,takeTotemTop,"+clientSelected.getTotemTopUser()+","+clientSelected.getName());
 		                out.flush();
 		                out.println("time,wolf,"+clientSelected.getTotemTopTimeParse()+","+clientSelected.getName());
 		                out.flush();
     				}
     				if(clientSelected.isTotemBotTaken()) {
-    					out.println("totem,coger_dragon,"+clientSelected.getTotemBotUser()+","+clientSelected.getName());
+    					out.println("totem,takeTotemBot,"+clientSelected.getTotemBotUser()+","+clientSelected.getName());
 		                out.flush();
 		                out.println("time,dragon,"+clientSelected.getTotemBotTimeParse()+","+clientSelected.getName());
 		                out.flush();
     				}
     				
 		        	for(String user_list: clientSelected.getTotemTopList()) {
-		        		out.println("list,coger_lobo,"+user_list+","+clientSelected.getName());
+		        		out.println("list,takeTotemTop,"+user_list+","+clientSelected.getName());
 		                out.flush();
 		            }
 		            for(String user_list: clientSelected.getTotemBotList()) {
-		            	out.println("list,coger_dragon,"+user_list+","+clientSelected.getName());
+		            	out.println("list,takeTotemBot,"+user_list+","+clientSelected.getName());
 		                out.flush();
 		            }
     			}
@@ -211,7 +211,7 @@ class Server_VT extends Thread{
     		}
         	if(change) {
 	        	switch (state){
-	        	case "coger_dragon":
+	        	case "takeTotemBot":
 	        		clientSelected.setTotemBotTaken(true);
 	        		if(clientSelected.getTotemBotTime() == 1) { //If the time is not already running
 	        			time("dragon",clientSelected);
@@ -222,7 +222,7 @@ class Server_VT extends Thread{
 	        		clientSelected.setTotemBotUser(name);
 	        		
 	        		break;
-	        	case "coger_lobo":
+	        	case "takeTotemTop":
 	        		clientSelected.setTotemTopTaken(true);
 	        		if(clientSelected.getTotemTopTime() == 1) { //If the time is not already running
 	        			time("wolf",clientSelected);
@@ -303,13 +303,13 @@ class Server_VT extends Thread{
     private void sendInfoServer(PrintWriter out) {
     	for (Server_Client server_Client : serverClient) {
 			if(server_Client.isTotemTopTaken()) {
-				out.println("totem,coger_lobo,"+server_Client.getTotemTopUser()+","+server_Client.getName());
+				out.println("totem,takeTotemTop,"+server_Client.getTotemTopUser()+","+server_Client.getName());
             	out.flush();
             	out.println("time,wolf,"+server_Client.getTotemTopTimeParse()+","+server_Client.getName());
             	out.flush();
 			}
 			if(server_Client.isTotemBotTaken()) {
-				out.println("totem,coger_dragon,"+server_Client.getTotemBotUser()+","+server_Client.getName());
+				out.println("totem,takeTotemBot,"+server_Client.getTotemBotUser()+","+server_Client.getName());
             	out.flush();
             	out.println("time,dragon,"+server_Client.getTotemBotTimeParse()+","+server_Client.getName());
             	out.flush();
@@ -317,11 +317,11 @@ class Server_VT extends Thread{
 		}
         for (Server_Client server_Client : serverClient) {
         	for(String user_list: server_Client.getTotemTopList()) {
-            	out.println("list,coger_lobo,"+user_list+","+server_Client.getName());
+            	out.println("list,takeTotemTop,"+user_list+","+server_Client.getName());
             	out.flush();
             }
             for(String user_list: server_Client.getTotemBotList()) {
-            	out.println("list,coger_dragon,"+user_list+","+server_Client.getName());
+            	out.println("list,takeTotemBot,"+user_list+","+server_Client.getName());
             	out.flush();
             }
 		}
