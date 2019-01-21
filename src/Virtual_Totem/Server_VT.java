@@ -27,7 +27,7 @@ class Server_VT extends Thread{
     private String linea;
     private ArrayList<Server_Client> serverClient;
 	private int id;
-	private int compatibleVersion = 206;
+	private int compatibleVersion = 208;
 	private int actualVersion = 206;
 	private Log_VT log;
 	

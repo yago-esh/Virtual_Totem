@@ -31,7 +31,7 @@ public class Client_VT {
 		terminar = false;
 		check_version=false;
 		parse_id=false;
-		version=206;
+		version=208;
 	}
 
 	public void associate(Generic_client client) {
