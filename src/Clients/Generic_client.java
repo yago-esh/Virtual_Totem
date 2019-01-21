@@ -47,9 +47,10 @@ public class Generic_client extends JPanel {
 	public Generic_client(Client_VT client, Window_VT window, String clientName) {
 		
 		//------------------------------Develop mode--------------------------------
-//		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
+//		myName="Cristina";
 		//---------------------------------------------------------------------------
-		myName=System.getProperty("user.name");
+//		myName=System.getProperty("user.name");
 		
 		this.client=client;
 		this.window=window;
@@ -125,7 +126,8 @@ public class Generic_client extends JPanel {
 		dragon_time_lb.setBounds(74, 145, 150, 15);
 		add(dragon_time_lb);
 		
-		JLabel Version_lb = new JLabel("Versi\u00F3n 2.0.8");
+//		JLabel Version_lb = new JLabel("Versi\u00F3n 2.0.8");
+		JLabel Version_lb = new JLabel("Development Version");
 		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
 		Version_lb.setBounds(10, 195, 120, 14);
 		add(Version_lb);

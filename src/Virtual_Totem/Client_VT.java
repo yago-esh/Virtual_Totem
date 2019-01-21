@@ -40,12 +40,12 @@ public class Client_VT {
 
 	public void execute() throws IOException {
 		//------------------------------Develop mode--------------------------------
-//			socketConexion = new Socket("localhost", 2030);
+			socketConexion = new Socket("localhost", 2030);
 //			socketConexion = new Socket("10.1.2.34", 2030);
 		//---------------------------------------------------------------------------
 		// Crear socket cliente y establecer conexion
 		
-		socketConexion = new Socket("10.0.1.95", 2030);
+//		socketConexion = new Socket("10.0.1.95", 2030);
 
 		System.out.println("Cliente> Establecida conexion");
 

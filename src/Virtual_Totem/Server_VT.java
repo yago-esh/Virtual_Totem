@@ -28,7 +28,7 @@ class Server_VT extends Thread{
     private ArrayList<Server_Client> serverClient;
 	private int id;
 	private int compatibleVersion = 208;
-	private int actualVersion = 206;
+	private int actualVersion = 208;
 	private Log_VT log;
 	
     public Server_VT() {

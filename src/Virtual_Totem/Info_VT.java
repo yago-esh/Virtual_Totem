@@ -47,7 +47,7 @@ public class Info_VT extends JDialog {
 		info_text.setFont(new Font("Tahoma", Font.BOLD, 13));
 		info_text.setBackground(UIManager.getColor("CheckBox.background"));
 		info_text.setText("A continuaci\u00F3n va a proceder a desbloquear uno de los totem"+
-				".\r\nEsta acci\u00F3n solo debe realizarse en los siguientes casos y solo tras haber"+
+				".\r\nEsta acci\u00F3n solo debe realizarse en los siguientes casos y solo tras haber "+
 				"corroborado la acci\u00F3n con el resto del equipo:\r\n\r\n\u2022 El programa ha "+
 				"bloqueado de forma incorrecta un totem.\r\n\u2022 Un usuario ha bloqueado de forma "+
 				"indefinida un totem, no est\u00E1 siendo utilizado y no puede liberarlo de forma manual.");
