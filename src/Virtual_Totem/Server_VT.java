@@ -27,7 +27,8 @@ class Server_VT extends Thread{
     private String linea;
     private ArrayList<Server_Client> serverClient;
 	private int id;
-	private int compatible_version = 206;
+	private int compatibleVersion = 206;
+	private int actualVersion = 206;
 	private Log_VT log;
 	
     public Server_VT() {
@@ -155,7 +156,8 @@ class Server_VT extends Thread{
     				}
     				break;
     			case "update":
-    				compatible_version = Integer.parseInt(parts[1]);
+    				compatibleVersion = Integer.parseInt(parts[1]);
+    				actualVersion = Integer.parseInt(parts[2]);
     				break;
     				
     			case "freeTotem":
@@ -349,7 +351,7 @@ class Server_VT extends Thread{
                                     new InputStreamReader(inStream));
                             System.out.println(
                                     "Servidor> Obtenido flujo de lectura");
-                            out.println(compatible_version);
+                            out.println(compatibleVersion+","+actualVersion);
                             out.flush();
                             out.println(id);
                             out.flush();

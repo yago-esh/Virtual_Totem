@@ -120,12 +120,18 @@ public class Client_VT {
 					} else {
 						if(!check_version) {
 							check_version=true;
-							if(Integer.parseInt(lineaRecibir)>version) {
+							String[] parts = lineaRecibir.split(",");
+							if(Integer.parseInt(parts[0])>version) {
 								JOptionPane.showMessageDialog(null,
 										"Su versión de Virtual Totem es incompatible. Por favor, actualícela.",
 										"ERROR", JOptionPane.ERROR_MESSAGE);
 								System.exit(-1);
 								salir=true;
+							}
+							if(Integer.parseInt(parts[1])>version) {
+								JOptionPane.showMessageDialog(null,
+										"Existe una nueva versión del Virtual Totem. Por favor, actualícela.",
+										"Nueva versión disponible", JOptionPane.INFORMATION_MESSAGE);
 							}
 						}
 						else if(!parse_id){
@@ -134,7 +140,9 @@ public class Client_VT {
 							System.out.println("Mi Id es: "+myId);
 							client.setId(myId);
 						}
-						client.ParseMsg(lineaRecibir);
+						else {
+							client.ParseMsg(lineaRecibir);
+						}
 					}
 				}
 			} catch (IOException ex) {
