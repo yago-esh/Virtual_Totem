@@ -15,7 +15,7 @@ public class Log_VT {
 		path = "C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\Virtual_Totem\\log_virtual.txt";
 	}
 	
-    public void crearLog(String Operacion) {
+    public void createLog(String Operacion) {
     	
     	if(!Operacion.equals("ACK")) {
 	    	try {

@@ -2,7 +2,7 @@ package Virtual_Totem;
 
 import java.util.ArrayList;
 
-public class Server_Client {
+public class Server_Company {
 	
 	private String name, totemTopUser, totemBotUser;
 	private boolean totemTopTaken, totemBotTaken;
@@ -10,7 +10,7 @@ public class Server_Client {
 	private ArrayList<Integer> totemTopControlList, totemBotControlList;
 	private Integer totemTopTime[], totemBotTime[];
 	
-	public Server_Client(String name) {
+	public Server_Company(String name) {
 		this.name = name;
 		
 		totemTopList = new ArrayList<String>();

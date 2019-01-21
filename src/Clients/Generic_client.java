@@ -383,13 +383,13 @@ public class Generic_client extends JPanel {
 			String totem="";
 			String okAction="";
 			if (action.equals("freeTotemTop")) {
-				send("CleanList,wolf,0");
+				send("CleanList,totemTop,0");
 				totem="lobo";
 				okAction="takeTotemTop";
 				promt("free_wolf");
 			}
 			if (action.equals("freeTotemBot")) {
-				send("CleanList,dragon,0");
+				send("CleanList,totemBot,0");
 				totem="dragon";
 				okAction="takeTotemBot";
 				promt("free_dragon");
@@ -667,8 +667,8 @@ public class Generic_client extends JPanel {
 	                		}
 	                		
 	                	if(!CanGo) {
-	                		if (action.equals("freeTotemTop,"+clientName))	panel.send("CleanList,wolf,0");
-	        				if (action.equals("freeTotemBot,"+clientName))	panel.send("CleanList,dragon,0");
+	                		if (action.equals("freeTotemTop,"+clientName))	panel.send("CleanList,totemTop,0");
+	        				if (action.equals("freeTotemBot,"+clientName))	panel.send("CleanList,totemBot,0");
 	        				try {
 	        					//Wait 2 second to let enough time to the server to read the last message and send us the CleanList back.
 								Thread.sleep(2000);

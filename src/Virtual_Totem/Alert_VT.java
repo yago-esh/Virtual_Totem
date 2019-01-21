@@ -260,7 +260,7 @@ public class Alert_VT extends JDialog {
 
 		for(int x=0; x<list_wolf.size(); x++) {
 			if (list_wolf.get(x).equals(myName)) {
-					panel.send("CleanList,wolf,"+String.valueOf(x));
+					panel.send("CleanList,totemTop,"+String.valueOf(x));
 				break;
 			}
 		}
@@ -268,7 +268,7 @@ public class Alert_VT extends JDialog {
 		for(int x=0; x<list_dragon.size(); x++) {
 			if (list_dragon.get(x).equals(myName)) {
 				list_dragon.remove(x);
-					panel.send("CleanList,dragon,"+String.valueOf(x));
+					panel.send("CleanList,totemBot,"+String.valueOf(x));
 				break;
 			}
 		}
