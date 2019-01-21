@@ -39,6 +39,9 @@ class Server_VT extends Thread{
         serverClient.add(new Server_Client("Vodafone"));
         serverClient.add(new Server_Client("Caser"));
         serverClient.add(new Server_Client("Mapfre"));
+        serverClient.add(new Server_Client("Multiasistencia"));
+        serverClient.add(new Server_Client("LDA"));
+        serverClient.add(new Server_Client("AXA"));
     }
 
     private void ejecutar() {
@@ -173,7 +176,6 @@ class Server_VT extends Thread{
 	        		break;
     			case "clientChanged":
     				
-    				Iterator<Socket> iter = listaConexiones.iterator();
     	            PrintWriter out = null;
     	            try {
 						out = new PrintWriter(listaConexiones.get(Integer.parseInt(parts[1])).getOutputStream());

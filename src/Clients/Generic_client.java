@@ -1,4 +1,4 @@
-package Virtual_Totem;
+package Clients;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -23,6 +23,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import Virtual_Totem.Alert_VT;
+import Virtual_Totem.Client_VT;
+import Virtual_Totem.Info_VT;
+import Virtual_Totem.Window_VT;
 import sun.applet.Main;
 
 

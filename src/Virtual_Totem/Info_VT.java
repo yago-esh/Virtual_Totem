@@ -7,6 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import java.awt.Color;
 import javax.swing.UIManager;
+
+import Clients.Generic_client;
+
 import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionListener;

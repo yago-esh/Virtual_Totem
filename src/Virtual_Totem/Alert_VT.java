@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
+import Clients.Generic_client;
+
 import java.awt.List;
 
 public class Alert_VT extends JDialog {

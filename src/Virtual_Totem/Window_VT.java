@@ -22,7 +22,15 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-class Window_VT extends JFrame {
+import Clients.Client_Axa;
+import Clients.Client_Caser;
+import Clients.Client_Lda;
+import Clients.Client_Mapfre;
+import Clients.Client_Multiasistencia;
+import Clients.Client_Vodafone;
+import Clients.Generic_client;
+
+public class Window_VT extends JFrame {
 
 	private Client_VT cliente;
 	private Read_Data IO;
@@ -45,8 +53,9 @@ class Window_VT extends JFrame {
 		clientsList.add("Vodafone");
 		clientsList.add("Caser");
 		clientsList.add("Mapfre");
-//		clientsList.add("LDA");
-//		clientsList.add("Multiasistencia");
+		clientsList.add("Multiasistencia");
+		clientsList.add("LDA");
+		clientsList.add("AXA");
 		
 		this.setTitle("Virtual Totem");
 		this.setLocation(810, 425);
@@ -89,6 +98,17 @@ class Window_VT extends JFrame {
 			
 		case 2:
 			this.getContentPane().add(new Client_Mapfre(cliente, this));
+			break;
+		case 3:
+			this.getContentPane().add(new Client_Multiasistencia(cliente, this));
+			break;
+			
+		case 4:
+			this.getContentPane().add(new Client_Lda(cliente, this));
+			break;
+			
+		case 5:
+			this.getContentPane().add(new Client_Axa(cliente, this));
 			break;
 		default:
 			break;

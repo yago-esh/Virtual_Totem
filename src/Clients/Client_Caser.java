@@ -1,6 +1,9 @@
-package Virtual_Totem;
+package Clients;
 
 import javax.swing.ImageIcon;
+
+import Virtual_Totem.Client_VT;
+import Virtual_Totem.Window_VT;
 
 public class Client_Caser extends Generic_client {
 	

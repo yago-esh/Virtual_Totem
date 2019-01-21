@@ -10,9 +10,10 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
+import Clients.Generic_client;
 import Virtual_Totem.Client_VT;
 
-class Client_VT {
+public class Client_VT {
 
 	private Socket socketConexion;
 	private PrintWriter out;
