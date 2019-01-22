@@ -24,7 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import Virtual_Totem.Alert_VT;
-import Virtual_Totem.Client_VT;
+import Virtual_Totem.Client;
 import Virtual_Totem.Info_VT;
 import Virtual_Totem.Window;
 import sun.applet.Main;
@@ -34,7 +34,7 @@ public class Generic_client extends JPanel {
 	
 	protected Info_VT info;
 	protected Alert_VT alert;
-	protected Client_VT client;
+	protected Client client;
 	protected String myName, clientName, id;
 	protected Window window;
 	static final long serialVersionUID = 42L;
@@ -44,7 +44,7 @@ public class Generic_client extends JPanel {
 	protected Integer time_wolf[], time_dragon[];
 	protected JLabel clientIcon;
 
-	public Generic_client(Client_VT client, Window window, String clientName) {
+	public Generic_client(Client client, Window window, String clientName) {
 		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
@@ -304,7 +304,7 @@ public class Generic_client extends JPanel {
 	}
 	
 	
-	public void ParseMsg(String msg){
+	public void changeClientStatus(String msg){
 		System.out.println("Message received: "+msg);
 		if(msg.indexOf(",") != -1) {
 			

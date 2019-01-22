@@ -13,7 +13,7 @@ class ClientGraphic {
     }
 
 	public void execute() {
-		Client_VT client = new Client_VT();
+		Client client = new Client();
 		window = new Window(client);
 		try {
 			//Connect the client with the server

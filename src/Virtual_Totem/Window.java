@@ -32,7 +32,7 @@ import Clients.Generic_client;
 
 public class Window extends JFrame {
 
-	private Client_VT client;
+	private Client client;
 	private ReadData IO;
 	private MenuItem exitItem, showItem;
 	private TrayIcon trayIcon;
@@ -43,7 +43,7 @@ public class Window extends JFrame {
 	private static int num_options = 3; 
 	static final long serialVersionUID = 42L;
 
-	public Window(Client_VT client) {
+	public Window(Client client) {
 		
 		this.client = client;
 
@@ -331,7 +331,6 @@ public class Window extends JFrame {
         	IO.write(options);
         	//To finish, close the app
 			Window.this.client.finish();
-            System.exit(-1);
 		}
 	}
 	
