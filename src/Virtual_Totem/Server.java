@@ -50,11 +50,11 @@ class Server extends Thread{
     	try {
 			serverSocket = new ServerSocket(2030);
 			this.start();
+			//The server creates a thread to send ACK messages to the clients to know if someone was disconnected
 			this.new ConnectionCheckACK();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	
     }
     
     public void run(){
@@ -78,7 +78,6 @@ class Server extends Thread{
                  
                  // Increment the id to set a unique id for each client
                  id++;
-
              }
          } catch (IOException ex) {
              ex.printStackTrace();
@@ -331,7 +330,6 @@ class Server extends Thread{
             		}
             	}
 			}
-        	  
         }
     
         public void setTimer(String totem, ServerCompany clientSelected) {
@@ -473,7 +471,6 @@ class Server extends Thread{
                 		connectionList.sendACK();
                 	}
                 }
-     
             }.start();
         }
     }

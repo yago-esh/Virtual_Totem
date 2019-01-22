@@ -64,7 +64,7 @@ public class Client_VT {
 		this.new CheckConexiones();
 	}
 
-	public void terminar() {
+	public void finish() {
 		terminar = true;
 
 		// Cerrar flujos
@@ -95,7 +95,7 @@ public class Client_VT {
 		
 	}
 
-	public void enviar(String linea) {
+	public void send(String linea) {
 		out.println(linea);
 		out.flush();
 	}
@@ -115,7 +115,7 @@ public class Client_VT {
 					String lineaRecibir = in.readLine();
 					if (lineaRecibir == null) {
 						salir = true;
-						Client_VT.this.terminar();
+						Client_VT.this.finish();
 						System.exit(0);
 					} else {
 						if(!check_version) {
@@ -154,7 +154,7 @@ public class Client_VT {
 				}
 			}
 			finally {
-				Client_VT.this.terminar();
+				Client_VT.this.finish();
 			}
 		}
 	}

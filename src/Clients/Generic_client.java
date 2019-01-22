@@ -26,7 +26,7 @@ import javax.swing.SwingConstants;
 import Virtual_Totem.Alert_VT;
 import Virtual_Totem.Client_VT;
 import Virtual_Totem.Info_VT;
-import Virtual_Totem.Window_VT;
+import Virtual_Totem.Window;
 import sun.applet.Main;
 
 
@@ -36,7 +36,7 @@ public class Generic_client extends JPanel {
 	protected Alert_VT alert;
 	protected Client_VT client;
 	protected String myName, clientName, id;
-	protected Window_VT window;
+	protected Window window;
 	static final long serialVersionUID = 42L;
 	protected boolean dragon_blocked, wolf_blocked, ImAlive;
 	protected JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
@@ -44,7 +44,7 @@ public class Generic_client extends JPanel {
 	protected Integer time_wolf[], time_dragon[];
 	protected JLabel clientIcon;
 
-	public Generic_client(Client_VT client, Window_VT window, String clientName) {
+	public Generic_client(Client_VT client, Window window, String clientName) {
 		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
@@ -394,7 +394,7 @@ public class Generic_client extends JPanel {
 				okAction="takeTotemBot";
 				promt("free_dragon");
 			}
-			window.msgTry("Se acaba de liberar el " +totem+ " y eres el siguiente en la cola.");
+			window.windowsMessage("Se acaba de liberar el " +totem+ " y eres el siguiente en la cola.");
 			String ObjButtons[] = {"Yes","No"};
 	        int PromptResult = JOptionPane.showOptionDialog(null,"Se acaba de liberar el " +totem+ " y eres el siguiente en la cola. ¿Quieres cogerlo?",
 	        		"Liberación del Totem",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
@@ -509,7 +509,7 @@ public class Generic_client extends JPanel {
 	
 	public void send(String text) {
 		System.out.println("We are sending: "+text+","+clientName);
-		client.enviar(text+","+clientName);
+		client.send(text+","+clientName);
 	}
 	
 	public boolean is_totem_taked(String totem) {
@@ -522,18 +522,18 @@ public class Generic_client extends JPanel {
 		return false;
 	}
 	
-	public boolean cant_exit() {
-		return (warning_wolf() || warning_dragon());
+	public boolean canIExit() {
+		return (!isTotemTopWarning() && !isTotemBotWarning());
 	}
 	
-	public boolean warning_wolf() {
+	public boolean isTotemTopWarning() {
 		if (Wolf_bt.getText().equals("Soltar Lobo")) {
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean warning_dragon() {
+	public boolean isTotemBotWarning() {
 		if (Dragon_bt.getText().equals("Soltar Dragon")) {
 			return true;
 		}
@@ -541,7 +541,7 @@ public class Generic_client extends JPanel {
 	}
 	
 	public void show_error(String totem, String user_name) {
-		window.msgTry("El usuario " +user_name+ " ha forzado la liberación del " + totem);
+		window.windowsMessage("El usuario " +user_name+ " ha forzado la liberación del " + totem);
 		if(totem.equals("lobo")) {
 			promt(user_name,"force_wolf");
 		}
@@ -552,7 +552,7 @@ public class Generic_client extends JPanel {
 	}
 	
 	public void show_alert(String totem, String user_name) {
-		window.msgTry("El usuario " +user_name+ " está solicitando el " + totem);
+		window.windowsMessage("El usuario " +user_name+ " está solicitando el " + totem);
 		if(totem.equals("lobo")) {
 			promt(user_name,"asking_wolf");
 		}

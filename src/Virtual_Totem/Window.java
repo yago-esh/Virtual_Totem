@@ -30,26 +30,27 @@ import Clients.Client_Multiasistencia;
 import Clients.Client_Vodafone;
 import Clients.Generic_client;
 
-public class Window_VT extends JFrame {
+public class Window extends JFrame {
 
-	private Client_VT cliente;
+	private Client_VT client;
 	private Read_Data IO;
 	private MenuItem exitItem, showItem;
 	private TrayIcon trayIcon;
 	private String[] options;
-	private CheckboxMenuItem OpcMinimize, OpcSilence;
+	private CheckboxMenuItem optionMinimize, optionSilence;
 	private ArrayList<String> clientsList;
-	private ArrayList<CheckboxMenuItem> opcClients;
+	private ArrayList<CheckboxMenuItem> optionClients;
 	private static int num_options = 3; 
 	static final long serialVersionUID = 42L;
 
-	public Window_VT(Client_VT cliente) {
+	public Window(Client_VT client) {
 		
-		this.cliente = cliente;
+		this.client = client;
 
-		opcClients = new ArrayList<CheckboxMenuItem>();
+		optionClients = new ArrayList<CheckboxMenuItem>();
 		clientsList = new ArrayList<String>();
 		
+		//Initialize the different companies
 		clientsList.add("Vodafone");
 		clientsList.add("Caser");
 		clientsList.add("Mapfre");
@@ -64,72 +65,86 @@ public class Window_VT extends JFrame {
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
-		Systray();
+		//Initialize the systray feature
+		systray();
+		
+		//Initialize the data needed from the class
 		initializer();
+		
+		//Choose the company that is related to the client
 		selectClient(Integer.valueOf(options[2]));
+		
+		//Initialize the listeners of the class
 		listeners();
 	}
 	
 	public void initializer() {
 		
+		//Create the ReadData class to read the options from the file
 		IO = new Read_Data(num_options);
 		options = IO.read();
+		//If the file is properly filled the options are set
 		if(options != null && options[num_options-1] != null) {
-			setoptions();
+			setOptions();
 		}
 		else {
+			//If not, we only need to set the company option to run the program
 			options = new String[num_options];
+			//The predefined value for the company option is 0 which means the company "Vodafone"
 			options[2]="0";
-			opcClients.get(0).setState(true);
+			optionClients.get(0).setState(true);
 		}
 	}
 	
 	public void selectClient(int num) {
 		
+		//Remove the current panel to set the new one
 		this.getContentPane().removeAll();
+		
+		//Each company is related with 1 id, these are the couples
 		switch (num) {
 		case 0:
-			this.getContentPane().add(new Client_Vodafone(cliente, this));
+			this.getContentPane().add(new Client_Vodafone(client, this));
 			break;
 			
 		case 1:
-			this.getContentPane().add(new Client_Caser(cliente, this));
+			this.getContentPane().add(new Client_Caser(client, this));
 			break;
 			
 		case 2:
-			this.getContentPane().add(new Client_Mapfre(cliente, this));
+			this.getContentPane().add(new Client_Mapfre(client, this));
 			break;
 		case 3:
-			this.getContentPane().add(new Client_Multiasistencia(cliente, this));
+			this.getContentPane().add(new Client_Multiasistencia(client, this));
 			break;
 			
 		case 4:
-			this.getContentPane().add(new Client_Lda(cliente, this));
+			this.getContentPane().add(new Client_Lda(client, this));
 			break;
 			
 		case 5:
-			this.getContentPane().add(new Client_Axa(cliente, this));
+			this.getContentPane().add(new Client_Axa(client, this));
 			break;
 		default:
 			break;
 		}
 		this.getContentPane().revalidate();
 		this.getContentPane().repaint();
-
 	}
 	
-	public void setoptions() {
-//		System.out.println(Boolean.valueOf(options[0]));
-		OpcMinimize.setState(Boolean.valueOf(options[0]));
-		OpcSilence.setState(Boolean.valueOf(options[1]));
-		opcClients.get(Integer.valueOf(options[2])).setState(true);;
+	public void setOptions() {
+		//Associate the value of the file to the value of the systray menu
+		optionMinimize.setState(Boolean.valueOf(options[0]));
+		optionSilence.setState(Boolean.valueOf(options[1]));
+		optionClients.get(Integer.valueOf(options[2])).setState(true);;
 	}
 	
-	public void getoptions() {
-		options[0]=String.valueOf(OpcMinimize.getState());
-		options[1]=String.valueOf(OpcSilence.getState());
-		for(int x=0;x<opcClients.size();x++) {
-			if(opcClients.get(x).getState()==true) {
+	public void getOptions() {
+		//Associate the value of the systray menu to the value of file
+		options[0]=String.valueOf(optionMinimize.getState());
+		options[1]=String.valueOf(optionSilence.getState());
+		for(int x=0;x<optionClients.size();x++) {
+			if(optionClients.get(x).getState()==true) {
 				options[2]=String.valueOf(x);
 				break;
 			}
@@ -137,72 +152,86 @@ public class Window_VT extends JFrame {
 	}
 	
 	public Generic_client getClient() {
+		//Get the current pane
 		return (Generic_client) this.getContentPane().getComponent(0);
 	}
 	
 	public void listeners() {
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if(OpcMinimize.getState()) {
+				//If the minimize option is active, closing window just sets the visibility of the app to false
+				if(optionMinimize.getState()) {
 					setVisible(false);
 				}
+				//Otherwise, it's close the app
 				else {
 					exit();
 				}
 			}
 		});
 		
+		//Exit item, close the app
 		exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 				exit();
             }
         });
 		
+		//Click on the tray icon sets the visibility of the app to true
 		trayIcon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	setVisible(true);
             }
         });
 		
+		//Click on the show item sets the visibility of the app to true
 		showItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	setVisible(true);
             }
         });
 		
-		for (CheckboxMenuItem menuItem : opcClients) {
+		//For each company we create a listener for the systray menu
+		for (CheckboxMenuItem menuItem : optionClients) {
 			menuItem.addItemListener(new ItemListener(){
 	            public void itemStateChanged(ItemEvent ie)
 	            {
-	            		if(menuItem.getState()) {
-	            			if(canIExitClient()) {
-			            		int x=0;
-			            		for (CheckboxMenuItem clients : opcClients) {
-									if(!clients.equals(menuItem)) {
-										clients.setState(false);
-									}
-									else {
-										selectClient(x);
-										cliente.enviar("clientChanged,"+cliente.getMyId()+","+getClient().getMyName()+","+getClient().getClientName());
-									}
-									x++;
+	            	//After click in the menu the state changes so we have to ask for the opposite state that we really want to control
+            		if(menuItem.getState()) {
+            			//We control if there is any problem to exit the client
+            			if(canIExitClient()) {
+            				//If we can exit
+		            		int x=0;
+		            		for (CheckboxMenuItem clients : optionClients) {
+		            			//Uncheck the rest of the menu items
+								if(!clients.equals(menuItem)) {
+									clients.setState(false);
 								}
-	            			}
-	            			else {
-	    	            		menuItem.setState(false);
-	    	            	}
-		            	}
-		            	else {
-		            		menuItem.setState(true);
-		            		JOptionPane.showMessageDialog(null,"Es necesario que un cliente esté seleccionado");
-		            	}
+								//For the item that was selected
+								else {
+									//Changes the panel to the new company
+									selectClient(x);
+									//Send to the server a clientChanged message to ask for the information of the new company
+									client.send("clientChanged,"+client.getMyId()+","+getClient().getMyName()+","+getClient().getClientName());
+								}
+								x++;
+							}
+            			}
+            			//If we can't exit just set the state of the new selected item to false
+            			else {
+    	            		menuItem.setState(false);
+    	            	}
+	            	}
+	            	else {
+	            		//Means we want to uncheck the unique company that is selected, so we can't let the user do this so we set the state to true again
+	            		menuItem.setState(true);
+	            	}
 	            }
 	        });
 		}
-		
 	}
 	
-	public void Systray() {
+	public void systray() {
 		//Check the SystemTray is supported
         if (!SystemTray.isSupported()) {
             System.out.println("SystemTray is not supported");
@@ -217,8 +246,8 @@ public class Window_VT extends JFrame {
 	        exitItem = new MenuItem("Salir");
 	        showItem = new MenuItem("Abrir");
 	        Menu options = new Menu("Opciones");
-	        OpcMinimize = new CheckboxMenuItem("Minimizar al cerrar");
-	        OpcSilence = new CheckboxMenuItem("Silenciar voz");
+	        optionMinimize = new CheckboxMenuItem("Minimizar al cerrar");
+	        optionSilence = new CheckboxMenuItem("Silenciar voz");
 	        Menu clients = new Menu("Clientes");
 	       
 	        //Add components to pop-up menu
@@ -227,11 +256,11 @@ public class Window_VT extends JFrame {
 	        popup.add(options);
 	        popup.addSeparator();
 	        popup.add(clients);
-	        options.add(OpcMinimize);
-	        options.add(OpcSilence);
+	        options.add(optionMinimize);
+	        options.add(optionSilence);
 	        for (String string : clientsList) {
 	        	CheckboxMenuItem aux = new CheckboxMenuItem(string);
-				opcClients.add(aux);
+				optionClients.add(aux);
 				clients.add(aux);
 			}
 	        popup.addSeparator();
@@ -253,24 +282,34 @@ public class Window_VT extends JFrame {
 	
 	public boolean canIExitClient() {
 		Generic_client clientExit = getClient();
-		if(clientExit.cant_exit()) {
+		//Looks if there is any problem to exit
+		if(clientExit.canIExit()) {
+			//If not, remove the user from the list
+			clientExit.getAlert_VT().removeMeUserFromList();
+			return true;
+		}else {
+			//if there is any problem, let the user know that he has taken a totem
 			String ObjButtons[] = {"Yes","No"};
+			//Ask him if he is sure to exit
 	        int PromptResult = JOptionPane.showOptionDialog(null,"¿Estás seguro de que quieres salir? Tienes un totem cogido.",
 	        		"Advertencia de salida",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+	        //If he is, we start the process to let him go
 	        if(PromptResult==JOptionPane.YES_OPTION)
 	        {
+	        	//Remove him from the list
 	        	clientExit.getAlert_VT().removeMeUserFromList();
 	        	
-	        	if (clientExit.warning_wolf()) {
+	        	//Look which is the totem he has, and send a message to the other users to set free the totem
+	        	if (clientExit.isTotemTopWarning()) {
 	        		clientExit.blockWolf("");
-	    			cliente.enviar("freeTotem,freeTotemTop,"+clientExit.getMyName()+","+clientExit.getClientName());
+	    			client.send("freeTotem,freeTotemTop,"+clientExit.getMyName()+","+clientExit.getClientName());
 	    		}
-	    		if ( clientExit.warning_dragon()) {
+	    		if ( clientExit.isTotemBotWarning()) {
 	    			clientExit.blockDragon("");
-	    			cliente.enviar("freeTotem,freeTotemBot,"+clientExit.getMyName()+","+clientExit.getClientName());
+	    			client.send("freeTotem,freeTotemBot,"+clientExit.getMyName()+","+clientExit.getClientName());
 	    		}
 	        	try {
-	        		//Need to wait 2 second to let enough time to the server to read the last message and be available to read the next one before close the flows.
+	        		//Need to wait 1 second to let enough time to the server to read the last message and be available to read the next one before close the flows.
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
@@ -280,27 +319,30 @@ public class Window_VT extends JFrame {
 	        else {
 	        	return false;
 	        }
-		}else {
-			clientExit.getAlert_VT().removeMeUserFromList();
-			return true;
 		}
 	}
 	
-	public void exit() {
+	public void exit() { 
+		//Check if there is any problem to exit
 		if(canIExitClient()) {
-			getoptions();
+			//If not, get the options from the systray
+			getOptions();
+			//And write them in the file
         	IO.write(options);
-			Window_VT.this.cliente.terminar();
+        	//To finish, close the app
+			Window.this.client.finish();
             System.exit(-1);
 		}
 	}
 	
-	public void msgTry(String msg) {
-		trayIcon.displayMessage(msg, "Virtual Totem", MessageType.WARNING);
+	public void windowsMessage(String message) {
+		//Display a Windows message
+		trayIcon.displayMessage(message, "Virtual Totem", MessageType.WARNING);
 	}
 	
 	public boolean isSilence() {
-		return OpcSilence.getState();
+		//Return if the silence option is activated or not
+		return optionSilence.getState();
 	}
 }
 

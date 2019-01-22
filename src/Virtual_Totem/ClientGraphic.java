@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 class ClientGraphic {
 	
-	private static Window_VT window;
+	private static Window window;
 	
     public static void main(String args[]) {
         new ClientGraphic().execute();
@@ -14,7 +14,7 @@ class ClientGraphic {
 
 	public void execute() {
 		Client_VT client = new Client_VT();
-		window = new Window_VT(client);
+		window = new Window(client);
 		try {
 			//Connect the client with the server
 			client.execute();
@@ -29,5 +29,4 @@ class ClientGraphic {
 			System.exit(-1);
 		}
     }
-	
 }
