@@ -285,7 +285,7 @@ public class Window extends JFrame {
 		//Looks if there is any problem to exit
 		if(clientExit.canIExit()) {
 			//If not, remove the user from the list
-			clientExit.getAlertPane().removeMeFromLists();
+			clientExit.getInfoPanel().removeMeFromLists();
 			return true;
 		}else {
 			//if there is any problem, let the user know that he has taken a totem
@@ -297,11 +297,11 @@ public class Window extends JFrame {
 	        if(PromptResult==JOptionPane.YES_OPTION)
 	        {
 	        	//Remove him from the list
-	        	clientExit.getAlertPane().removeMeFromLists();
+	        	clientExit.getInfoPanel().removeMeFromLists();
 	        	
 	        	//Look which is the totem he has, and send a message to the other users to set free the totem
 	        	if (clientExit.isTotemTopWarning()) {
-	        		clientExit.blockWolf("");
+	        		clientExit.blockTotemTop("");
 	    			client.send("freeTotem,freeTotemTop,"+clientExit.getMyName()+","+clientExit.getClientName());
 	    		}
 	    		if ( clientExit.isTotemBotWarning()) {
