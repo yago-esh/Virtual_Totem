@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import Virtual_Totem.Alert_VT;
+import Virtual_Totem.AlertPane;
 import Virtual_Totem.Client;
 import Virtual_Totem.InfoPanel;
 import Virtual_Totem.Window;
@@ -33,9 +33,9 @@ import sun.applet.Main;
 public class Generic_client extends JPanel {
 	
 	protected InfoPanel info;
-	protected Alert_VT alert;
+	protected AlertPane alert;
 	protected Client client;
-	protected String myName, clientName, id;
+	protected String myName, clientName, id, totemTopName, totemBotName;
 	protected Window window;
 	static final long serialVersionUID = 42L;
 	protected boolean dragon_blocked, wolf_blocked, ImAlive;
@@ -43,7 +43,6 @@ public class Generic_client extends JPanel {
 	protected JLabel wolf_time_lb, dragon_time_lb;
 	protected Integer time_wolf[], time_dragon[];
 	protected JLabel clientIcon;
-	protected String[] totemNames = new String[2];
 
 	public Generic_client(Client client, Window window, String clientName, String[] totemNames) {
 		
@@ -56,9 +55,11 @@ public class Generic_client extends JPanel {
 		this.client=client;
 		this.window=window;
 		this.clientName=clientName;
+		this.totemTopName = totemNames[0];
+		this.totemBotName = totemNames[1];
 		client.associate(this);
 		info = new InfoPanel(Generic_client.this,totemNames);
-		alert = new Alert_VT(this,myName);
+		alert = new AlertPane(this,myName, totemNames);
 		setLayout(null);
 		
 		//------------------------------------Buttons------------------------------------------//
@@ -234,7 +235,7 @@ public class Generic_client extends JPanel {
 			show_error("lobo",user_name);
 		}
 		Wolf_bt.setEnabled(true);
-		alert.changeActiveOkButton("wolf", false);
+		alert.changeActiveOkButton(totemTopName, false);
 		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
 		wolf_blocked=false;
@@ -248,7 +249,7 @@ public class Generic_client extends JPanel {
 			show_error("dragon",user_name);
 		}
 		Dragon_bt.setEnabled(true);
-		alert.changeActiveOkButton("dragon", false);
+		alert.changeActiveOkButton(totemBotName, false);
 		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
 		dragon_blocked=false;
@@ -259,7 +260,7 @@ public class Generic_client extends JPanel {
 	public void blockDragon(String user_name) {
 		
 		Dragon_bt.setEnabled(false);
-		alert.changeActiveOkButton("dragon", true);
+		alert.changeActiveOkButton(totemBotName, true);
 		dragon_blocked=true;
 		if(time_dragon[0]+time_dragon[1]+time_dragon[2] == 1) { //If the time is not already running
 			time("dragon");
@@ -283,7 +284,7 @@ public class Generic_client extends JPanel {
 	public void blockWolf(String user_name) {
 		
 		Wolf_bt.setEnabled(false);
-		alert.changeActiveOkButton("wolf", true);
+		alert.changeActiveOkButton(totemTopName, true);
 		wolf_blocked=true;
 		System.out.println("La hora con la que entro al bucle es: "+time_wolf[2]+":"+time_wolf[1]+":"+time_wolf[0]);
 		if(time_wolf[0]+time_wolf[1]+time_wolf[2] == 1) { //If the time is not already running
@@ -338,7 +339,7 @@ public class Generic_client extends JPanel {
 							break;
 							
 						case "CleanList":
-							alert.removeNumList(parts[1], Integer.parseInt(parts[2]));
+							alert.removeUserFromListByNumber(parts[1], Integer.parseInt(parts[2]));
 		    				break;
 		    			
 						case "isAlive":
@@ -563,7 +564,7 @@ public class Generic_client extends JPanel {
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " está solicitando el " + totem);
 	}
 	
-	public Alert_VT getAlert_VT() {
+	public AlertPane getAlertPane() {
 		return alert;
 	}
 	
@@ -645,16 +646,6 @@ public class Generic_client extends JPanel {
 	    t1.start();
 		
 	}
-	
-	public String[] getTotemNames() {
-		return totemNames;
-	}
-
-	public void setTotemNames(String[] totemNames) {
-		this.totemNames = totemNames;
-	}
-
-
 
 	protected class CheckConexiones{
     	
