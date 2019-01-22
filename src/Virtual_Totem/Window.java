@@ -33,7 +33,7 @@ import Clients.Generic_client;
 public class Window extends JFrame {
 
 	private Client_VT client;
-	private Read_Data IO;
+	private ReadData IO;
 	private MenuItem exitItem, showItem;
 	private TrayIcon trayIcon;
 	private String[] options;
@@ -81,7 +81,7 @@ public class Window extends JFrame {
 	public void initializer() {
 		
 		//Create the ReadData class to read the options from the file
-		IO = new Read_Data(num_options);
+		IO = new ReadData(num_options);
 		options = IO.read();
 		//If the file is properly filled the options are set
 		if(options != null && options[num_options-1] != null) {
