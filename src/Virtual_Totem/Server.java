@@ -22,7 +22,7 @@ class Server extends Thread{
     private ServerSocket serverSocket;
     private Socket connectionSocket;
     private String line;
-    private Log_VT log;
+    private ServerLog serverLog;
     private ArrayList<ServerCompany> serverCompany;
 	private int id;
 	private int compatibleVersion = 208;
@@ -31,7 +31,7 @@ class Server extends Thread{
 	
     public Server() {
         connectionList = new ConnectionList();
-        log = new Log_VT();
+        serverLog = new ServerLog();
         
         //The server creates a Id to have a control of the different clients
         id=0;
@@ -399,7 +399,7 @@ class Server extends Thread{
                             	
                                 System.out.println("Servidor> Recibida linea = " + line);
                                 //Write the file in the log   
-                            	log.createLog(line);
+                            	serverLog.writeLog(line);
                             	//The server sends the same line to all the clients
                                 connectionList.processLine(line,clientId);
   

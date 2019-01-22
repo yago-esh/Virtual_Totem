@@ -5,32 +5,34 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class Log_VT {
+public class ServerLog {
 
-	private FileWriter archivo; //nuestro archivo log
+	private FileWriter fileWriter;
 	private String path;
 
-	public Log_VT() {
+	public ServerLog() {
+		//Create the directory
 		new File("C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\Virtual_Totem").mkdirs();
 		path = "C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\Virtual_Totem\\log_virtual.txt";
 	}
 	
-    public void createLog(String Operacion) {
+    public void writeLog(String line) {
     	
-    	if(!Operacion.equals("ACK")) {
+    	//If the line is not an ACK message
+    	if(line.indexOf("ACK") == -1) {
 	    	try {
-	    		if (new File(path).exists()==false){archivo=new FileWriter(new File(path),false);}
-	            archivo = new FileWriter(new File(path), true);
+	    		if (new File(path).exists()==false){fileWriter=new FileWriter(new File(path),false);}
+	            fileWriter = new FileWriter(new File(path), true);
 	            Calendar fechaActual = Calendar.getInstance();
 	            
-					archivo.write("["+(String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH))
+					fileWriter.write("["+(String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH))
 					     +"/"+String.valueOf(fechaActual.get(Calendar.MONTH)+1)
 					     +"/"+String.valueOf(fechaActual.get(Calendar.YEAR))
 					     +" - "+String.valueOf(fechaActual.get(Calendar.HOUR_OF_DAY))
 					     +":"+String.valueOf(fechaActual.get(Calendar.MINUTE))
-					     +":"+String.valueOf(fechaActual.get(Calendar.SECOND)))+"]  "+Operacion+"\r\n");
+					     +":"+String.valueOf(fechaActual.get(Calendar.SECOND)))+"]  "+line+"\r\n");
 				
-	            archivo.close(); 
+	            fileWriter.close(); 
 	   		} catch (IOException e) {
 				e.printStackTrace();
 			}
