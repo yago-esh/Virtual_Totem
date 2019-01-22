@@ -23,26 +23,28 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import Virtual_Totem.AlertPane;
-import Virtual_Totem.Client;
 import Virtual_Totem.InfoPanel;
+import Virtual_Totem.Client;
+import Virtual_Totem.AlertPanel;
 import Virtual_Totem.Window;
 import sun.applet.Main;
 
 
 public class Generic_client extends JPanel {
 	
-	protected InfoPanel info;
-	protected AlertPane alert;
+	protected AlertPanel alertPanel;
+	protected InfoPanel infoPanel;
 	protected Client client;
 	protected String myName, clientName, id, totemTopName, totemBotName;
 	protected Window window;
 	static final long serialVersionUID = 42L;
-	protected boolean dragon_blocked, wolf_blocked, ImAlive;
-	protected JButton Wolf_bt, Dragon_bt, Info_bt, wolf_alert, dragon_alert;
-	protected JLabel wolf_time_lb, dragon_time_lb;
-	protected Integer time_wolf[], time_dragon[];
+	protected boolean totemBotTaken, totemTopTaken, ImAlive;
+	protected JButton totemTopButton, totemBotButton, alertPanelButton, infoPanelTotemTopButton, infoPanelTotemBotButton;
+	protected JLabel totemTopTimerLabel, totemBotTimerLabel;
+	protected Integer totemTopTimer[], totemBotTimer[];
 	protected JLabel clientIcon;
+	private String totemTopForcedAlert = "force_wolf";
+	private String totemBotForcedAlert = "force_dragon";
 
 	public Generic_client(Client client, Window window, String clientName, String[] totemNames) {
 		
@@ -58,92 +60,90 @@ public class Generic_client extends JPanel {
 		this.totemTopName = totemNames[0];
 		this.totemBotName = totemNames[1];
 		client.associate(this);
-		info = new InfoPanel(Generic_client.this,totemNames);
-		alert = new AlertPane(this,myName, totemNames);
+		alertPanel = new AlertPanel(Generic_client.this,totemNames);
+		infoPanel = new InfoPanel(this,myName, totemNames);
 		setLayout(null);
 		
 		//------------------------------------Buttons------------------------------------------//
-		Wolf_bt = new JButton("Coger Lobo");
-		Wolf_bt.setBounds(74, 25, 150, 50);
-		Wolf_bt.setForeground(Color.WHITE);
-		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		Wolf_bt.setVerticalTextPosition(SwingConstants.CENTER);
-		Wolf_bt.setHorizontalTextPosition(SwingConstants.CENTER);
-		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
-		Wolf_bt.setIcon(new ImageIcon(Generic_client.class.getResource("/Img/bt_Wolf_bt.jpg")));
-		Wolf_bt.setDisabledIcon(new ImageIcon(Generic_client.class.getResource("/Img/bt_Wolf_bt_disabled.jpg")));
-		add(Wolf_bt);
+		totemTopButton = new JButton("Coger "+totemTopName);
+		totemTopButton.setBounds(74, 25, 150, 50);
+		totemTopButton.setForeground(Color.WHITE);
+		totemTopButton.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		totemTopButton.setVerticalTextPosition(SwingConstants.CENTER);
+		totemTopButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		totemTopButton.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
+		add(totemTopButton);
 		
-		Dragon_bt = new JButton("Coger Dragon");		
-		Dragon_bt.setForeground(Color.WHITE);
-		Dragon_bt.setBounds(74, 95, 150, 50);
-		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		Dragon_bt.setVerticalTextPosition(SwingConstants.CENTER);
-		Dragon_bt.setHorizontalTextPosition(SwingConstants.CENTER);
-		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
-		Dragon_bt.setIcon(new ImageIcon(Generic_client.class.getResource("/Img/bt_dragon.jpg")));
-		Dragon_bt.setDisabledIcon(new ImageIcon(Generic_client.class.getResource("/Img/bt_dragon_disabled.jpg")));
-		add(Dragon_bt);
+		totemBotButton = new JButton("Coger "+totemBotName);		
+		totemBotButton.setForeground(Color.WHITE);
+		totemBotButton.setBounds(74, 95, 150, 50);
+		totemBotButton.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		totemBotButton.setVerticalTextPosition(SwingConstants.CENTER);
+		totemBotButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		totemBotButton.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
+		add(totemBotButton);
 		
-		Info_bt = new JButton("");
-		Info_bt.setBorder(null);
-		Info_bt.setOpaque(false);
-		Info_bt.setBounds(133, 169, 32, 32);
-		Info_bt.setBackground(Color.LIGHT_GRAY);
-		Info_bt.setMargin(new Insets(0, 0, 0, 0));
-		Info_bt.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
-		add(Info_bt);
+		alertPanelButton = new JButton("");
+		alertPanelButton.setBorder(null);
+		alertPanelButton.setOpaque(false);
+		alertPanelButton.setBounds(133, 169, 32, 32);
+		alertPanelButton.setBackground(Color.LIGHT_GRAY);
+		alertPanelButton.setMargin(new Insets(0, 0, 0, 0));
+		alertPanelButton.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/warning.png")));
+		add(alertPanelButton);
 		
-		wolf_alert = new JButton("");
-		wolf_alert.setBorder(null);
-		wolf_alert.setOpaque(false);
-		wolf_alert.setBounds(233, 36, 32, 32);
-		wolf_alert.setBackground(Color.LIGHT_GRAY);
-		wolf_alert.setMargin(new Insets(0, 0, 0, 0));
-		wolf_alert.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
-		add(wolf_alert);
+		infoPanelTotemTopButton = new JButton("");
+		infoPanelTotemTopButton.setBorder(null);
+		infoPanelTotemTopButton.setOpaque(false);
+		infoPanelTotemTopButton.setBounds(233, 36, 32, 32);
+		infoPanelTotemTopButton.setBackground(Color.LIGHT_GRAY);
+		infoPanelTotemTopButton.setMargin(new Insets(0, 0, 0, 0));
+		infoPanelTotemTopButton.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		add(infoPanelTotemTopButton);
 		
-		dragon_alert = new JButton("");
-		dragon_alert.setBorder(null);
-		dragon_alert.setOpaque(false);
-		dragon_alert.setBounds(233, 106, 32, 32);
-		dragon_alert.setBackground(Color.LIGHT_GRAY);
-		dragon_alert.setMargin(new Insets(0, 0, 0, 0));
-		dragon_alert.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
-		add(dragon_alert);
+		infoPanelTotemBotButton = new JButton("");
+		infoPanelTotemBotButton.setBorder(null);
+		infoPanelTotemBotButton.setOpaque(false);
+		infoPanelTotemBotButton.setBounds(233, 106, 32, 32);
+		infoPanelTotemBotButton.setBackground(Color.LIGHT_GRAY);
+		infoPanelTotemBotButton.setMargin(new Insets(0, 0, 0, 0));
+		infoPanelTotemBotButton.setIcon(new ImageIcon(Generic_client.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		add(infoPanelTotemBotButton);
 		
-		wolf_time_lb = new JLabel("");
-		wolf_time_lb.setBackground(Color.BLACK);
-		wolf_time_lb.setFont(new Font("Tahoma", Font.BOLD, 11));
-		wolf_time_lb.setForeground(Color.BLACK);
-		wolf_time_lb.setHorizontalAlignment(SwingConstants.CENTER);
-		wolf_time_lb.setBounds(74, 75, 150, 15);
-		add(wolf_time_lb);
+		totemTopTimerLabel = new JLabel("");
+		totemTopTimerLabel.setBackground(Color.BLACK);
+		totemTopTimerLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		totemTopTimerLabel.setForeground(Color.BLACK);
+		totemTopTimerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		totemTopTimerLabel.setBounds(74, 75, 150, 15);
+		add(totemTopTimerLabel);
 		
-		dragon_time_lb = new JLabel("");
-		dragon_time_lb.setHorizontalAlignment(SwingConstants.CENTER);
-		dragon_time_lb.setForeground(Color.BLACK);
-		dragon_time_lb.setFont(new Font("Tahoma", Font.BOLD, 11));
-		dragon_time_lb.setBackground(Color.BLACK);
-		dragon_time_lb.setBounds(74, 145, 150, 15);
-		add(dragon_time_lb);
+		totemBotTimerLabel = new JLabel("");
+		totemBotTimerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		totemBotTimerLabel.setForeground(Color.BLACK);
+		totemBotTimerLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		totemBotTimerLabel.setBackground(Color.BLACK);
+		totemBotTimerLabel.setBounds(74, 145, 150, 15);
+		add(totemBotTimerLabel);
 		
-//		JLabel Version_lb = new JLabel("Versi\u00F3n 2.0.8");
-		JLabel Version_lb = new JLabel("Development Version");
-		Version_lb.setFont(new Font("Yu Gothic", Font.BOLD, 11));
-		Version_lb.setBounds(10, 195, 120, 14);
-		add(Version_lb);
-		
-		clientIcon = new JLabel("");
-		clientIcon.setBounds(10, 63, 50, 50);
-		add(clientIcon);
 		
 		//------------------------------------Labels------------------------------------------//
+		
+//		JLabel versionLabel = new JLabel("Versión 2.0.8");
+		JLabel versionLabel = new JLabel("Development Version");
+		
+		versionLabel.setFont(new Font("Yu Gothic", Font.BOLD, 11));
+		versionLabel.setBounds(10, 195, 120, 14);
+		add(versionLabel);
 		
 		JLabel background = new JLabel("New label");
 		background.setBounds(0, 0, 299, 221);
 		background.setIcon(new ImageIcon(Generic_client.class.getResource("/Img/Background_main.png")));
 		add(background);
+		
+		clientIcon = new JLabel("");
+		clientIcon.setBounds(10, 63, 50, 50);
+		add(clientIcon);
 		
 		//------------------------------------Initialize Variables--------------------------------//
 		initialize();
@@ -152,76 +152,83 @@ public class Generic_client extends JPanel {
 	
 	public void listeners() {
 		
-		Wolf_bt.addActionListener(new ActionListener() {
+		//When the top button is pressed the action will be...
+		totemTopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (Wolf_bt.getText() == "Coger Lobo") {
-					Wolf_bt.setText("Soltar Lobo");
-					Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
+				//If the totem was free, take it
+				if (totemTopButton.getText().equals("Coger " + totemTopName)) {
+					System.out.println("entro en el if");
+					//Change the text to set free
+					totemTopButton.setText("Soltar " + totemTopName);
+					//Add a red border to the button
+					totemTopButton.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
+					//Send the other clients that the totem is taken
 					send("totem,takeTotemTop,"+myName);
 				}
+				//If the totem was blocked, send a freeTotem message
 				else {
-					blockWolf("");
-					new CheckConexiones("freeTotemTop",Generic_client.this);
+					new ConnectionCheck("freeTotemTop",Generic_client.this);
 				}
 			}
 		});
 		
-		Dragon_bt.addActionListener(new ActionListener() {
+		//When the bot button is pressed the action will be...
+		totemBotButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (Dragon_bt.getText() == "Coger Dragon") {
-					Dragon_bt.setText("Soltar Dragon");
-					Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
+				//If the totem was free, take it
+				if (totemBotButton.getText() == "Coger " + totemBotName) {
+					//Change the text to set free
+					totemBotButton.setText("Soltar " + totemBotName);
+					//Add a red border to the button
+					totemBotButton.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
+					//Send the other clients that the totem is taken
 					send("totem,takeTotemBot,"+myName);
 				}
+				//If the totem was blocked, send a freeTotem message
 				else {
-	        		blockDragon("");
-	        		new CheckConexiones("freeTotemBot",Generic_client.this);
+	        		new ConnectionCheck("freeTotemBot",Generic_client.this);
 				}
 			}
 		});
 		
-		Info_bt.addActionListener(new ActionListener() {
+		//Shows the alertPanel with the buttons active if the totem is taken
+		alertPanelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				info.showIt(is_totem_taked("lobo"), is_totem_taked("dragon"));
+				alertPanel.showIt(totemTopTaken, totemBotTaken);
 			}
 		});
 		
-		wolf_alert.addActionListener(new ActionListener() {
+		//Shows the infoPanel for the Top totem
+		infoPanelTotemTopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				alert.showIt("takeTotemTop");
+				infoPanel.showIt("takeTotemTop");
 			}
 		});
 		
-		dragon_alert.addActionListener(new ActionListener() {
+		//Shows the infoPanel for the Bot totem
+		infoPanelTotemBotButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				alert.showIt("takeTotemBot");
+				infoPanel.showIt("takeTotemBot");
 			}
 		});
 	}
 	
 	public void initialize(){
-		dragon_blocked=false;
-		wolf_blocked=false;
+		
+		//Initialize the variables
+		totemBotTaken=false;
+		totemTopTaken=false;
 		ImAlive=false;
-		time_wolf = new Integer[3];
-        time_wolf[0]=1;
-        time_wolf[1]=0;
-        time_wolf[2]=0;
-        time_dragon = new Integer[3];
-        time_dragon[0]=1;
-        time_dragon[1]=0;
-        time_dragon[2]=0;
+		totemTopTimer = new Integer[3];
+        totemTopTimer[0]=1;
+        totemTopTimer[1]=0;
+        totemTopTimer[2]=0;
+        totemBotTimer = new Integer[3];
+        totemBotTimer[0]=1;
+        totemBotTimer[1]=0;
+        totemBotTimer[2]=0;
 	}
 	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-		System.out.println("id puesto a: "+id);
-	}
-
 	public String getClientName() {
 		return clientName;
 	}
@@ -229,79 +236,83 @@ public class Generic_client extends JPanel {
 	public String getMyName() {
 		return myName;
 	}
-	public void freeWolf(String user_name) {
+	
+	public void setTotemTopFree(String userName) {
 		
-		if (Wolf_bt.getText() == "Soltar Lobo") {
-			show_error("lobo",user_name);
+		//If we received a message that the totem is set free and we have the totem taken the app will show an alert
+		if (totemTopButton.getText().equals("Soltar " + totemTopName)) {
+			showsForcedAlert(totemTopName,userName);
 		}
-		Wolf_bt.setEnabled(true);
-		alert.changeActiveOkButton(totemTopName, false);
-		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
-		wolf_blocked=false;
-		Wolf_bt.setText("Coger Lobo");
+		//Reinitialize the button
+		totemTopButton.setEnabled(true);
+		infoPanel.changeActiveOkButton(totemTopName, false);
+		totemTopButton.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		totemTopButton.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
+		totemTopTaken=false;
+		totemTopButton.setText("Coger " + totemTopName);
 		
 	}
 	
-	public void freeDragon(String user_name) {
+	public void setTotemBotFree(String userName) {
 		
-		if (Dragon_bt.getText() == "Soltar Dragon") {
-			show_error("dragon",user_name);
+		//If we received a message that the totem is set free and we have the totem taken the app will show an alert
+		if (totemBotButton.getText().equals("Soltar " + totemBotName)) {
+			showsForcedAlert(totemBotName,userName);
 		}
-		Dragon_bt.setEnabled(true);
-		alert.changeActiveOkButton(totemBotName, false);
-		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
-		dragon_blocked=false;
-		Dragon_bt.setText("Coger Dragon");
+		//Reinitialize the button
+		totemBotButton.setEnabled(true);
+		infoPanel.changeActiveOkButton(totemBotName, false);
+		totemBotButton.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		totemBotButton.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
+		totemBotTaken=false;
+		totemBotButton.setText("Coger " + totemBotName);
 		
 	}
 	
 	public void blockDragon(String user_name) {
 		
-		Dragon_bt.setEnabled(false);
-		alert.changeActiveOkButton(totemBotName, true);
-		dragon_blocked=true;
-		if(time_dragon[0]+time_dragon[1]+time_dragon[2] == 1) { //If the time is not already running
-			time("dragon");
+		totemBotButton.setEnabled(false);
+		infoPanel.changeActiveOkButton(totemBotName, true);
+		totemBotTaken=true;
+		if(totemBotTimer[0]+totemBotTimer[1]+totemBotTimer[2] == 1) { //If the time is not already running
+			startTimer("dragon");
 		}
 		else {
-			time_dragon[0]=1;
-	        time_dragon[1]=0;
-	        time_dragon[2]=0;
+			totemBotTimer[0]=1;
+	        totemBotTimer[1]=0;
+	        totemBotTimer[2]=0;
 		}
-		Dragon_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-		Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
+		totemBotButton.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		totemBotButton.setBorder(BorderFactory.createLineBorder(new Color(232,183,169), 2));
 		if(user_name.equals("")) {
-			Dragon_bt.setText("En transición");
+			totemBotButton.setText("En transición");
 		}
 		else {
-			Dragon_bt.setText("<html><font color = black>Dragon: " + user_name+"</html>");
+			totemBotButton.setText("<html><font color = black>Dragon: " + user_name+"</html>");
 		}
 		
 	}
 	
-	public void blockWolf(String user_name) {
+	public void blockTotemTop(String userName) {
 		
-		Wolf_bt.setEnabled(false);
-		alert.changeActiveOkButton(totemTopName, true);
-		wolf_blocked=true;
-		System.out.println("La hora con la que entro al bucle es: "+time_wolf[2]+":"+time_wolf[1]+":"+time_wolf[0]);
-		if(time_wolf[0]+time_wolf[1]+time_wolf[2] == 1) { //If the time is not already running
-			time("wolf");
+		totemTopButton.setEnabled(false);
+		infoPanel.changeActiveOkButton(totemTopName, true);
+		totemTopTaken=true;
+		if(totemTopTimer[0]+(totemTopTimer[1]*60)+(totemTopTimer[2]*3600) == 1) { //If the time is not already running
+			startTimer(totemTopName);
 		}
 		else {
-			time_wolf[0]=1;
-			time_wolf[1]=0;
-			time_wolf[2]=0;
+			totemTopTimer[0]=1;
+			totemTopTimer[1]=0;
+			totemTopTimer[2]=0;
 		}
-		Wolf_bt.setFont(new Font("Yu Gothic", Font.BOLD, 14));
-		Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
-		if(user_name.equals("")) {
-			Wolf_bt.setText("En transición");
+		totemTopButton.setFont(new Font("Yu Gothic", Font.BOLD, 14));
+		totemTopButton.setBorder(BorderFactory.createLineBorder(new Color(79,202,217), 2));
+		if(userName.equals("")) {
+			totemTopButton.setText("En transición");
 		}
 		else {
-			Wolf_bt.setText("<html><font color = white>Lobo: " + user_name+"</html>");
+			totemTopButton.setText("<html><font color = white>Lobo: " + userName+"</html>");
 		}
 	}
 	
@@ -318,15 +329,15 @@ public class Generic_client extends JPanel {
 							showMsg(parts[1],parts[2],parts[3]);
 							break;
 						case "list":
-								alert.addList(parts[1],parts[2]);
+								infoPanel.addList(parts[1],parts[2]);
 								switch (parts[1]){
 					        	case "takeTotemBot":
-					        		if (Dragon_bt.getText().equals("Soltar Dragon")) {
+					        		if (totemBotButton.getText().equals("Soltar Dragon")) {
 					        			show_alert("dragon",parts[2]);
 					        		}
 					        		break;
 					        	case "takeTotemTop":
-					        		if (Wolf_bt.getText().equals("Soltar Lobo")) {
+					        		if (totemTopButton.getText().equals("Soltar Lobo")) {
 					        			show_alert("lobo",parts[2]);
 					        		}
 					        		break;
@@ -334,12 +345,12 @@ public class Generic_client extends JPanel {
 							break;
 							
 						case "freedom":
-							alert.clearList(parts[1]);
+							infoPanel.clearList(parts[1]);
 							showMsg(parts[1],parts[2],parts[3]);
 							break;
 							
 						case "CleanList":
-							alert.removeUserFromListByNumber(parts[1], Integer.parseInt(parts[2]));
+							infoPanel.removeUserFromListByNumber(parts[1], Integer.parseInt(parts[2]));
 		    				break;
 		    			
 						case "isAlive":
@@ -357,14 +368,14 @@ public class Generic_client extends JPanel {
 								System.out.println("Hora recibida: "+parts[2]);
 								String[] times = parts[2].split(":");
 								if(parts[1].equals("wolf")) {
-									time_wolf[0]=Integer.valueOf(times[2]);
-							        time_wolf[1]=Integer.valueOf(times[1]);
-							        time_wolf[2]=Integer.valueOf(times[0]);
+									totemTopTimer[0]=Integer.valueOf(times[2]);
+							        totemTopTimer[1]=Integer.valueOf(times[1]);
+							        totemTopTimer[2]=Integer.valueOf(times[0]);
 								}
 								else if(parts[1].equals("dragon")) {
-									time_dragon[0]=Integer.valueOf(times[2]);
-									time_dragon[1]=Integer.valueOf(times[1]);
-									time_dragon[2]=Integer.valueOf(times[0]);
+									totemBotTimer[0]=Integer.valueOf(times[2]);
+									totemBotTimer[1]=Integer.valueOf(times[1]);
+									totemBotTimer[2]=Integer.valueOf(times[0]);
 								}
 							
 		    				break;
@@ -380,7 +391,7 @@ public class Generic_client extends JPanel {
 	
 	public void chekList(String action, String name) {
 		
-		if(alert.getUser(action).equals(myName)) {
+		if(infoPanel.getUser(action).equals(myName)) {
 			
 			String totem="";
 			String okAction="";
@@ -403,14 +414,14 @@ public class Generic_client extends JPanel {
 	        if(PromptResult==JOptionPane.YES_OPTION)
 	        {
 	        	if (action.equals("freeTotemTop")) {
-	        		freeWolf(name);
-	        		Wolf_bt.setText("Soltar Lobo");
-					Wolf_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
+	        		setTotemTopFree(name);
+	        		totemTopButton.setText("Soltar Lobo");
+					totemTopButton.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
 				}
 				if (action.equals("freeTotemBot")) {
-					freeDragon(name);
-					Dragon_bt.setText("Soltar Dragon");
-					Dragon_bt.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
+					setTotemBotFree(name);
+					totemBotButton.setText("Soltar Dragon");
+					totemBotButton.setBorder(BorderFactory.createLineBorder(new Color(254,0,0), 5));
 				}
 				send("totem,"+okAction+","+myName);
 	        }
@@ -419,7 +430,7 @@ public class Generic_client extends JPanel {
 	        }
 			
 		}
-		else if(alert.getUser(action).equals("empty")) {
+		else if(infoPanel.getUser(action).equals("empty")) {
 			showMsg(action,name,"");
 		}
 	}
@@ -427,20 +438,20 @@ public class Generic_client extends JPanel {
 	public void showMsg(String text, String user_name, String client) {
 				
 		if("takeTotemBot".equals(text) && clientName.equals(client)){
-			if(!Dragon_bt.getText().equals("Soltar Dragon")) {
+			if(!totemBotButton.getText().equals("Soltar Dragon")) {
 				blockDragon(user_name);
 			}
 		}
 		else if("takeTotemTop".equals(text) && clientName.equals(client)){
-			if(!Wolf_bt.getText().equals("Soltar Lobo")) {
-				blockWolf(user_name);
+			if(!totemTopButton.getText().equals("Soltar Lobo")) {
+				blockTotemTop(user_name);
 			}
 		}
 		else if(("freeTotemBot").equals(text)){
-			freeDragon(user_name);
+			setTotemBotFree(user_name);
 		}
 		else if(("freeTotemTop").equals(text)){
-			freeWolf(user_name);
+			setTotemTopFree(user_name);
 		}
 	}
 	
@@ -513,44 +524,37 @@ public class Generic_client extends JPanel {
 		System.out.println("We are sending: "+text+","+clientName);
 		client.send(text+","+clientName);
 	}
-	
-	public boolean is_totem_taked(String totem) {
-		if(totem == "lobo") {
-			return wolf_blocked;
-		}
-		else if (totem == "dragon") {
-			return dragon_blocked;
-		}
-		return false;
-	}
-	
+
 	public boolean canIExit() {
 		return (!isTotemTopWarning() && !isTotemBotWarning());
 	}
 	
 	public boolean isTotemTopWarning() {
-		if (Wolf_bt.getText().equals("Soltar Lobo")) {
+		if (totemTopButton.getText().equals("Soltar Lobo")) {
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean isTotemBotWarning() {
-		if (Dragon_bt.getText().equals("Soltar Dragon")) {
+		if (totemBotButton.getText().equals("Soltar Dragon")) {
 			return true;
 		}
 		return false;
 	}
 	
-	public void show_error(String totem, String user_name) {
-		window.windowsMessage("El usuario " +user_name+ " ha forzado la liberación del " + totem);
-		if(totem.equals("lobo")) {
-			promt(user_name,"force_wolf");
+	public void showsForcedAlert(String totem, String userName) {
+		//Shows a windows alert
+		window.windowsMessage("El usuario " +userName+ " ha forzado la liberación del totem \"" + totem+"\"");
+		//Reproduce the sound alert
+		if(totem.equals(totemTopName)) {
+			promt(userName,totemTopForcedAlert);
 		}
-		else if(totem.equals("dragon")) {
-			promt(user_name,"force_dragon");
+		else if(totem.equals(totemBotName)) {
+			promt(userName,totemBotForcedAlert);
 		}
-		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " ha forzado la liberación del " + totem);
+		//Shows a message that the totem was forced to set free
+		JOptionPane.showMessageDialog(null,"El usuario " +userName+ " ha forzado la liberación del totem \"" + totem+"\"");
 	}
 	
 	public void show_alert(String totem, String user_name) {
@@ -564,111 +568,121 @@ public class Generic_client extends JPanel {
 		JOptionPane.showMessageDialog(null,"El usuario " +user_name+ " está solicitando el " + totem);
 	}
 	
-	public AlertPane getAlertPane() {
-		return alert;
+	public InfoPanel getInfoPanel() {
+		return infoPanel;
 	}
 	
-	public void time(String totem) {
+	//Method that start the timer for a totem
+	public void startTimer(String totemName) {
 		Thread t1 = new Thread(new Runnable() {
 	         public void run() {
 	        	 try {
+	        		//Wait 1 second to have a good synchronization
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-	        	 if(totem.equals("dragon")) {
-	        		 while(dragon_blocked) {
+	        	//Difference between top and bot totem
+	        	 if(totemName.equals(totemBotName)) {
+	        		 //Run the timer while the totem is taken
+	        		 while(totemBotTaken) {
 	        			 
-	        			 if(time_dragon[0]==60) {
-	        				 time_dragon[0]=0;
-	        				 time_dragon[1]+=1;
+	        			 if(totemBotTimer[0]==60) {
+	        				 totemBotTimer[0]=0;
+	        				 totemBotTimer[1]+=1;
 	        			 }
-	        			 if(time_dragon[1]==60) {
-	        				 time_dragon[1]=0;
-	        				 time_dragon[2]+=1;
+	        			 if(totemBotTimer[1]==60) {
+	        				 totemBotTimer[1]=0;
+	        				 totemBotTimer[2]+=1;
 	        			 }
-	        			 if(time_dragon[2] != 0) {
-	        				 dragon_time_lb.setText("Retenido: "+ String.valueOf(time_dragon[2]) + " h " + String.valueOf(time_dragon[1]) + " min "+ String.valueOf(time_dragon[0])+ " seg");
+	        			 if(totemBotTimer[2] != 0) {
+	        				 totemBotTimerLabel.setText("Retenido: "+ String.valueOf(totemBotTimer[2]) + " h " + String.valueOf(totemBotTimer[1]) + " min "+ String.valueOf(totemBotTimer[0])+ " seg");
 	        			 }
-	        			 else if(time_dragon[1] !=0) {
-	        				 dragon_time_lb.setText("Retenido: "+ String.valueOf(time_dragon[1]) + " min "+ String.valueOf(time_dragon[0])+ " seg");
+	        			 else if(totemBotTimer[1] !=0) {
+	        				 totemBotTimerLabel.setText("Retenido: "+ String.valueOf(totemBotTimer[1]) + " min "+ String.valueOf(totemBotTimer[0])+ " seg");
 	        			 }
 	        			 else {
-	        				 dragon_time_lb.setText("Retenido: "+ String.valueOf(time_dragon[0])+ " seg");
+	        				 totemBotTimerLabel.setText("Retenido: "+ String.valueOf(totemBotTimer[0])+ " seg");
 	        			 }
-	        			 time_dragon[0]++;
+	        			 totemBotTimer[0]++;
 			        	 try {
+			        		 //Wait 1 second
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 		        	 }
-	        		 time_dragon[0]=1;
-	        		 time_dragon[1]=0;
-	        		 time_dragon[2]=0;
-	        		 dragon_time_lb.setText("");
+	        		 //Restart the timer and remove the text of the label
+	        		 totemBotTimer[0]=1;
+	        		 totemBotTimer[1]=0;
+	        		 totemBotTimer[2]=0;
+	        		 totemBotTimerLabel.setText("");
 	        	 }
-	        	 else if (totem.equals("wolf")) {
-	        		 while(wolf_blocked) {
-	        			 if(time_wolf[0]==60) {
-	        				 time_wolf[0]=0;
-	        				 time_wolf[1]+=1;
+	        	 else if (totemName.equals(totemTopName)) {
+	        		 while(totemTopTaken) {
+	        			 if(totemTopTimer[0]==60) {
+	        				 totemTopTimer[0]=0;
+	        				 totemTopTimer[1]+=1;
 	        			 }
-	        			 if(time_wolf[1]==60) {
-	        				 time_wolf[1]=0;
-	        				 time_wolf[2]+=1;
+	        			 if(totemTopTimer[1]==60) {
+	        				 totemTopTimer[1]=0;
+	        				 totemTopTimer[2]+=1;
 	        			 }
-	        			 if(time_wolf[2] != 0) {
-	        				 wolf_time_lb.setText("Retenido: "+ String.valueOf(time_wolf[2]) + " h " + String.valueOf(time_wolf[1]) + " min "+ String.valueOf(time_wolf[0])+ " seg");
+	        			 if(totemTopTimer[2] != 0) {
+	        				 totemTopTimerLabel.setText("Retenido: "+ String.valueOf(totemTopTimer[2]) + " h " + String.valueOf(totemTopTimer[1]) + " min "+ String.valueOf(totemTopTimer[0])+ " seg");
 	        			 }
-	        			 else if(time_wolf[1] !=0) {
-	        				 wolf_time_lb.setText("Retenido: "+ String.valueOf(time_wolf[1]) + " min "+ String.valueOf(time_wolf[0])+ " seg");
+	        			 else if(totemTopTimer[1] !=0) {
+	        				 totemTopTimerLabel.setText("Retenido: "+ String.valueOf(totemTopTimer[1]) + " min "+ String.valueOf(totemTopTimer[0])+ " seg");
 	        			 }
 	        			 else {
-	        				 wolf_time_lb.setText("Retenido: "+ String.valueOf(time_wolf[0])+ " seg");
+	        				 totemTopTimerLabel.setText("Retenido: "+ String.valueOf(totemTopTimer[0])+ " seg");
 	        			 }
-	        			 time_wolf[0]++;
+	        			 totemTopTimer[0]++;
 			        	 try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 		        	 }
-	        		 time_wolf[0]=1;
-	        		 time_wolf[1]=0;
-	        		 time_wolf[2]=0;
-	        		 wolf_time_lb.setText("");
+	        		 totemTopTimer[0]=1;
+	        		 totemTopTimer[1]=0;
+	        		 totemTopTimer[2]=0;
+	        		 totemTopTimerLabel.setText("");
 	        	 }
 	         }
 	    });  
 	    t1.start();
-		
 	}
 
-	protected class CheckConexiones{
+	protected class ConnectionCheck{
     	
-    	public CheckConexiones(String action, Generic_client panel) {
+    	public ConnectionCheck(String action, Generic_client panel) {
             new Thread() {
                 public void run() {
-                	String user=alert.getUser(action+","+clientName);
-                	boolean CanGo=false;
-        			while (!CanGo &&!user.equals("empty")) {
+                	//Get the first user in the list
+                	String user = infoPanel.getUser(action);
+                	boolean canGo=false;
+                	
+                	//Until someone respond with an "imAlive" message or the wait list is empty
+        			while (!canGo &&!user.equals("empty")) {
         				
-        					//Wait 3 seconds to know if the client is disconnected.
+        					//Send the message to know if the user is still connected
 	                		send("isAlive,NO_DATA,"+user);
 	                		try {
+	                			//Wait 3 seconds to know if the client is disconnected.
 								Thread.sleep(3000);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
+	                		//After 3 seconds, check if the client has responded to the ask
 	                		if(ImAlive) {
-	                			CanGo=true;
+	                			//If he is alive, then change the variable
+	                			canGo=true;
 	                			break;
 	                		}
-	                		
-	                	if(!CanGo) {
+	                	
+	                	if(!canGo) {
+	                		//If he is not alive, remove the disconnected client to the wait list
 	                		if (action.equals("freeTotemTop,"+clientName))	panel.send("CleanList,totemTop,0");
 	        				if (action.equals("freeTotemBot,"+clientName))	panel.send("CleanList,totemBot,0");
 	        				try {
@@ -677,10 +691,13 @@ public class Generic_client extends JPanel {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-	                		user=alert.getUser(action+","+clientName);
+	        				//And get the next person in the queue
+	                		user=infoPanel.getUser(action);
 	                	}
         			}
+        			//Set the variable to false again
         			ImAlive=false;
+        			//Send the message to set free the totem
         			send("freeTotem,"+action+","+myName);
                 }
             }.start();

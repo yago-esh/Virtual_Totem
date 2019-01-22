@@ -161,8 +161,6 @@ public class Client {
 		private void parseId(String receivedLine) {
 			//Set the id sent by the server
 			myId = receivedLine;
-			System.out.println("Mi Id es: "+myId);
-			client.setId(myId);
 		}
 	}
 	
