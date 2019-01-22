@@ -83,7 +83,7 @@ public class Alert_VT extends JDialog {
 		
 		JLabel background = new JLabel();
 		background.setBounds(0, 0, 450, 254);
-		background.setIcon(new ImageIcon(Info_VT.class.getResource("/Img/background.jpg")));
+		background.setIcon(new ImageIcon(InfoPanel.class.getResource("/Img/background.jpg")));
 		contentPanel.add(background);
 		
 		//------------------------------------Initialize Variables--------------------------------//

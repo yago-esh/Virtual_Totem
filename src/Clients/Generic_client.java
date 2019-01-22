@@ -25,14 +25,14 @@ import javax.swing.SwingConstants;
 
 import Virtual_Totem.Alert_VT;
 import Virtual_Totem.Client;
-import Virtual_Totem.Info_VT;
+import Virtual_Totem.InfoPanel;
 import Virtual_Totem.Window;
 import sun.applet.Main;
 
 
 public class Generic_client extends JPanel {
 	
-	protected Info_VT info;
+	protected InfoPanel info;
 	protected Alert_VT alert;
 	protected Client client;
 	protected String myName, clientName, id;
@@ -43,8 +43,9 @@ public class Generic_client extends JPanel {
 	protected JLabel wolf_time_lb, dragon_time_lb;
 	protected Integer time_wolf[], time_dragon[];
 	protected JLabel clientIcon;
+	protected String[] totemNames = new String[2];
 
-	public Generic_client(Client client, Window window, String clientName) {
+	public Generic_client(Client client, Window window, String clientName, String[] totemNames) {
 		
 		//------------------------------Develop mode--------------------------------
 		myName=(System.getProperty("user.name")+String.valueOf(Math.floor(Math.random()*999)));
@@ -56,7 +57,7 @@ public class Generic_client extends JPanel {
 		this.window=window;
 		this.clientName=clientName;
 		client.associate(this);
-		info = new Info_VT(Generic_client.this);
+		info = new InfoPanel(Generic_client.this,totemNames);
 		alert = new Alert_VT(this,myName);
 		setLayout(null);
 		
@@ -645,6 +646,16 @@ public class Generic_client extends JPanel {
 		
 	}
 	
+	public String[] getTotemNames() {
+		return totemNames;
+	}
+
+	public void setTotemNames(String[] totemNames) {
+		this.totemNames = totemNames;
+	}
+
+
+
 	protected class CheckConexiones{
     	
     	public CheckConexiones(String action, Generic_client panel) {
